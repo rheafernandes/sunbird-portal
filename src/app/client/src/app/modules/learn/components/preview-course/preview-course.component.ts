@@ -22,6 +22,7 @@ export class PreviewCourseComponent implements OnInit {
   previewurl = [];
   coursechapters = [];
   youtubelink = [];
+  check = [];
   safeUrl;
 
   constructor(
@@ -62,7 +63,7 @@ export class PreviewCourseComponent implements OnInit {
     this.courseBatchService.getAllBatchDetails(this.ongoingSearch)
       .subscribe((data: any) => {
         this.batches = data.result.response.content;
-        console.log(this.batches);
+        // console.log(this.batches);
         for (const batch of this.batches) {
           this.totalParticipants = this.totalParticipants + Object.keys(batch.participant).length;
         }
@@ -91,23 +92,31 @@ export class PreviewCourseComponent implements OnInit {
   }
   getpreviewlinks() {
     for (const child of this.coursechapters) {
-      console.log('child', child);
-      this.youtubelink.push(child.children);
-      if (child.children.length > 0) {
-      this.checkChildrens(child.children);
-      } else {
-          console.log('previewurl', child.previewUrl);
-      }
-    }
-    for (const link of this.youtubelink) {
 
-      for (const ulink of link) {
-        if (ulink.mimeType === 'video/x-youtube') {
-          ulink.previewUrl = ulink.previewUrl.replace('watch?v=', 'embed/');
-          this.previewurl.push(ulink.previewUrl);
-        }
+      this.youtubelink.push(child.children);
+      if (child.children.length !== 0 ) {
+      this.checkChildrens(child);
+      }
+
+  }
+
+    for (const link of this.check) {
+      if (link.mimeType === 'video/x-youtube') {
+        link.previewUrl = link.previewUrl.replace('watch?v=', 'embed/');
+        this.previewurl.push(link.previewUrl);
+        console.log('link preview', link.previewUrl);
       }
     }
+
+
+    // for (const link of this.youtubelink) {
+    //   for (const ulink of link) {
+    //     if (ulink.mimeType === 'video/x-youtube') {
+    //       ulink.previewUrl = ulink.previewUrl.replace('watch?v=', 'embed/');
+    //       this.previewurl.push(ulink.previewUrl);
+    //     }
+    //   }
+    // }
     this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.previewurl[0]);
   }
 
@@ -116,9 +125,20 @@ export class PreviewCourseComponent implements OnInit {
   }
 
 checkChildrens(child) {
-  if (child.children.length > 0) {
-    console.log('child values', child.children);
-  }
-}
 
+   const property = 'children';
+  for (const chheck of child.children) {
+  //  console.log('checkk ', chheck.children);
+  // console.log('boolean ', property in chheck);
+  if (chheck.hasOwnProperty('children')) {
+  if (chheck.children.length !== 0 ) {
+      this.checkChildrens(chheck);
+    } else {
+      // console.log('lenght', chheck.children.length === 0 );
+        this.check.push(chheck);
+    }
+  }
+  }
+
+}
 }

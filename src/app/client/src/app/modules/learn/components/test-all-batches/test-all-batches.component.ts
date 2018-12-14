@@ -41,7 +41,7 @@ export class DialogOverviewExampleDialog implements OnInit {
   }
   ngOnInit(): void {
     this.batchDetail = this.batchShare.getBatchDetail();
-    console.log(this.batchDetail);
+    // console.log(this.batchDetail);
     this.getUserDetails(this.batchDetail.createdBy);
   }
   // ngOnChange(){
@@ -59,7 +59,7 @@ export class DialogOverviewExampleDialog implements OnInit {
     };
     const response = this.learnerService.get(option).pipe(pluck('result', 'response'));
     response.subscribe(data => {
-      console.log(data);
+      // console.log(data);
       this.mentorContactDetail = data;
     }
     );
@@ -108,29 +108,29 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
         courseId: this.courseId
       }
     };
-    console.log('course id', this.courseId);
+    // console.log('course id', this.courseId);
     this.courseBatchService.getAllBatchDetails(this.ongoingSearch)
       .subscribe((data: any) => {
-        console.log('this is batch deets', data);
+        // console.log('this is batch deets', data);
         this.ongoingBatches = data.result.response.content;
-        console.log(this.ongoingBatches);
+        // console.log(this.ongoingBatches);
       });
     this.courseBatchService.getAllBatchDetails(this.upcomingSearch)
       .subscribe((resp: any) => {
-        console.log('this is batch deets', resp);
+        // console.log('this is batch deets', resp);
         this.upcomingBatches = resp.result.response.content;
-        console.log(this.ongoingBatches);
+        // console.log(this.ongoingBatches);
       });
   }
   openContactDetailsDialog(batch): void {
-    console.log('Output batch', batch);
+    // console.log('Output batch', batch);
     this.batchshare.setBatchDetail(batch);
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
       width: '500px',
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('Dialog result', result);
+      // console.log('Dialog result', result);
     });
   }
   openEnrollDetailsDialog(batch) {
@@ -150,7 +150,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
     this.courseBatchService.enrollToCourse(request).pipe(
       takeUntil(this.unsubscribe))
       .subscribe((data) => {
-        console.log('data', data);
+        // console.log('data', data);
         this.showUnenroll = data.result.response;
         this.toasterService.success(this.resourceService.messages.smsg.m0036);
       }, (err) => {
