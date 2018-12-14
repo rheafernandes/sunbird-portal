@@ -1,15 +1,15 @@
 <!-- Navbar #0
 For easy navigation of course preview -->
-<nav class="course-preview-nav navbar navbar-expand-lg navbar-dark bg-dark" id="navbar">
+<nav class="course-preview-nav navbar navbar-expand-lg navbar-light bg-light sticky-top " id="navbar">
   <!--navbar-light -->
   <div class="container">
-    <a class="navbar-brand" href="#">STACKROUTE</a>
+    <!-- <a class="navbar-brand" href="#">STACKROUTE</a> -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto">
+    <div class="collapse navbar-collapse" style="font-size: 18px" id="navbarSupportedContent">
+      <ul class="navbar-nav mx-auto">
         <!--the Ml and Mr are to align to left and right -->
         <li class="nav-item active">
           <a class="nav-link" href="#desc">Description<span class="sr-only">(current)</span></a>
@@ -30,7 +30,7 @@ For easy navigation of course preview -->
           <a class="nav-link" href="#instructors">Instructors</a>
         </li>
       </ul>
-      <button type="button" (click)="redirect()" class="btn btn-dark btn-enroll ml-auto" style="background: black;">View Batches</button>
+      <!-- <button type="button" class="btn btn-dark btn-enroll ml-auto">Enroll Now </button> -->
     </div>
   </div>
 </nav>
@@ -241,12 +241,12 @@ For easy navigation of course preview -->
       This section is for Preview/Sample video  -->
 <section class="course-preview-section container-fluid bg-dark" id="preview">
   <h2>Sneak-Peak</h2>
-  <mat-tab-group class="video-text">
-    <mat-tab label="Sample Video ">
+  <mat-tab-group>
+    <mat-tab label="Sample Video" style="color:white;font-size: 20px">
       <iframe width="720" height="450" [src]='safeUrl' frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen></iframe>
     </mat-tab>
-    <mat-tab label="Sample Chapter">
+    <mat-tab label="Sample Chapter" style="color:white;font-size: 20px">
       <iframe width="720" height="450" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vS-ORUK9ChAFCMDw0zjPwYrxcgp1n47iTqCPnNSdfq5AKvhvJkHbWqmuSNb8qTuvaRdRxh3v9EbKBYO/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
     </mat-tab>
   </mat-tab-group>
