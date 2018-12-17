@@ -259,6 +259,9 @@ export class CreateBatchComponent implements OnInit, OnDestroy {
       this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent });
     }, 1000);
   }
+  private createSession() {
+   this.router.navigate(['create-session']);
+  }
 
   private getUserOtherDetail(userData) {
     if (userData.email && userData.phone) {

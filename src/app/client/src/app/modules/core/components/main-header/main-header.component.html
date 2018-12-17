@@ -1,7 +1,7 @@
 <div class="container-fluid bg-dark ">
 <!-- <div class="container"> -->
   <nav
-    class="navbar navbar-expand-lg navbar-dark bg-dark "
+    class="navbar navbar-expand-lg navbar-dark  "
     *ngIf="!showExploreHeader"
   >
     <div
@@ -14,21 +14,21 @@
         class="navbar-toggler"
         type="button"
         data-toggle="collapse"
-        data-target="#navbarColor01"
-        aria-controls="navbarColor01"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
         aria-expanded="false"
         aria-label="Toggle navigation"
         style="margin-left: 9em;"
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarColor01" >
+      <div class="collapse navbar-collapse" id="navbarSupportedContent" >
         <span
           *ngIf="!showExploreHeader && userService.userid"
           class="nav-align"
         >
           <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
+            <li class="nav-item ">
               <a
                 class="nav-link"
                 [class.active]="
@@ -38,7 +38,7 @@
                 >{{ resourceService?.frmelmnts?.tab?.home }}</a
               >
             </li>
-            <li class="nav-item active">
+            <li class="nav-item ">
               <a
                 class="nav-link"
                 [class.active]="
@@ -49,7 +49,7 @@
                 >{{ resourceService?.frmelmnts?.tab?.courses }}</a
               >
             </li>
-            <li class="nav-item active">
+            <li class="nav-item ">
               <a
                 class="nav-link"
                 [class.active]="
@@ -60,13 +60,13 @@
                 >{{ resourceService?.frmelmnts?.tab?.resources }}</a
               >
             </li>
-            <li class="nav-item active">
+            <li class="nav-item ">
               <a
                 class="nav-link"
                  [matMenuTriggerFor]="main_menu"
                 >Catalog</a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item ">
               <a class="nav-link" id="profile-color" style="color: white;"
                 ><extension-point
                   id="profile-color"
@@ -191,7 +191,7 @@
   </nav>
 <!-- </div> -->
 </div>
-<div class="container-fluid bg-dark">
+<div class="container-fluid ">
 <div class="container">
   <nav
     class="navbar navbar-expand-lg navbar-dark bg-dark "

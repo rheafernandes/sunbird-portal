@@ -165,6 +165,7 @@ export class BatchListComponent extends WorkSpace implements OnInit {
   }
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
+      console.log('parm', params);
       this.pageNumber = Number(params.pageNumber);
       this.fetchBatchList();
     });

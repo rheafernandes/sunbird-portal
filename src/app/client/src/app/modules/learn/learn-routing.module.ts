@@ -11,6 +11,7 @@ import { FlagContentComponent, AuthGuard } from '@sunbird/core';
 import { CourseProgressComponent } from '@sunbird/dashboard';
 import { RedirectComponent } from './../shared/components/redirect/redirect.component';
 import { PreviewCourseComponent } from './components/preview-course/preview-course.component';
+import { CreateSessionComponent } from './components/create-session/create-session.component';
 const telemetryEnv = 'course';
 const objectType = 'course';
 const routes: Routes = [
@@ -107,6 +108,9 @@ const routes: Routes = [
           },
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }]
         }
+      },
+      {
+        path: 'create-session' , component: CreateSessionComponent
       }
     ]
   }

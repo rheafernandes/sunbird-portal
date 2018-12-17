@@ -24,13 +24,14 @@
   margin-left: 60rem;
 }
 .icon-alignment{
-  margin-left: 5rem;
+  margin-left: 3rem;
   margin-top: 0.5em;
   display: inline-flex;
 }
 .nav-align{
   /* margin-left: 1.5rem; */
-  font-size: 1rem
+  font-size: 1rem;
+margin-left: 2rem;
 }
 .navbar-brand{
   display: inline-block;
@@ -63,7 +64,7 @@
    -webkit-text-fill-color: transparent !important;
 }
 .navbar {
-  margin-bottom: 50px;
+  /* margin-bottom: 50px; */
   border-radius: 0;
 }
 #search-bar{

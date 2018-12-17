@@ -16,6 +16,7 @@ import { CoreModule } from '@sunbird/core';
 import { NotesModule } from '@sunbird/notes';
 import { DashboardModule } from '@sunbird/dashboard';
 import { PlayContent } from '../shared';
+import { CreateSessionComponent } from './components/create-session/create-session.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -34,6 +35,6 @@ import { PlayContent } from '../shared';
   providers: [CourseConsumptionService, CourseBatchService, CourseProgressService, PlayContent],
   declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
     CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,
-    UpdateCourseBatchComponent, CarriculumCardComponent, PreviewCourseComponent]
+    UpdateCourseBatchComponent, CarriculumCardComponent, PreviewCourseComponent, CreateSessionComponent]
 })
 export class LearnModule { }
