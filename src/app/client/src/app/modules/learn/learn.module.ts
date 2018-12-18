@@ -11,7 +11,7 @@ import {
   LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
   CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,
   UpdateCourseBatchComponent, CarriculumCardComponent, PreviewCourseComponent, TestAllBatchesComponent,
-  DialogOverviewExampleDialog } from './components';
+  DialogOverviewExampleDialog, CreateBatchDialog} from './components';
 import { CourseConsumptionService, CourseBatchService, CourseProgressService, } from './services';
 import { CoreModule } from '@sunbird/core';
 import { NotesModule } from '@sunbird/notes';
@@ -37,7 +37,8 @@ import { PlayContent } from '../shared';
   providers: [CourseConsumptionService, CourseBatchService, CourseProgressService, PlayContent],
   declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
     CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,
-    UpdateCourseBatchComponent, CarriculumCardComponent, PreviewCourseComponent, TestAllBatchesComponent, DialogOverviewExampleDialog],
-    entryComponents: [DialogOverviewExampleDialog],
+    UpdateCourseBatchComponent, CarriculumCardComponent, PreviewCourseComponent, TestAllBatchesComponent,
+    DialogOverviewExampleDialog, CreateBatchDialog ],
+  entryComponents: [DialogOverviewExampleDialog, CreateBatchDialog],
 })
 export class LearnModule { }

@@ -94,7 +94,7 @@ export class PreviewCourseComponent implements OnInit {
     for (const child of this.coursechapters) {
 
       this.youtubelink.push(child.children);
-      if (child.children.length !== 0 ) {
+      if (child.children.length !== 0 && child.hasOwnProperty('children') ) {
       this.checkChildrens(child);
       }
 

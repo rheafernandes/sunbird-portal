@@ -1,5 +1,11 @@
+@import '../../../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
 .all-batches-section{
-    padding:0 10vw;
+    padding:0 0vw;
+}
+.grid {
+  height:70vh !important;
+  overflow-y: scroll;
 }
 .wrapper {
     width: 300px;
@@ -7,7 +13,6 @@
     background-color: white;
     box-shadow: 0 3px 10px 0px rgb(39, 39, 39);
 }
-
 .example-header-image{
     background-image: url('https://i.pinimg.com/736x/2f/8c/43/2f8c431cc7e7ef1dda2f2deebbcff3af--pastel-color-background-pastel-background-iphone.jpg');
     background-size: cover;
@@ -15,5 +20,11 @@
 .align-content{
     text-align: center;
 }
+.example-container {
+  display: flex;
+  flex-direction: column;
+}
 
-
+.example-container > * {
+  width: 100%;
+}

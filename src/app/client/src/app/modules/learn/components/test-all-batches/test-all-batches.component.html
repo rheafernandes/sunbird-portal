@@ -1,10 +1,15 @@
 <!-- This is a section for view all batches -->
-<section class="all-batches-section container-fluid">
-    <mat-tab-group>
+<!-- <div class="container">
+  <div class="row pt-5"> -->
+    <!-- <div class="col-md-9 "> -->
+<section class="all-batches-section container">
+    <mat-tab-group class="grid">
         <mat-tab label="Ongoing Batches">
-            <mat-grid-list cols="3">
-            <mat-grid-tile *ngFor="let upcoming of upcomingBatches">
-                <div class="wrapper">
+            <mat-grid-list [cols]="breakpoint" (window:resize)="onResize($event)">
+              <!-- <ng-container> -->
+                <mat-grid-tile *ngFor="let upcoming of upcomingBatches">
+                  <!-- <ng-container *ngFor="let upcoming of upcomingBatches"> -->
+                  <div class="wrapper">
                     <mat-card class="styleClass">
                         <mat-card-header>
                             <div mat-card-avatar class="example-header-image"></div>
@@ -26,18 +31,22 @@
                             <button mat-button *ngIf="upcoming.enrollmentType==='open' && !(upcoming?.participant.hasOwnProperty(userId))"
                                 (click)="openEnrollDetailsDialog(upcoming)">Enroll</button>
                             <button mat-button *ngIf="upcoming.enrollmentType==='invite-only'" (click)="openContactDetailsDialog(upcoming)">Contact</button>
-                            <button mat-button *ngIf="upcoming?.participant && upcoming?.participant.hasOwnProperty(userId)" (click)="unEnroll(upcoming?.id)">UnEnroll</button>
+                            <button mat-button *ngIf="upcoming?.participant && upcoming?.participant.hasOwnProperty(userId)" (click)="unEnroll(upcoming)">UnEnroll</button>
                         </mat-card-actions>
                     </mat-card>
                 </div>
             </mat-grid-tile>
+          <!-- </ng-container> -->
+
             </mat-grid-list>
 
         </mat-tab>
         <mat-tab label="Upcoming Batches">
-            <mat-grid-list cols="3">
+            <mat-grid-list [cols]="breakpoint" (window:resize)="onResize($event)">
+              <!-- <ng-container> -->
             <mat-grid-tile *ngFor="let ongoing of ongoingBatches">
-                <div class="wrapper ">
+              <!-- <ng-container *ngFor="let ongoing of ongoingBatches"> -->
+                     <div class="wrapper ">
                     <mat-card class="styleClass">
                         <mat-card-header>
                             <div mat-card-avatar class="example-header-image"></div>
@@ -59,12 +68,21 @@
                             <button class="btn" mat-button *ngIf="ongoing.enrollmentType==='open' && !(ongoing?.participant.hasOwnProperty(userId))"
                                 (click)="openEnrollDetailsDialog(ongoing)">Enroll</button>
                             <button class="btn" mat-button *ngIf="ongoing?.enrollmentType==='invite-only'" (click)="openContactDetailsDialog(ongoing)">Contact</button>
-                            <button mat-button *ngIf="ongoing?.participant && ongoing?.participant.hasOwnProperty(userId)" (click)="unEnroll(ongoing?.id)">UnEnroll</button>
+                            <button mat-button *ngIf="ongoing?.participant && ongoing?.participant.hasOwnProperty(userId)" (click)="unEnroll(ongoing)">UnEnroll</button>
                         </mat-card-actions>
                     </mat-card>
                 </div>
             </mat-grid-tile>
+          <!-- </ng-container> -->
             </mat-grid-list>
+        </mat-tab>
+        <mat-tab label="Create Batch">
+            <mat-card>
+                <button class="btn" (click)="createNewBatch()">Add New Batch</button>
+              </mat-card>
         </mat-tab>
     </mat-tab-group>
 </section>
+<!-- </div>
+
+</div> -->
