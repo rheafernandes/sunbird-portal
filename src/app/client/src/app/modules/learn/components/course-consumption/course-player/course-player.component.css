@@ -1,9 +1,108 @@
 .click-notify-xurl {
-    position: absolute; z-index: 999; top: 25%; left: 34%;;
+  position: absolute;
+  z-index: 999;
+  top: 25%;
+  left: 34%;
 }
-.ui.button.right.floated{
-    text-align: right;
+.ui.button.right.floated {
+  text-align: right;
 }
-.ui.button.left.floated{
-    text-align: left;
+.ui.button.left.floated {
+  text-align: left;
+}
+.example-container {
+  width: 100%;
+  height: 100%;
+  background-color: black;
+}
+
+.example-sidenav-content {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  padding-left: 2%;
+  font-size: 30px;
+}
+
+.example-sidenav {
+  padding: 10px;
+  width: 30%;
+  background-color: rgb(13, 13, 14);
+  font-size: 30px;
+  border-right-color: orange;
+  border-right: 30px;
+}
+
+.example-sidenav::-webkit-scrollbar-thumb {
+  background-color: orange;
+}
+
+#icon {
+  position: absolute;
+  top: 0;
+  left: 2px;
+  color: orange;
+  font-size: 40px;
+  border-radius: 20px;
+}
+
+
+.example-sidenav-content a{
+  width: 10px;
+  height: 30px;
+}
+a :hover{
+  background-color: aliceblue;
+}
+
+#previous {
+   background-color: orange;
+
+}
+
+.schedule{
+   font-size: 15px;
+   margin-bottom: 10px;
+   /* justify-content: center; */
+   /* text-align: center; */
+       /* border: 5px solid; */
+   border-color: orange;
+   border-radius: 4%;
+}
+
+.schedule mat-card {
+  padding-top: 2px;
+}
+.schedule mat-card-title {
+  padding-top: 0px;
+  font-size: 20px;
+  text-align: left;
+}
+
+.schedule mat-card-header {
+  padding-left: 2px;
+  font-weight: bold;
+}
+
+.schedule mat-card-footer {
+ text-align: end
+}
+
+.schedule mat-card-content {
+  font-size: 15px;
+}
+
+.schedule mat-panel-title{
+  font-weight: bold;
+  font-size: 18px;
+}
+
+@media screen and (max-width: 750px) {
+  .example-sidenav{
+    width: 100%;
+  }
+  .example-sidenav-content{
+    width: 100%;
+  }
 }

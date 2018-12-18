@@ -1,6 +1,8 @@
 @import "../node_modules/slick-carousel/slick/slick.css";
 @import "../node_modules/slick-carousel/slick/slick-theme.css";
 @import "../node_modules/fine-uploader/fine-uploader/fine-uploader-new.min.css";
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
 /*sunbird light font*/
 @font-face {
   font-family: 'sunbirdlightfont';
@@ -1227,7 +1229,7 @@ ui.primary.basic.button.ann-upload-attachment {
   color: #007AFF;
   font-family: 'sunbirdboldfont';
   font-size: 1em;
-  line-height: 17px; 
+  line-height: 17px;
 }
 .linkify.icon.opacity04 {
   opacity: 0.4;
@@ -2655,7 +2657,7 @@ iframe.iziModal-iframe {
   right: 0;
   left: 0;
   bottom: 0;
-} 
+}
 
 .overflow-word-wrap {
   overflow-wrap: break-word !important;
@@ -2738,10 +2740,10 @@ iframe.iziModal-iframe {
 .ui.icon.input>i.icon.dialcode-search-icon:not(.link) {
   pointer-events: auto;
 }
-.text-ellipsis { 
+.text-ellipsis {
   white-space: nowrap;
-  overflow: hidden; 
-  text-overflow:ellipsis; 
+  overflow: hidden;
+  text-overflow:ellipsis;
   display: block;
   line-height:1.4em;
 }
@@ -2809,7 +2811,7 @@ iframe.iziModal-iframe {
 
     .accordion-content {
       width: 250px;
-    }  
+    }
 
     .fancytree-plain span.fancytree-node span.fancytree-title {
       overflow: hidden;
@@ -2820,7 +2822,7 @@ iframe.iziModal-iframe {
     }
   /* content player y0ur progress section margin here !important is added to address specificity issue*/
     p.m-responsive-cp-header {
-      margin-top:20px !important; 
+      margin-top:20px !important;
       float: left;
     }
     .ui.grid.m-responsive-cp-nmt-50 {
@@ -2875,7 +2877,7 @@ iframe.iziModal-iframe {
 
 .accordion-content {
   align-self: center;
-} 
+}
 
 i.icon.accordion-content-right {
   align-self: center;
@@ -2908,7 +2910,7 @@ i.icon.accordion-content-right {
 }
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
   .header-logo {
-    max-height: 45px;   
+    max-height: 45px;
   }
 }
 .ui.calendar .table td {
@@ -2916,8 +2918,8 @@ i.icon.accordion-content-right {
 }
 
 /* Removing body scroll when modal opens */
-.no-scroll { 
+.no-scroll {
   overflow-y: hidden;
-  margin-right: 16px; 
+  margin-right: 16px;
 }
 

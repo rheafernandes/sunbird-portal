@@ -1,6 +1,6 @@
 import { combineLatest, Subscription, Subject } from 'rxjs';
 import { takeUntil, first, mergeMap, map } from 'rxjs/operators';
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, OnChanges } from '@angular/core';
 import {
   ContentService, UserService, BreadcrumbsService, PermissionService, CoursesService
 } from '@sunbird/core';
@@ -8,7 +8,7 @@ import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash';
 import {
   WindowScrollService, ILoaderMessage, ConfigService, ICollectionTreeOptions, NavigationHelperService,
-  ToasterService, ResourceService, ExternalUrlPreviewService
+  ToasterService, ResourceService, ExternalUrlPreviewService, PlayContent, ServerResponse
 } from '@sunbird/shared';
 import { CourseConsumptionService, CourseBatchService, CourseProgressService } from './../../../services';
 import { INoteData } from '@sunbird/notes';
@@ -16,12 +16,16 @@ import {
   IImpressionEventInput, IEndEventInput, IStartEventInput, IInteractEventObject, IInteractEventEdata
 } from '@sunbird/telemetry';
 import { DeviceDetectorService } from 'ngx-device-detector';
+// import { PlayContent } from '@sunbird/shared';
+import { checkNoChangesView } from '@angular/core/src/view/view';
+
 @Component({
   selector: 'app-course-player',
   templateUrl: './course-player.component.html',
-  styleUrls: ['./course-player.component.css']
+  styleUrls: ['./course-player.component.css'],
+  providers: [PlayContent]
 })
-export class CoursePlayerComponent implements OnInit, OnDestroy {
+export class CoursePlayerComponent implements OnInit, OnDestroy, OnChanges {
 
   public courseInteractObject: IInteractEventObject;
 
@@ -116,6 +120,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   prevPlaylistItem: any;
 
+  contributions: any;
+
+  contributionsLength: number;
+
   noContentToPlay = 'No content to play';
 
   showExtContentMsg = false;
@@ -130,20 +138,35 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public collectionTreeOptions: ICollectionTreeOptions;
 
   public unsubscribe = new Subject<void>();
-
+  public subscribed: Subscription;
+  public courseProgressListner: Subscription;
   constructor(contentService: ContentService, activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, windowScrollService: WindowScrollService,
     router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
     private toasterService: ToasterService, private resourceService: ResourceService, public breadcrumbsService: BreadcrumbsService,
     private cdr: ChangeDetectorRef, public courseBatchService: CourseBatchService, public permissionService: PermissionService,
     public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService,
-    private courseProgressService: CourseProgressService, private deviceDetectorService: DeviceDetectorService) {
+    private courseProgressService: CourseProgressService, private deviceDetectorService: DeviceDetectorService,
+    public player: PlayContent) {
     this.contentService = contentService;
     this.activatedRoute = activatedRoute;
     this.windowScrollService = windowScrollService;
     this.router = router;
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
+    this.player = player;
+    this.subscribed = this.player.subject.subscribe(
+      item => this.navigateToContent(item)
+    );
+    this.courseProgressListner = this.player.CourseProgressListner.subscribe(
+      next => {
+        this.contentProgressEvent({
+          status: 'END',
+          content_id: next.content_id
+        });
+      }
+    );
+
   }
   ngOnInit() {
     this.activatedRouteSubscription = this.activatedRoute.params.pipe(first(),
@@ -163,6 +186,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         }
       })).subscribe((response: any) => {
         this.courseHierarchy = response.courseHierarchy;
+        const contentCredits = _.get(this.courseHierarchy, 'contentCredits');
+        if (_.isArray(contentCredits)) {
+          this.contributionsLength = contentCredits.length;
+        }
+        this.contributions = _.join(_.map(contentCredits, 'name'), ', ');
         this.courseInteractObject = {
           id: this.courseHierarchy.identifier,
           type: 'Course',
@@ -193,11 +221,15 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.loader = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
       });
-      this.courseProgressService.courseProgressData.pipe(
+    this.courseProgressService.courseProgressData.pipe(
       takeUntil(this.unsubscribe))
       .subscribe((courseProgressData) => {
         this.courseProgressData = courseProgressData;
       });
+  }
+
+  ngOnChanges() {
+    this.getEnrolledCourseBatchDetails();
   }
   private parseChildContent() {
     const model = new TreeModel();
@@ -323,10 +355,18 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
   public contentProgressEvent(event) {
     if (this.batchId && this.enrolledBatchInfo && this.enrolledBatchInfo.status === 1) {
-      const eid = event.detail.telemetryData.eid;
+      let eid: any;
+      let content_id: any;
+      if (event.status === 'END') {
+        eid = event.status;
+      } else { eid = event.detail.telemetryData.eid; }
+
+      if (event.content_id) {
+        content_id = event.content_id;
+      } else { content_id = this.contentId; }
       const request: any = {
         userId: this.userService.userid,
-        contentId: this.contentId,
+        contentId: content_id,
         courseId: this.courseId,
         batchId: this.batchId,
         status: eid === 'END' ? 2 : 1
@@ -335,7 +375,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         .subscribe((updatedRes) => {
           this.contentStatus = updatedRes.content;
         }, (err) => {
-          console.log('updating content status failed', err);
         });
     }
   }
@@ -354,7 +393,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   // on destroy of player if content played was H5P make content as read (status=2)
-  public playerOnDestroy (data) {
+  public playerOnDestroy(data) {
     if (data.contentId) {
       const playContentDetail = this.findContentById(data.contentId);
       const index = _.findIndex(this.courseProgressData.content, { 'contentId': data.contentId });
@@ -411,7 +450,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         uaspec: {
           agent: deviceInfo.browser,
           ver: deviceInfo.browser_version,
-          system: deviceInfo.os_version ,
+          system: deviceInfo.os_version,
           platform: deviceInfo.os,
           raw: deviceInfo.userAgent
         }
@@ -483,5 +522,26 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       type: 'click',
       pageid: 'course-consumption'
     };
+  }
+
+
+  getEnrolledCourseBatchDetails() {
+    this.courseBatchService.getEnrolledBatchDetails(this.batchId).pipe(
+      takeUntil(this.unsubscribe))
+      .subscribe((data: ServerResponse) => {
+        this.enrolledBatchInfo = data;
+        console.log('this enrolled batch info', this.enrolledBatchInfo);
+        if (this.enrolledBatchInfo.participant) {
+          const participant = [];
+          _.forIn(this.enrolledBatchInfo.participant, (value, key) => {
+            participant.push(key);
+          });
+          this.enrolledBatchInfo.participant = participant;
+        } else {
+          this.enrolledBatchInfo.participant = [];
+        }
+      }, () => {
+        // handle error
+      });
   }
 }

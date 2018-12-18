@@ -159,6 +159,7 @@ export class DataDrivenFilterComponent implements OnInit, OnDestroy, OnChanges {
           this.showConcepts = true;
         }
       });
+
     });
   }
   /**
