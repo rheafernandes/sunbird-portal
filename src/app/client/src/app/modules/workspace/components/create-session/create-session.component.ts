@@ -25,4 +25,12 @@ export class CreateSessionComponent implements OnInit {
 
   }
 
+  // used to save the session delta for creating a new session
+  save(formElement) {
+    // const sessionDelta = Object.assign({status:"draft" , participantCount:this.data.label , 
+    // enrolledCount:0 , participants: this.data.participant , createdBy:"ravinder"} , formElement.value)
+    // const result = Object.assign({ sessionDetails: formElement.value }, this.data.createSession);
+    // console.log("form", result);
+  }
+
 }
