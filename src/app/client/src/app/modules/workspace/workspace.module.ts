@@ -19,6 +19,9 @@ import {
 } from './components';
 import { NgInviewModule } from 'angular-inport';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { UpdateSessionComponent } from './components/update-session/update-session.component';
+import { SessionListComponent } from './components/session-list/session-list.component';
+import { CreateSessionComponent } from './components/create-session/create-session.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -44,7 +47,10 @@ import { TelemetryModule } from '@sunbird/telemetry';
     LimitedPublishedComponent,
     AllContentComponent,
     FlagReviewerComponent,
-    AllMyContentFilterComponent
+    AllMyContentFilterComponent,
+    UpdateSessionComponent,
+    SessionListComponent,
+    CreateSessionComponent
   ],
   providers: [WorkSpaceService, EditorService, BatchService]
 })

@@ -1,0 +1,69 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="ui upForReviewTable table">
+        <thead>
+          <tr>
+            <th class="four wide UpReviewTableHeader">Session
+            </th>
+            <th class="two wide UpReviewTableHeader">Course
+            </th>
+            <th class="two wide UpReviewTableHeader">Date
+            </th>
+            <th class="two wide UpReviewTableHeader">Status
+            </th>
+            <th class="two wide UpReviewTableHeader">Delete
+            </th >
+            <th class="two wide UpReviewTableHeader">Update
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr in-view-item class="UpForReviewListHover cursor-pointer" *ngFor="let i of [1,2,3]">
+            <td>
+              <h5 class="ui image header">
+                <img src="https://images-na.ssl-images-amazon.com/images/I/31E%2BwRLUqNL._US500_.jpg" class="ui tiny image UpReviewTinyImage">
+                <div class="content ">
+                  <div class="UpReviewHeader">Session 1</div>
+                  <div class="UpReviewSubHeader">Batch Name
+                  </div>
+                </div>
+              </h5>
+            </td>
+            <td>
+              <h5 class="ui image header">
+                <div class="content ">
+                  <div class="UpReviewHeader">Session 1</div>
+                </div>
+              </h5>
+            </td>
+            <td>
+              <h5 class="ui image header">
+                <div class="content">
+                  <div class="UpReviewSubHeader">Date
+                  </div>
+                </div>
+              </h5>
+            </td>
+            <td class="UpForReviewStatusOrange">Draft/Published</td>
+            <td>
+              <i class="trash large icon">
+              </i>
+            </td>
+            <td>
+            <i class="fa fa-refresh" data-toggle="modal" data-target="#myModal" aria-hidden="true"></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+   <!-- Modal -->
+   <div class="modal fade" id="myModal" role="dialog">
+      <app-update-session></app-update-session>
+    </div>
+
+</div>
+
+
+<router-outlet> </router-outlet>
