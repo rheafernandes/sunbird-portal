@@ -52,6 +52,7 @@ import { CreateSessionComponent } from './components/create-session/create-sessi
     SessionListComponent,
     CreateSessionComponent
   ],
-  providers: [WorkSpaceService, EditorService, BatchService]
+  providers: [WorkSpaceService, EditorService, BatchService],
+  entryComponents:[CreateSessionComponent]
 })
 export class WorkspaceModule { }
