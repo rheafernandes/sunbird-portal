@@ -87,6 +87,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy, OnChanges {
    */
   showNoteEditor = false;
 
+  session = false;
+
   /**
 	 * telemetryImpression object for course TOC page
 	*/
@@ -231,6 +233,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges() {
     this.getEnrolledCourseBatchDetails();
   }
+
+  toggle() {
+    console.log('============togle');
+    document.getElementById('icon_view_list').click();
+  }
   private parseChildContent() {
     const model = new TreeModel();
     const mimeTypeCount = {};
@@ -341,6 +348,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy, OnChanges {
       queryParams: { 'contentId': content.id },
       relativeTo: this.activatedRoute
     };
+    console.log('navigate');
     const playContentDetail = this.findContentById(content.id);
     if (playContentDetail.model.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
       this.showExtContentMsg = false;

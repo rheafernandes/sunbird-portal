@@ -46,6 +46,7 @@
     "fine-uploader": "^5.15.7",
     "font-awesome": "^4.7.0",
     "gulp-download": "0.0.1",
+    "install": "^0.12.2",
     "izimodal": "^1.5.1",
     "jquery": "^3.3.1",
     "jquery.fancytree": "^2.28.1",
