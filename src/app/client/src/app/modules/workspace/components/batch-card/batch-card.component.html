@@ -16,7 +16,7 @@
       By {{batch.userName}}<br/> {{batch.startDate | date: "dd MMM"}} - {{batch.endDate | date: "dd MMM"}}
       <i class="right floated large unlock alternate icon" *ngIf="batch.enrollmentType === 'open'">
       </i>
-      <button type="button" class="btn btn-primary" style="float: right">Update</button>
+      <button type="button" class="btn btn-primary" (click)="openDialog()" style="float: right">Create</button>
     </div>
   </div>
 </div>
