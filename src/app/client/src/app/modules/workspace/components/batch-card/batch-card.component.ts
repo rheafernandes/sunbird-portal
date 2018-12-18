@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { Ibatch } from './../../interfaces';
 import { WorkSpaceService, BatchService } from '../../services';
+import { MatDialog } from '@angular/material';
+import { CreateSessionComponent } from '../create-session/create-session.component';
 /**
 * This display a batch card
 */
@@ -48,7 +50,8 @@ export class BatchCardComponent {
   constructor(workSpaceService: WorkSpaceService,
     batchService: BatchService,
     activatedRoute: ActivatedRoute,
-    route: Router) {
+    route: Router,
+    public dialog: MatDialog) {
     this.batchService = batchService;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -56,6 +59,17 @@ export class BatchCardComponent {
   public onAction(batchdata) {
     this.batchService.setBatchData(batchdata);
     this.route.navigate(['update/batch', batchdata.identifier], {relativeTo: this.activatedRoute});
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(CreateSessionComponent, {
+      width: '50%',
+      data: {createSession: this.batch}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+    });
   }
 
 }

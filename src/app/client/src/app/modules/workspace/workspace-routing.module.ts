@@ -8,6 +8,7 @@ import {
   FlagConentplayerComponent, PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
   AllContentComponent, FlagReviewerComponent} from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
+import { SessionListComponent } from './components/session-list/session-list.component';
 const telemetryEnv = 'workspace';
 const objectType = 'workspace';
 const routes: Routes = [
@@ -191,6 +192,18 @@ const routes: Routes = [
             breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
           }
         }]
+      },
+
+      {
+        path: 'sessions', component: SessionListComponent, canActivate: [AuthGuard],
+        data: {
+          telemetry: {
+            env: telemetryEnv, pageid: 'workspace-course-batch', subtype: 'paginate', uri: '/workspace/sessions',
+            type: 'list', mode: 'create', object: { type: objectType, ver: '1.0' }
+          }, roles: 'coursebacthesRole',
+          breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' },
+           { label: 'Sessions', url: '' }]
+        },
       },
       {
         path: 'allcontent/:pageNumber', component: AllContentComponent, canActivate: [AuthGuard],
