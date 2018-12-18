@@ -51,18 +51,13 @@
               </i>
             </td>
             <td>
-            <i class="fa fa-refresh" data-toggle="modal" data-target="#myModal" aria-hidden="true"></i>
+            <i class="fa fa-refresh"  mat-raised-button (click)="openDialog()" aria-hidden="true"></i>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
-   <!-- Modal -->
-   <div class="modal fade" id="myModal" role="dialog">
-      <app-update-session></app-update-session>
-    </div>
-
 </div>
 
 
