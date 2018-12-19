@@ -30,9 +30,9 @@
     <input  ngModel name="sessionDate" type="datetime-local" class="form-control" id="sessionDate" placeholder="http://">
   </div>
   <div>
-    <button *ngIf="!existingSessionFlag" type="button" class="btn btn-secondary" style="float:right;" (click)="save(sessionForm)">Save</button>
+    <button *ngIf="!existingSessionFlag" type="button" class="btn btn-secondary" style="float:right;" (click)="save(sessionForm,'draft')">Save</button>
     <button *ngIf="existingSessionFlag" type="button" class="btn btn-primary" style="float:right;margin-right: 1rem;">Update</button>
-    <button *ngIf="!existingSessionFlag" type="button" class="btn btn-primary" style="float:right;margin-right: 1rem;">Publish</button>
+    <button *ngIf="!existingSessionFlag" type="button" class="btn btn-primary" style="float:right;margin-right: 1rem;" (click)="save(sessionForm,'published')">Publish</button>
 
   </div>
 </form>

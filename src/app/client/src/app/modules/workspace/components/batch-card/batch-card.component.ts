@@ -64,7 +64,7 @@ export class BatchCardComponent {
   openDialog(): void {
     const dialogRef = this.dialog.open(CreateSessionComponent, {
       width: '50%',
-      data: {createSession: this.batch}
+      data: {sessionData: this.batch , create: true}
     });
 
     dialogRef.afterClosed().subscribe(result => {
