@@ -12,11 +12,16 @@
       <textarea matInput placeholder="Description of Batch"></textarea>
     </mat-form-field>
 <br>
-    <mat-form-field  style="width: 50% !important">
-        <!-- <label>Choose End Date</label> -->
-        <input matInput [matDatepicker]="picker" placeholder="Choose start date">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
+      <mat-form-field style="width: 45% !important">
+        <input matInput [matDatepicker]="picker1" placeholder="Choose Start Date" [formControl]="date">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+      &nbsp;&nbsp;
+      <mat-form-field style="width:45% !important">
+        <input matInput [matDatepicker]="picker2" placeholder="Choose End Date" [formControl]="serializedDate">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
       </mat-form-field>
 
 <br>
@@ -37,22 +42,23 @@
   <mat-card-footer>
     <div class="container">
       <div class="row">
-        <div class="col">
+        <!-- <div class="col">
       <button mat-button (click)="onNoClick()"style="
-      width: 30vh;
+      width: inherit;
+      font-size: 15px;
       height: 6vh;
       background: black;
       color: white;
   ">Create Session</button>
-  </div>
+  </div> -->
   <div class="col">
       <button mat-button (click)="onNoClick()" style="
-      width: 30vh;
       height: 6vh;
-
+      font-size: 15px;
+      width:inherit;
       background: black;
       color: white;
-  ">Create</button>
+  ">Create Batch</button>
     </div>
   </div>
   </div>
