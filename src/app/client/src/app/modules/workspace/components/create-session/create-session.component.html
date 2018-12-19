@@ -1,39 +1,34 @@
-<form>
-
+<form #sessionForm="ngForm">
   <h5 class="modal-title" id="ModalLabel"> {{existingSessionFlag ? "Update" : "Create" }} Sessions
     <i class="fas fa-times-circle float-right" (click)="onNoClick()"></i>
   </h5>
   <hr />
   <div class="form-group">
     <label for="sessionTitle">Name of Session</label>
-    <input type="text" class="form-control" id="sessionTitle" placeholder="session name">
+    <input ngModel name="sessionTitle" type="text" class="form-control" id="sessionTitle" placeholder="session name">
   </div>
   <div class="form-group">
     <label for="sessionDescription">Description </label>
-    <textarea class="form-control" id="sessionDescription" rows="3"></textarea>
+    <textarea  ngModel name="sessionDescription" class="form-control" id="sessionDescription" rows="3"></textarea>
   </div>
   <div class="form-group">
     <label for="courseUnit">Course Units</label>
-    <select class="form-control" id="courseUnit">
-      <option>1</option>
-      <option>2</option>
-      <option>3</option>
-      <option>4</option>
-      <option>5</option>
+    <select class="form-control" id="courseUnit" ngModel name="courseUnit">
+      <option [value]="courseName?.code" *ngFor='let courseName of coursechapters'>{{courseName.name}}</option>
     </select>
   </div>
   <div class="form-group">
     <label for="sessionUrl">Meeting Url</label>
-    <input type="email" class="form-control" id="sessionUrl" placeholder="http://">
+    <input  ngModel name="sessionUrl" type="email" class="form-control" id="sessionUrl" placeholder="http://">
   </div>
   <div class="form-group">
     <label for="sessionDate">Session Date</label>
-    <input type="datetime-local" class="form-control" id="sessionDate" placeholder="http://">
+    <input  ngModel name="sessionDate" type="datetime-local" class="form-control" id="sessionDate" placeholder="http://">
   </div>
   <div>
-    <button *ngIf="!existingSessionFlag" type="button" class="btn btn-secondary" style="float:right;">Save</button>
+    <button *ngIf="!existingSessionFlag" type="button" class="btn btn-secondary" style="float:right;" (click)="save(sessionForm,'draft')">Save</button>
     <button *ngIf="existingSessionFlag" type="button" class="btn btn-primary" style="float:right;margin-right: 1rem;">Update</button>
-    <button *ngIf="!existingSessionFlag" type="button" class="btn btn-primary" style="float:right;margin-right: 1rem;">Publish</button>
+    <button *ngIf="!existingSessionFlag" type="button" class="btn btn-primary" style="float:right;margin-right: 1rem;" (click)="save(sessionForm,'published')">Publish</button>
 
   </div>
 </form>
