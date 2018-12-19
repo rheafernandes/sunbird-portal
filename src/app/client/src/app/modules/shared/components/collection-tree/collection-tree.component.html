@@ -23,7 +23,6 @@
         <mat-panel-title>
           <span [ngClass]="child.icon"></span> {{ child.title }} &nbsp;&nbsp;
         </mat-panel-title>
-
           <mat-panel-description>
           </mat-panel-description>
 
@@ -37,7 +36,6 @@
     <mat-card
       *ngIf="child.children.length == 0"
       (click)="onItemSelect(child)"
-      tabindex="0"
     >
       <mat-card-header>
         <mat-checkbox
@@ -45,7 +43,7 @@
           [checked]="child.completed"
           color="primary"
         ></mat-checkbox>
-        &nbsp;  &nbsp; &nbsp; <span [ngClass]="child.icon"></span> &nbsp; {{ child.title }}
+        &nbsp; &nbsp; <span [ngClass]="child.icon"></span> &nbsp; {{ child.title }}
       </mat-card-header>
     </mat-card>
   </mat-accordion>

@@ -1,27 +1,46 @@
 <mat-drawer-container class="example-container">
   <mat-drawer #drawer class="example-sidenav" mode="side">
+      <a>
+          <i id="list"
+            mat-button
+            (click)="toggle()"
+            class="material-icons"
+          >
+            close
+          </i></a>
     <div *ngIf="enrolledBatchInfo" class="schedule">
       <mat-accordion>
-      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-        <mat-expansion-panel-header>
-          <mat-panel-title>course schedule</mat-panel-title>
-        </mat-expansion-panel-header>
-        <mat-card>
-            <mat-card-header>{{enrolledBatchInfo.name}}</mat-card-header>
-                <mat-card-content>
-                   <i class="material-icons">schedule</i>
-                   <span>{{enrolledBatchInfo.startDate  | date}}</span>&nbsp;<span *ngIf="enrolledBatchInfo.endDate" class="date"> - {{enrolledBatchInfo.endDate | date}}</span>
-                   </mat-card-content>
-                   <mat-divider></mat-divider>
-                   <mat-card-footer>
-                        <!-- <span class="left-float">
-                            {{enrolledBatchInfo.participant.length}} {{resourceService.frmelmnts.lbl.learners}}
-                        </span> -->
-                   &nbsp; &nbsp; &nbsp;
-                  <span>{{enrolledBatchInfo.mentors.length}} {{resourceService.frmelmnts.lbl.mentors}}</span>
-                </mat-card-footer>
-                </mat-card>      </mat-expansion-panel>
-    </mat-accordion>
+        <mat-expansion-panel
+          (opened)="panelOpenState = true"
+          (closed)="panelOpenState = false"
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title>course schedule</mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-card>
+            <mat-card-header>{{ enrolledBatchInfo.name }}</mat-card-header>
+            <mat-card-content>
+              <i class="material-icons">schedule</i>
+              <span>{{ enrolledBatchInfo.startDate | date }}</span
+              >&nbsp;<span *ngIf="enrolledBatchInfo.endDate" class="date">
+                - {{ enrolledBatchInfo.endDate | date }}</span
+              >
+            </mat-card-content>
+            <mat-divider></mat-divider>
+            <mat-card-footer>
+              <span class="left-float">
+                {{ enrolledBatchInfo.participant.length }}
+                {{ resourceService.frmelmnts.lbl.learners }}
+              </span>
+              &nbsp; &nbsp; &nbsp;
+              <span
+                >{{ enrolledBatchInfo.mentors.length }}
+                {{ resourceService.frmelmnts.lbl.mentors }}</span
+              >
+            </mat-card-footer>
+          </mat-card>
+        </mat-expansion-panel>
+      </mat-accordion>
     </div>
     <app-collection-tree
       *ngIf="collectionTreeNodes; else: dataCommingSoon"
@@ -31,22 +50,62 @@
       [contentStatus]="contentStatus"
     ></app-collection-tree>
   </mat-drawer>
+  <div class="icons" >
+    <ul>
+      <li>
+        <a>
+          <i
+            mat-button
+            (click)="drawer.toggle()"
+            id="icon_view_list"
+            class="material-icons"
+          >
+            view_list
+          </i></a
+        >
+      </li>
+
+      <li>
+        <div ng-if="toc.showNoteInLecture">
+          <h2 class="ui center aligned icon tiny header toc-note">
+            <a
+              class="ui cursor-pointer"
+              (click)="showNoteEditor = !showNoteEditor"
+            >
+              <app-popup-editor
+                *ngIf="showNoteEditor"
+                [mode]="'create'"
+                [ids]="{ contentId: contentId, courseId: courseId }"
+                (exitModal)="showNoteEditor = false"
+                (createEventEmitter)="createEventEmitter($event)"
+              ></app-popup-editor>
+                  <i id="noteIcon" class="material-icons"> note </i>
+            </a>
+          </h2>
+        </div>
+      </li>
+      <li>
+
+        <a (click)= "session = !session" data-toggle="modal" data-target="#exampleModal">
+          <!-- <app-session-list id="#exampleModal" *ngIf="session"></app-session-list> -->
+            <i id="sessionlist"
+
+             class="material-icons">
+                account_box
+                </i>
+        </a>
+  </li>
+      <!-- <span>{{enableContentPlayer}} {{loader}}</span> -->
+    </ul>
+  </div>
   <div class="example-sidenav-content">
-    <a>
-      <i mat-button (click)="drawer.toggle()" id="icon" class="material-icons">
-        view_list
-      </i></a
-    >
-    <!-- <span>{{enableContentPlayer}} {{loader}}</span> -->
     <div *ngIf="enableContentPlayer && !loader" id="player">
-      ￼
       <div class="ui stackable grid">
         <div class="twelve wide column">
           <div class="ui grid">
             <div class="row">
               <div class="twelve wide column">
-                <div class="ui grid" id="app-player-collection-renderer">
-                </div>
+                <div class="ui grid" id="app-player-collection-renderer"></div>
                 <div
                   class="ui warning message click-notify-xurl"
                   *ngIf="showExtContentMsg"
@@ -81,9 +140,7 @@
                     (click)="navigateToContent(prevPlaylistItem)"
                     [disabled]="prevPlaylistItem === undefined"
                   >
-                    <span class="header">{{
-                      resourceService.frmelmnts.btn.previous
-                    }}</span>
+                    <span class="header">previous</span>
                     <br />
                     <span
                       class="font-white description text-ellipsis"
@@ -95,30 +152,8 @@
                 <div
                   class="two wide tablet only two wide computer only column"
                 ></div>
-                <div
-                  class="two wide column center aligned"
-                  ng-if="toc.showNoteInLecture"
-                >
-                  <h2 class="ui center aligned icon tiny header toc-note">
-                    <a
-                      class="ui take-note-card cursor-pointer"
-                      (click)="showNoteEditor = !showNoteEditor"
-                    >
-                      <app-popup-editor
-                        *ngIf="showNoteEditor"
-                        [mode]="'create'"
-                        [ids]="{ contentId: contentId, courseId: courseId }"
-                        (exitModal)="showNoteEditor = false"
-                        (createEventEmitter)="createEventEmitter($event)"
-                      ></app-popup-editor>
-                      <img
-                        src="{{'assets/images/takenote.png' |  cdnprefixurl}}"
-                      />
-                      <span>{{
-                        resourceService?.frmelmnts?.lbl?.takenote
-                      }}</span>
-                    </a>
-                  </h2>
+                <div class="two wide column center aligned">
+                  <!-- take note -->
                 </div>
                 <div
                   class="two wide tablet only two wide computer only column"
@@ -132,9 +167,7 @@
                     (click)="navigateToContent(nextPlaylistItem)"
                     [disabled]="nextPlaylistItem === undefined"
                   >
-                    <span class="header">{{
-                      resourceService.frmelmnts.btn.next
-                    }}</span>
+                    <span class="header">next</span>
                     <br />
                     <span
                       class="font-white description text-ellipsis"
