@@ -64,19 +64,19 @@
             <th class="two wide UpReviewTableHeader">Status
             </th>
             <th class="two wide UpReviewTableHeader">Delete
-            </th >
+            </th>
             <th class="two wide UpReviewTableHeader">Update
             </th>
           </tr>
         </thead>
         <tbody>
-          <tr in-view-item class="UpForReviewListHover cursor-pointer" *ngFor="let i of [1,2,3]">
+          <tr in-view-item class="UpForReviewListHover cursor-pointer" *ngFor="let session of sessionsList">
             <td>
               <h5 class="ui image header">
                 <img src="https://images-na.ssl-images-amazon.com/images/I/31E%2BwRLUqNL._US500_.jpg" class="ui tiny image UpReviewTinyImage">
                 <div class="content ">
-                  <div class="UpReviewHeader">Session 1</div>
-                  <div class="UpReviewSubHeader">Batch Name
+                  <div class="UpReviewHeader"> {{ session?.sessionDetails?.sessionTitle}}</div>
+                  <div class="UpReviewSubHeader"> {{session?.name}}
                   </div>
                 </div>
               </h5>
@@ -84,25 +84,25 @@
             <td>
               <h5 class="ui image header">
                 <div class="content ">
-                  <div class="UpReviewHeader">Session 1</div>
+                  <div class="UpReviewHeader">{{session?.courseAdditionalInfo?.courseName}}</div>
                 </div>
               </h5>
             </td>
             <td>
               <h5 class="ui image header">
                 <div class="content">
-                  <div class="UpReviewSubHeader">Date
+                  <div class="UpReviewSubHeader"> {{session?.sessionDetails?.sessionDate}}
                   </div>
                 </div>
               </h5>
             </td>
-            <td class="UpForReviewStatusOrange">Draft/Published</td>
+            <td class="UpForReviewStatusOrange"> <button class="btn btn-primary" (click)="publish(session)" [disabled]="session?.sessionDetails?.status==='published'">{{session?.sessionDetails?.status}}</button></td>
             <td>
-              <i class="trash large icon">
+              <i class="trash large icon" (click)="deleteSession(session)">
               </i>
             </td>
             <td>
-            <i class="fa fa-refresh"  mat-raised-button (click)="openDialog()" aria-hidden="true"></i>
+              <i class="fa fa-refresh" mat-raised-button (click)="openDialog(session)" aria-hidden="true"></i>
             </td>
           </tr>
         </tbody>
