@@ -1,4 +1,55 @@
 <div class="container">
+  <!--filerStart -->
+  <div class="container1">
+  <div class="row">
+      <div id="filter-panel" class="collapse filter-panel">
+          <div class="panel panel-default">
+              <div class="panel-body">
+                  <form class="form-inline" role="form">
+                      <div class="">
+                          <label class="filter-col" style="margin-right:0;" for="pref-perpage">Session Title</label>
+                       <input type="text" class="form-control input-sm" style="margin-right: 1rem;" placeholder="Title"/>
+                      </div>
+                      <!-- form group [rows] -->
+                      <div class="">
+                          <label class="filter-col" style="margin-right:0;" for="pref-search" placeholder="name">Course Name</label>
+                          <input type="text" class="form-control input-sm" style="margin-right: 1rem;" id="pref-search">
+                      </div><!-- form group [search] -->
+                      <div class="">
+                          <label class="filter-col" style="margin-right:0;" for="pref-orderby">Batch</label>
+                          <select id="pref-orderby" class="form-control" style="margin-right: 1rem;" placeholder="select batch">
+                              <option>batch 1</option>
+                               <option>batch 2</option>
+                          </select>
+                      </div>
+                       <div class="">
+                          <label class="filter-col" style="margin-right:0;" for="pref-orderby">Status</label>
+                          <select id="pref-orderby" class="form-control" style="margin-right: 1rem;" placeholder="Session status">
+                              <option>Draft</option>
+                               <option>Released</option>
+                          </select>
+                      </div>
+                       <div class="">
+                          <label class="filter-col" style="margin-right:0;" for="pref-orderby">Select</label>
+                          <select id="pref-orderby" class="form-control" style="margin-right: 1rem;" placeholder=" status">
+                              <option>Completed</option>
+                               <option>Not Completed</option>
+                          </select>
+                      </div>
+                      <!-- form group [order by] -->
+
+                  </form>
+              </div>
+          </div>
+      </div>
+      <button type="button" class="btn btn-primary mt-2" data-toggle="collapse" data-target="#filter-panel">
+          <span class="glyphicon glyphicon-cog"></span> Session Filters
+      </button>
+</div>
+</div>
+  <!--filter end-->
+  <br>
+  <br>
   <div class="row">
     <div class="col-md-12">
       <table class="ui upForReviewTable table">
@@ -13,19 +64,23 @@
             <th class="two wide UpReviewTableHeader">Status
             </th>
             <th class="two wide UpReviewTableHeader">Delete
-            </th >
+            </th>
             <th class="two wide UpReviewTableHeader">Update
             </th>
           </tr>
         </thead>
         <tbody>
+<<<<<<< HEAD
           <tr in-view-item class="UpForReviewListHover cursor-pointer" *ngFor="let i of [1,2,3]" (click)="openSession()">
+=======
+          <tr in-view-item class="UpForReviewListHover cursor-pointer" *ngFor="let session of sessionsList">
+>>>>>>> 1e84481fc6b15fb13b0cc2ce562d933630407e9f
             <td>
               <h5 class="ui image header">
                 <img src="https://images-na.ssl-images-amazon.com/images/I/31E%2BwRLUqNL._US500_.jpg" class="ui tiny image UpReviewTinyImage">
                 <div class="content ">
-                  <div class="UpReviewHeader">Session 1</div>
-                  <div class="UpReviewSubHeader">Batch Name
+                  <div class="UpReviewHeader"> {{ session?.sessionDetails?.sessionTitle}}</div>
+                  <div class="UpReviewSubHeader"> {{session?.name}}
                   </div>
                 </div>
               </h5>
@@ -33,25 +88,25 @@
             <td>
               <h5 class="ui image header">
                 <div class="content ">
-                  <div class="UpReviewHeader">Session 1</div>
+                  <div class="UpReviewHeader">{{session?.courseAdditionalInfo?.courseName}}</div>
                 </div>
               </h5>
             </td>
             <td>
               <h5 class="ui image header">
                 <div class="content">
-                  <div class="UpReviewSubHeader">Date
+                  <div class="UpReviewSubHeader"> {{session?.sessionDetails?.sessionDate}}
                   </div>
                 </div>
               </h5>
             </td>
-            <td class="UpForReviewStatusOrange">Draft/Published</td>
+            <td class="UpForReviewStatusOrange"> <button class="btn btn-primary" (click)="publish(session)" [disabled]="session?.sessionDetails?.status==='published'">{{session?.sessionDetails?.status}}</button></td>
             <td>
-              <i class="trash large icon">
+              <i class="trash large icon" (click)="deleteSession(session)">
               </i>
             </td>
             <td>
-            <i class="fa fa-refresh"  mat-raised-button (click)="openDialog()" aria-hidden="true"></i>
+              <i class="fa fa-refresh" mat-raised-button (click)="openDialog(session)" aria-hidden="true"></i>
             </td>
           </tr>
         </tbody>
