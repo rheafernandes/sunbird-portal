@@ -1,16 +1,20 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import {CourseConsumptionService} from '../../../learn/services';
 
 @Component({
   selector: 'app-create-session',
   templateUrl: './create-session.component.html',
-  styleUrls: ['./create-session.component.css']
+  styleUrls: ['./create-session.component.css'],
+  // providers: [CourseConsumptionService]
 })
 export class CreateSessionComponent implements OnInit {
 
   existingSessionFlag: Boolean;
-
-  constructor(
+  course: any;
+  courseid: any;
+  coursechapters;
+  constructor(private courseConsumptionService: CourseConsumptionService,
     public dialogRef: MatDialogRef<CreateSessionComponent>,
     @Inject(MAT_DIALOG_DATA) private data) { }
 
@@ -22,15 +26,19 @@ export class CreateSessionComponent implements OnInit {
     if ('createSession' in this.data) {
       this.existingSessionFlag = false;
     }
-
+    console.log('meta data', this.data);
+    this.courseid = this.data.createSession.courseId;
+    this.getCourseUnits();
   }
 
-  // used to save the session delta for creating a new session
-  save(formElement) {
-    // const sessionDelta = Object.assign({status:"draft" , participantCount:this.data.label , 
-    // enrolledCount:0 , participants: this.data.participant , createdBy:"ravinder"} , formElement.value)
-    // const result = Object.assign({ sessionDetails: formElement.value }, this.data.createSession);
-    // console.log("form", result);
-  }
-
+  getCourseUnits() {
+    this.courseConsumptionService.getCourseHierarchy(this.courseid)
+    .subscribe(
+      (response: any) => {
+        this.course = response;
+        this.coursechapters = this.course.children;
+        console.log('khdjwhsefdsfesjfhe', this.course);
+      }
+    );
+    }
 }
