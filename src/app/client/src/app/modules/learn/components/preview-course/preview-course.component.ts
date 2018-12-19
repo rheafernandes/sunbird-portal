@@ -101,6 +101,16 @@ export class PreviewCourseComponent implements OnInit {
         this.previewurl.push(link.previewUrl);
       }
     }
+
+
+    // for (const link of this.youtubelink) {
+    //   for (const ulink of link) {
+    //     if (ulink.mimeType === 'video/x-youtube') {
+    //       ulink.previewUrl = ulink.previewUrl.replace('watch?v=', 'embed/');
+    //       this.previewurl.push(ulink.previewUrl);
+    //     }
+    //   }
+    // }
     this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.previewurl[0]);
   }
 
