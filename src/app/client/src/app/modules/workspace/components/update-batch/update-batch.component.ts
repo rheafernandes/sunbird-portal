@@ -6,6 +6,7 @@ import { ResourceService, ToasterService, ServerResponse } from '@sunbird/shared
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { BatchService } from '../../services';
+// import {updateSession} from '../../components/update-session';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -149,6 +150,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
       (userDetails, batchDetails) => ({ userDetails, batchDetails })
     );
   }
+
   /**
   * initializes form fields and apply field level validation
   */
@@ -401,6 +403,10 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
         }
       }
     };
+  }
+  sessionUpdate(batch) {
+    console.log(batch);
+    this.router.navigate(['/workspace/content/create/session', batch.id, batch.courseId]);
   }
   ngOnDestroy() {
     if (this.updateBatchModal && this.updateBatchModal.deny) {

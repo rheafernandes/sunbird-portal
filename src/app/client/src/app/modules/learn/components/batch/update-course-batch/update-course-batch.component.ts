@@ -383,7 +383,6 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
       this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent });
     }, 1000);
   }
-
   private getUserOtherDetail(userData) {
     if (userData.email && userData.phone) {
       return ' (' + userData.email + ', ' + userData.phone + ')';

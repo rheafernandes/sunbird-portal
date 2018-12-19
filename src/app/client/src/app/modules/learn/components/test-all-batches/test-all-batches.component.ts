@@ -3,10 +3,10 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef, Injectable, OnChanges,
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseBatchService } from '../../services';
-import {MAT_DIALOG_DATA} from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material';
 import { Inject } from '@angular/core';
 
-import { ConfigService, ToasterService, ResourceService  } from '@sunbird/shared';
+import { ConfigService, ToasterService, ResourceService } from '@sunbird/shared';
 import { LearnerService, UserService, } from '@sunbird/core';
 import { pluck, takeUntil, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -29,7 +29,7 @@ export class DialogOverviewExampleDialog implements OnInit {
   }
   ngOnInit(): void {
     this.mentorDetail = this.data.mentorDetail;
- }
+  }
   onNoClick(): void {
     this.dialogRef.close();
   }
@@ -49,6 +49,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
   userId;
   showUnenroll;
   public unsubscribe = new Subject<void>();
+  public currentDate = new Date().toJSON().slice(0, 10);
   ngOnDestroy(): void {
   }
 
@@ -69,23 +70,45 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.ongoingSearch = {
       filters: {
-        status: '0',
+        status: '1',
         courseId: this.courseId
       }
     };
     this.upcomingSearch = {
       filters: {
-        status: '1',
+        status: '0',
         courseId: this.courseId
       }
     };
+    // this.courseBatchService.getAllBatchDetails(this.ongoingSearch)
+    //   .subscribe((data: any) => {
+    //     this.ongoingBatches = data.result.response.content;
+    //   });
+    // this.courseBatchService.getAllBatchDetails(this.upcomingSearch)
+    //   .subscribe((resp: any) => {
+    //     this.upcomingBatches = resp.result.response.content;
+    //   });
     this.courseBatchService.getAllBatchDetails(this.ongoingSearch)
       .subscribe((data: any) => {
-        this.ongoingBatches = data.result.response.content;
+        const batchdetails = data.result.response.content;
+        for (const batch of batchdetails) {
+          if (batch.endDate > this.currentDate || batch.endDate === null || batch.endDate === undefined) {
+            this.ongoingBatches.push(batch);
+            console.log(batch);
+            console.log('current date', this.currentDate, 'enddate', batch.endDate);
+          }
+        }
       });
     this.courseBatchService.getAllBatchDetails(this.upcomingSearch)
       .subscribe((resp: any) => {
-        this.upcomingBatches = resp.result.response.content;
+        const batchdetails = resp.result.response.content;
+        for (const batch of batchdetails) {
+          if (this.currentDate < batch.startDate) {
+            console.log(batch);
+            console.log('current date', this.currentDate, 'enddate', batch.startDate);
+            this.upcomingBatches.push(batch);
+          }
+        }
       });
   }
   openContactDetailsDialog(batch): void {
