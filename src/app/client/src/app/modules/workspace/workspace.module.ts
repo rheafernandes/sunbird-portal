@@ -22,6 +22,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { SessionListComponent } from './components/session-list/session-list.component';
 import { CreateSessionComponent } from './components/create-session/create-session.component';
 import {CourseConsumptionService, CourseProgressService, CourseBatchService} from '../learn/services';
+import { SessionService } from './services/session/session.service';
 
 @NgModule({
   imports: [
@@ -52,7 +53,8 @@ import {CourseConsumptionService, CourseProgressService, CourseBatchService} fro
     SessionListComponent,
     CreateSessionComponent
   ],
-  providers: [WorkSpaceService, EditorService, BatchService, CourseConsumptionService, CourseProgressService, CourseBatchService],
+  providers: [WorkSpaceService, EditorService, BatchService, CourseConsumptionService, CourseProgressService,
+    CourseBatchService , SessionService],
   entryComponents: [CreateSessionComponent]
 })
 export class WorkspaceModule { }

@@ -5,30 +5,38 @@
   <hr />
   <div class="form-group">
     <label for="sessionTitle">Name of Session</label>
-    <input ngModel name="sessionTitle" type="text" class="form-control" id="sessionTitle" placeholder="session name">
+    <input [ngModel]="existingSessionFlag ? (session.sessionDetails.sessionTitle) : ''" #title="ngModel" name="sessionTitle"
+      type="text" class="form-control" id="sessionTitle" placeholder="session name">
   </div>
+  <!-- [value]="existingSessionFlag ? (session.sessionDetails.sessionDescription) : ''" -->
   <div class="form-group">
     <label for="sessionDescription">Description </label>
-    <textarea  ngModel name="sessionDescription" class="form-control" id="sessionDescription" rows="3"></textarea>
+    <textarea [ngModel]="existingSessionFlag ? (session.sessionDetails.sessionDescription) : ''" #description="ngModel"
+      name="sessionDescription" class="form-control" id="sessionDescription" rows="3" placeholder="session Description"></textarea>
   </div>
   <div class="form-group">
     <label for="courseUnit">Course Units</label>
-    <select class="form-control" id="courseUnit" ngModel name="courseUnit">
+    <select class="form-control" id="courseUnit" [ngModel]="existingSessionFlag ? (session.sessionDetails.courseUnit) : ''"
+      #courseUnit="ngModel" name="courseUnit">
       <option [value]="courseName?.code" *ngFor='let courseName of coursechapters'>{{courseName.name}}</option>
     </select>
   </div>
   <div class="form-group">
     <label for="sessionUrl">Meeting Url</label>
-    <input  ngModel name="sessionUrl" type="email" class="form-control" id="sessionUrl" placeholder="http://">
+    <input [ngModel]="existingSessionFlag ? (session.sessionDetails.sessionUrl) : ''" #url="ngModel" name="sessionUrl"
+      type="email" class="form-control" id="sessionUrl" placeholder="http://example.com">
   </div>
   <div class="form-group">
     <label for="sessionDate">Session Date</label>
-    <input  ngModel name="sessionDate" type="datetime-local" class="form-control" id="sessionDate" placeholder="http://">
+    <input [ngModel]="existingSessionFlag ? (session.sessionDetails.sessionDate) : ''" #sessionDate="ngModel" name="sessionDate"
+      type="datetime-local" class="form-control" id="sessionDate">
   </div>
   <div>
-    <button *ngIf="!existingSessionFlag" type="button" class="btn btn-secondary" style="float:right;" (click)="save(sessionForm,'draft')">Save</button>
-    <button *ngIf="existingSessionFlag" type="button" class="btn btn-primary" style="float:right;margin-right: 1rem;">Update</button>
-    <button *ngIf="!existingSessionFlag" type="button" class="btn btn-primary" style="float:right;margin-right: 1rem;" (click)="save(sessionForm,'published')">Publish</button>
+    <button *ngIf="!existingSessionFlag" type="button" class="btn btn-secondary" style="float:right;" (click)="saveSession(sessionForm,'draft')">Save</button>
+    <button *ngIf="existingSessionFlag" type="button" class="btn btn-primary" style="float:right;margin-right: 1rem;"
+      (click)="updateSession(sessionForm)">Update</button>
+    <button *ngIf="!existingSessionFlag" type="button" class="btn btn-primary" style="float:right;margin-right: 1rem;"
+      (click)="saveSession(sessionForm,'published')">Publish</button>
 
   </div>
 </form>

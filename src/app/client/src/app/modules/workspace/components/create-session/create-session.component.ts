@@ -1,6 +1,7 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CourseConsumptionService } from '../../../learn/services';
+import { SessionService } from '../../services/session/session.service';
 
 @Component({
   selector: 'app-create-session',
@@ -8,45 +9,56 @@ import { CourseConsumptionService } from '../../../learn/services';
   styleUrls: ['./create-session.component.css'],
   // providers: [CourseConsumptionService]
 })
-export class CreateSessionComponent implements OnInit {
+export class CreateSessionComponent implements OnInit, OnDestroy {
 
   existingSessionFlag: Boolean;
   course: any;
   courseid: any;
   coursechapters;
   batchData;
-  sessionId;
+  session;
   constructor(private courseConsumptionService: CourseConsumptionService,
     public dialogRef: MatDialogRef<CreateSessionComponent>,
-    @Inject(MAT_DIALOG_DATA) private data) { }
+    @Inject(MAT_DIALOG_DATA) private data, private sessionService: SessionService) { }
 
   onNoClick(): void {
     this.dialogRef.close();
+    this.ngOnDestroy();
   }
   ngOnInit() {
     if (this.data.create) {
       this.existingSessionFlag = false;
       this.batchData = this.data.sessionData;
+      console.log('Batch Details for session', this.batchData);
       this.courseid = this.data.sessionData.courseId;
-      this.getCourseUnits();
     } else {
       this.existingSessionFlag = true;
-      this.sessionId = this.data.sessionData;
+      this.session = this.data.sessionData;
+      this.courseid = this.data.sessionData.courseId;
+      console.log('Session details', this.session);
     }
+    this.getCourseUnits();
   }
 
   // used to save the session delta for creating a new session
-  save(formElement, status) {
+  saveSession(formElement, status) {
     // creates the session delta
     const sessionDelta = Object.assign({
-      status: status, participantCount: Object.keys(this.batchData.participant).length,
-      enrolledCount: 0, participants: this.batchData.participant, createdBy: 'ravinder'
+      status: status, participantCount: this.batchData.hasOwnProperty('participant') ? Object.keys(this.batchData.participant).length : 0,
+      enrolledCount: 0, participants: this.batchData.hasOwnProperty('participant') ? this.batchData.participant : {}, createdBy: 'ravinder'
     }, formElement.value);
 
     // addes the session delta to the batch details object
-    const result = Object.assign({ sessionDetails: sessionDelta }, this.batchData);
-    console.log('session Delta', result);
-    console.log('json batchData', JSON.stringify(sessionDelta));
+    const resultBatchData = Object.assign({ sessionDetails: sessionDelta }, this.batchData);
+    this.sessionService.addSession(resultBatchData);
+  }
+
+  updateSession(form) {
+    const sessionDelta = Object.assign({}, this.session.sessionDetails, form.value);
+    const resultBatchData = Object.assign({}, this.session);
+    resultBatchData.sessionDetails = sessionDelta;
+    console.log('Resultant batch delta', resultBatchData);
+    this.sessionService.updateSession(resultBatchData);
   }
 
   getCourseUnits() {
@@ -57,5 +69,8 @@ export class CreateSessionComponent implements OnInit {
           this.coursechapters = this.course.children;
         }
       );
+  }
+
+  ngOnDestroy() {
   }
 }
