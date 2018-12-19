@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-create-session',
@@ -7,9 +8,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CreateSessionComponent implements OnInit {
 
-  constructor() { }
+  existingSessionFlag: Boolean;
 
+  constructor(
+    public dialogRef: MatDialogRef<CreateSessionComponent>,
+    @Inject(MAT_DIALOG_DATA) private data) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
   ngOnInit() {
+    this.existingSessionFlag = true;
+    if ('createSession' in this.data) {
+      this.existingSessionFlag = false;
+    }
+
   }
 
 }

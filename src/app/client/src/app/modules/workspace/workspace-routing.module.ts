@@ -8,9 +8,7 @@ import {
   FlagConentplayerComponent, PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
   AllContentComponent, FlagReviewerComponent} from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
-import { UpdateSessionComponent } from './components/update-session/update-session.component';
 import { SessionListComponent } from './components/session-list/session-list.component';
-import { CreateSessionComponent } from './components/create-session/create-session.component';
 const telemetryEnv = 'workspace';
 const objectType = 'workspace';
 const routes: Routes = [
@@ -208,28 +206,6 @@ const routes: Routes = [
         },
       },
       {
-        path: 'create/session/:batchId/:courseId', component: CreateSessionComponent, canActivate: [AuthGuard],
-        data: {
-          telemetry: {
-            env: telemetryEnv, pageid: 'session-create', uri: '/create/session/',
-            type: 'detail', mode: 'create', object: { type: objectType, ver: '1.0' }
-          }, roles: 'coursebacthesRole',
-          breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
-        }
-      },
-      {
-        path: 'update/session/:sessionId', component: UpdateSessionComponent, canActivate: [AuthGuard],
-        data: {
-          telemetry: {
-            env: telemetryEnv, pageid: 'session-edit', uri: '/update/session/',
-            type: 'detail', mode: 'create', object: { type: objectType, ver: '1.0' }
-          }, roles: 'coursebacthesRole',
-          breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
-        }
-      },
-
-
-      {
         path: 'allcontent/:pageNumber', component: AllContentComponent, canActivate: [AuthGuard],
         data: {
           telemetry: {
@@ -287,9 +263,6 @@ const routes: Routes = [
       roles: 'workspace',
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
     }
-  },
-  {
-    path: 'update-session' , component: UpdateSessionComponent
   }
 ];
 
