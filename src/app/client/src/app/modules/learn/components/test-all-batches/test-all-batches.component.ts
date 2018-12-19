@@ -89,7 +89,6 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       });
   }
   openContactDetailsDialog(batch): void {
-    console.log('BATCH Details', batch);
     this.getUserDetails(batch.createdBy)
       .pipe(tap((data) => {
         this.mentorContactDetail = data;
@@ -127,7 +126,6 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
     this.courseBatchService.enrollToCourse(request).pipe(
       takeUntil(this.unsubscribe))
       .subscribe((data) => {
-        console.log('data', data);
         if (data.result.response === 'SUCCESS') {
           this.showUnenroll = true;
         }
@@ -138,6 +136,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
   }
   unEnroll(batch) {
     this.courseBatchService.setEnrollToBatchDetails(batch);
+    this.router.navigate(['unenroll/batch', batch.identifier], { relativeTo: this.activatedRoute });
     this.unEnrollToCourse(batch);
 
   }
@@ -152,7 +151,9 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
     this.courseBatchService.unEnrollToCourse(request).pipe(
       takeUntil(this.unsubscribe))
       .subscribe((data) => {
-        console.log('data', data);
+        if (data.result.response === 'SUCCESS') {
+          this.showUnenroll = false;
+        }
         this.toasterService.success('You have successfully un-enrolled from this batch');
       }, (err) => {
         this.toasterService.error('Unsuccesful, try again later');

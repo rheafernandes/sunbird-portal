@@ -12,6 +12,9 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatListModule} from '@angular/material/list';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatInputModule, MatAutocompleteModule } from '@angular/material';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [MatCheckboxModule,
@@ -26,6 +29,11 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatListModule,
     MatDialogModule,
     MatGridListModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
+    FormsModule,
   ],
   exports: [MatCheckboxModule,
     MatSidenavModule,
@@ -40,6 +48,11 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatListModule,
     MatDialogModule,
     MatGridListModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
+    FormsModule,
   ],
 })
 
