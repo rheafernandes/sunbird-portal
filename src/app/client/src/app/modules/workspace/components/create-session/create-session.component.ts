@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CourseConsumptionService } from '../../../learn/services';
+import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-create-session',
@@ -16,9 +17,10 @@ export class CreateSessionComponent implements OnInit {
   coursechapters;
   batchData;
   sessionId;
+  model = 'est name';
   constructor(private courseConsumptionService: CourseConsumptionService,
     public dialogRef: MatDialogRef<CreateSessionComponent>,
-    @Inject(MAT_DIALOG_DATA) private data) { }
+    @Inject(MAT_DIALOG_DATA) private data, private formbuilder: FormBuilder) { }
 
   onNoClick(): void {
     this.dialogRef.close();

@@ -1,15 +1,20 @@
-<form #sessionForm="ngForm">
+<form #sessionForm="ngForm" novalidate>
   <h5 class="modal-title" id="ModalLabel"> {{existingSessionFlag ? "Update" : "Create" }} Sessions
     <i class="fas fa-times-circle float-right" (click)="onNoClick()"></i>
   </h5>
   <hr />
   <div class="form-group">
     <label for="sessionTitle">Name of Session</label>
-    <input ngModel name="sessionTitle" type="text" class="form-control" id="sessionTitle" placeholder="session name">
+    <input name="sessionTitle" type="text" class="form-control" id="sessionTitle" [ngModel]="model" placeholder="session name"
+    #sessionTitle="ngModel" [ngClass]="{'is-invalid':sessionTitle.invalid}" required/>
+     <!--name validation-->
+  <div class="invalid-feedback">
+      <div >Session name Required</div>
+    </div>
   </div>
   <div class="form-group">
     <label for="sessionDescription">Description </label>
-    <textarea  ngModel name="sessionDescription" class="form-control" id="sessionDescription" rows="3"></textarea>
+    <textarea  ngModel name="sessionDescription" class="form-control" id="sessionDescription" rows="3" required></textarea>
   </div>
   <div class="form-group">
     <label for="courseUnit">Course Units</label>
@@ -21,12 +26,17 @@
     <label for="sessionUrl">Meeting Url</label>
     <input  ngModel name="sessionUrl" type="email" class="form-control" id="sessionUrl" placeholder="http://">
   </div>
-  <div class="form-group">
-    <label for="sessionDate">Session Date</label>
-    <input  ngModel name="sessionDate" type="datetime-local" class="form-control" id="sessionDate" placeholder="http://">
-  </div>
+  <!--Url validation-->
+  <div class="invalid-feedback">
+      <div >Meeting Url Required</div>
+    </div>
+  <mat-form-field style="width: 45% !important">
+      <input matInput [matDatepicker]="picker1" placeholder="Choose Start Date" [formControl]="date">
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1></mat-datepicker>
+  </mat-form-field>
   <div>
-    <button *ngIf="!existingSessionFlag" type="button" class="btn btn-secondary" style="float:right;" (click)="save(sessionForm,'draft')">Save</button>
+    <!-- <button *ngIf="!existingSessionFlag" type="button" class="btn btn-secondary" style="float:right;" (click)="save(sessionForm,'draft')">Save</button> -->
     <button *ngIf="existingSessionFlag" type="button" class="btn btn-primary" style="float:right;margin-right: 1rem;">Update</button>
     <button *ngIf="!existingSessionFlag" type="button" class="btn btn-primary" style="float:right;margin-right: 1rem;" (click)="save(sessionForm,'published')">Publish</button>
 

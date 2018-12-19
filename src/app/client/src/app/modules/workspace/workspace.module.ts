@@ -22,7 +22,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { SessionListComponent } from './components/session-list/session-list.component';
 import { CreateSessionComponent } from './components/create-session/create-session.component';
 import {CourseConsumptionService, CourseProgressService, CourseBatchService} from '../learn/services';
-
+import {MatFormField, MatDatepicker} from '@angular/material';
 @NgModule({
   imports: [
     CommonModule,
@@ -33,7 +33,9 @@ import {CourseConsumptionService, CourseProgressService, CourseBatchService} fro
     CoreModule,
     ReactiveFormsModule,
     NgInviewModule,
-    TelemetryModule
+    TelemetryModule,
+    MatFormField,
+    MatDatepicker
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,

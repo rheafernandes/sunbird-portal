@@ -1,2 +1,6 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 @import url('https://fonts.googleapis.com/css?family=Carter+One%7CCabin+Sketch');
+@import "~ng-pick-datetime/assets/style/picker.min.css";
+.example-trigger {
+  display: inline-block;
+}
