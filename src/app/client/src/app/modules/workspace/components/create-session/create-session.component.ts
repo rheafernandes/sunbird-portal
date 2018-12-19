@@ -43,6 +43,7 @@ export class CreateSessionComponent implements OnInit, OnDestroy {
   // used to save the session delta for creating a new session
   saveSession(formElement, status) {
     // creates the session delta
+    console.log('form data ' , formElement);
     const sessionDelta = Object.assign({
       status: status, participantCount: this.batchData.hasOwnProperty('participant') ? Object.keys(this.batchData.participant).length : 0,
       enrolledCount: 0, participants: this.batchData.hasOwnProperty('participant') ? this.batchData.participant : {}, createdBy: 'ravinder'
@@ -51,6 +52,7 @@ export class CreateSessionComponent implements OnInit, OnDestroy {
     // addes the session delta to the batch details object
     const resultBatchData = Object.assign({ sessionDetails: sessionDelta }, this.batchData);
     this.sessionService.addSession(resultBatchData);
+    this.onNoClick();
   }
 
   updateSession(form) {
@@ -59,6 +61,7 @@ export class CreateSessionComponent implements OnInit, OnDestroy {
     resultBatchData.sessionDetails = sessionDelta;
     console.log('Resultant batch delta', resultBatchData);
     this.sessionService.updateSession(resultBatchData);
+    this.onNoClick();
   }
 
   getCourseUnits() {

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
+// import { ToasterService } from 'src/app/modules/shared';
 @Injectable({
   providedIn: 'root'
 })
@@ -12,6 +13,7 @@ export class SessionService {
   // create session
   addSession(sessionDelta) {
     this.sessions.push(sessionDelta);
+    // this.toasterService.info("session successfully added");
   }
 
   // returns all sessions
@@ -31,6 +33,8 @@ export class SessionService {
     });
 
     this.sessions[batchIndex] = session;
+    // this.toasterService.info("session successfully updated");
+
   }
 
   deleteSession(session) {
@@ -44,6 +48,8 @@ export class SessionService {
       return false;
     });
     this.sessions.splice(batchIndex, 1);
+    // this.toasterService.info("session successfully removed");
+
   }
 
 
@@ -58,6 +64,8 @@ export class SessionService {
       return false;
     });
     this.sessions[batchIndex].sessionDetails.status = 'published';
+    // this.toasterService.info("session successfully published");
+
   }
 
 
