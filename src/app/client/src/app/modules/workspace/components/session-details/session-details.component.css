@@ -1,0 +1,14 @@
+@import "~bootstrap/dist/css/bootstrap.css";
+@import url('https://fonts.googleapis.com/css?family=Carter+One%7CCabin+Sketch');
+
+.modal-body a {
+  text-decoration: none;
+}
+
+.modal-body a :hover{
+  text-decoration-color: blue;
+}
+.modal-content {
+  /* overflow-y: scroll;
+  scroll-behavior: auto; */
+}

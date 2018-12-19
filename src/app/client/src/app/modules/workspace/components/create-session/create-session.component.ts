@@ -24,6 +24,7 @@ export class CreateSessionComponent implements OnInit {
     this.dialogRef.close();
   }
   ngOnInit() {
+    console.log('mat data', this.data);
     if (this.data.create) {
       this.existingSessionFlag = false;
       this.batchData = this.data.sessionData;
@@ -55,6 +56,7 @@ export class CreateSessionComponent implements OnInit {
         (response: any) => {
           this.course = response;
           this.coursechapters = this.course.children;
+          console.log('this.course', this.course);
         }
       );
   }

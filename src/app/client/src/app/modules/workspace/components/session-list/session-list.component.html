@@ -19,7 +19,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr in-view-item class="UpForReviewListHover cursor-pointer" *ngFor="let i of [1,2,3]">
+          <tr in-view-item class="UpForReviewListHover cursor-pointer" *ngFor="let i of [1,2,3]" (click)="openSession()">
             <td>
               <h5 class="ui image header">
                 <img src="https://images-na.ssl-images-amazon.com/images/I/31E%2BwRLUqNL._US500_.jpg" class="ui tiny image UpReviewTinyImage">

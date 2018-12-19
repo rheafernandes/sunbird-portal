@@ -1,8 +1,13 @@
 <form #sessionForm="ngForm">
-  <h5 class="modal-title" id="ModalLabel"> {{existingSessionFlag ? "Update" : "Create" }} Sessions
-    <i class="fas fa-times-circle float-right" (click)="onNoClick()"></i>
-  </h5>
-  <hr />
+    <h5 class="modal-title" id="ModalLabel"> {{existingSessionFlag ? "Update" : "Create" }} Sessions
+        <i class="fas fa-times-circle float-right" (click)="onNoClick()"></i>
+      </h5>
+      <hr/>
+
+
+    <h6 class="modal-title text-center align-cnter" id="ModalLabel"><i class="fas fa-book" ></i>&nbsp;&nbsp;{{course.name}} &nbsp; &nbsp;  &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span><i class="fas fa-group"></i>&nbsp; &nbsp;{{batchData.name}}</span>
+    </h6>
+  <br>
   <div class="form-group">
     <label for="sessionTitle">Name of Session</label>
     <input ngModel name="sessionTitle" type="text" class="form-control" id="sessionTitle" placeholder="session name">
