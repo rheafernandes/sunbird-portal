@@ -190,6 +190,10 @@ ul{
     .highlight-card{
         width: 20rem;
     }
+    .mentor-card{
+        width:18rem;
+        margin: 0 auto;
+    }
     .sneak-peak{
         display:flex;
     }

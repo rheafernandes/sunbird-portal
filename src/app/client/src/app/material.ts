@@ -14,8 +14,9 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatInputModule, MatAutocompleteModule } from '@angular/material';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-
+import {MatSelectModule} from '@angular/material/select';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   imports: [MatCheckboxModule,
     MatSidenavModule,
@@ -32,8 +33,11 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     MatFormFieldModule,
     MatInputModule,
     MatAutocompleteModule,
-    ReactiveFormsModule,
+    MatSelectModule,
+    MatDatepickerModule,
     FormsModule,
+    ReactiveFormsModule
+
   ],
   exports: [MatCheckboxModule,
     MatSidenavModule,
@@ -51,8 +55,12 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     MatFormFieldModule,
     MatInputModule,
     MatAutocompleteModule,
-    ReactiveFormsModule,
+    MatSelectModule,
+    MatDatepickerModule,
     FormsModule,
+    ReactiveFormsModule
+
+
   ],
 })
 

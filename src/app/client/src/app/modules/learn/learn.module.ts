@@ -11,7 +11,7 @@ import {
   LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
   CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,
   UpdateCourseBatchComponent, CarriculumCardComponent, PreviewCourseComponent, TestAllBatchesComponent,
-  DialogOverviewExampleDialog, CreateBatchCardComponent} from './components';
+  DialogOverviewExampleDialog, CreateBatchCardComponent, CreateBatchDialog} from './components';
 import { CourseConsumptionService, CourseBatchService, CourseProgressService, } from './services';
 import { CoreModule } from '@sunbird/core';
 import { NotesModule } from '@sunbird/notes';
@@ -43,7 +43,7 @@ import {MatDividerModule} from '@angular/material/divider';
   declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
     CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,
     UpdateCourseBatchComponent, CarriculumCardComponent, PreviewCourseComponent, TestAllBatchesComponent,
-    DialogOverviewExampleDialog, CreateBatchCardComponent],
-    entryComponents: [DialogOverviewExampleDialog],
+    DialogOverviewExampleDialog, CreateBatchCardComponent, CreateBatchDialog],
+    entryComponents: [DialogOverviewExampleDialog, CreateBatchDialog],
 })
 export class LearnModule { }

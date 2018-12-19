@@ -1,16 +1,20 @@
-
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, Injectable, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy,  VERSION, ViewChild, ChangeDetectorRef, Injectable, OnChanges, SimpleChanges } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseBatchService } from '../../services';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { Inject } from '@angular/core';
-
-import { ConfigService, ToasterService, ResourceService } from '@sunbird/shared';
-import { LearnerService, UserService, } from '@sunbird/core';
+import { ConfigService, ToasterService, ResourceService,  ServerResponse  } from '@sunbird/shared';
+import { LearnerService, UserService, SearchParam } from '@sunbird/core';
 import { pluck, takeUntil, tap } from 'rxjs/operators';
-import { Subject } from 'rxjs';
-
+import { Subject,  of as observableOf, Observable } from 'rxjs';
+import {FormControl} from '@angular/forms';
+import * as _ from 'lodash';
+export interface DialogData {
+  shouldSizeUpdate: boolean;
+  animal: string;
+  name: string;
+}
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example-dialog.html',
@@ -19,6 +23,8 @@ import { Subject } from 'rxjs';
 // tslint:disable-next-line:component-class-suffix
 export class DialogOverviewExampleDialog implements OnInit {
   mentorDetail;
+  shouldSizeUpdate: boolean;
+  breakpoint: number;
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -26,14 +32,71 @@ export class DialogOverviewExampleDialog implements OnInit {
     public learnerService: LearnerService,
     public toasterService: ToasterService
   ) {
+    this.shouldSizeUpdate = data.shouldSizeUpdate;
   }
   ngOnInit(): void {
+    this.breakpoint = (window.innerWidth <= 550) ? 1 : 1;
+    if (this.shouldSizeUpdate) { this.updateSize(); }
     this.mentorDetail = this.data.mentorDetail;
   }
   onNoClick(): void {
     this.dialogRef.close();
   }
+  updateSize() {
+    this.dialogRef.updateSize('300px', '200px');
 }
+  onResize(event) {
+    this.breakpoint = (event.target.innerWidth <= 550) ? 1 : 1;
+  }
+}
+
+@Component({
+  selector: 'app-create-batch-dialog',
+  templateUrl: './create-batch-dialog.html',
+  styleUrls: ['./test-all-batches.component.css'],
+})
+
+// tslint:disable-next-line:component-class-suffix
+export class CreateBatchDialog implements OnInit {
+  courseId = this.route.snapshot.paramMap.get('courseId');
+  shouldSizeUpdate: boolean;
+  breakpoint: number;
+  date = new FormControl(new Date());
+  serializedDate = new FormControl((new Date()).toISOString());
+  private courseBatchService: CourseBatchService;
+  constructor(
+    private route: ActivatedRoute,
+    courseBatchService: CourseBatchService,
+    public userService: UserService,
+    public configService: ConfigService,
+    public dialogRef: MatDialogRef<CreateBatchDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {
+      this.shouldSizeUpdate = data.shouldSizeUpdate;
+    }
+     onNoClick(): void {
+    this.dialogRef.close();
+  }
+  ngOnInit(): void {
+    this.breakpoint = (window.innerWidth <= 550) ? 1 : 1;
+    if (this.shouldSizeUpdate) { this.updateSize(); }
+    const orddata = {
+      filters: {
+      courseId: this.courseId
+  }
+};
+this.getmentorlist();
+  }
+  getmentorlist(requestParam: SearchParam = {}): any {
+
+  }
+  updateSize() {
+    this.dialogRef.updateSize('600px', '300px');
+}
+  onResize(event) {
+    this.breakpoint = (event.target.innerWidth <= 550) ? 1 : 1;
+  }
+}
+
 @Component({
   selector: 'app-test-all-batches',
   templateUrl: './test-all-batches.component.html',
@@ -49,7 +112,11 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
   userId;
   showUnenroll;
   public unsubscribe = new Subject<void>();
-  public currentDate = new Date().toJSON().slice(0, 10);
+  currentDate = new Date().toJSON().slice(0, 10);
+  animal: string;
+  name: string;
+  breakpoint: number;
+
   ngOnDestroy(): void {
   }
 
@@ -68,6 +135,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
     this.userId = this.userService.userid;
   }
   ngOnInit(): void {
+    this.breakpoint = (window.innerWidth <= 550) ? 1 : 3;
     this.ongoingSearch = {
       filters: {
         status: '1',
@@ -93,22 +161,19 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
         const batchdetails = data.result.response.content;
         for (const batch of batchdetails) {
           if (batch.endDate > this.currentDate || batch.endDate === null || batch.endDate === undefined) {
-            this.ongoingBatches.push(batch);
-            console.log(batch);
-            console.log('current date', this.currentDate, 'enddate', batch.endDate);
-          }
-        }
+               this.ongoingBatches.push(batch);
+         }
+
+    }
       });
     this.courseBatchService.getAllBatchDetails(this.upcomingSearch)
       .subscribe((resp: any) => {
         const batchdetails = resp.result.response.content;
-        for (const batch of batchdetails) {
-          if (this.currentDate < batch.startDate) {
-            console.log(batch);
-            console.log('current date', this.currentDate, 'enddate', batch.startDate);
-            this.upcomingBatches.push(batch);
-          }
-        }
+                for (const batch of batchdetails) {
+                if (this.currentDate < batch.startDate)  {
+                    this.upcomingBatches.push(batch);
+                }
+              }
       });
   }
   openContactDetailsDialog(batch): void {
@@ -118,7 +183,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       }))
       .subscribe((data) => {
         const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-          width: '50vw',
+          // width: '50vw',
           data: {
             mentorDetail: this.mentorContactDetail
           }
@@ -182,20 +247,19 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
         this.toasterService.error('Unsuccesful, try again later');
       });
   }
+
+  createNewBatch(): void {
+    const dialogRef = this.dialog.open(CreateBatchDialog, {
+      data: {name: this.name, animal: this.animal}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.animal = result;
+    });
+  }
+
+  onResize(event) {
+    this.breakpoint = (event.target.innerWidth <= 550) ? 1 : 3 ;
+  }
 }
-//   fetchEnrolledCourseData() {
-//     setTimeout(() => {
-//       this.coursesService.getEnrolledCourses().pipe(
-//         takeUntil(this.unsubscribe))
-//         .subscribe(() => {
-//           this.disableSubmitBtn = false;
-//           this.toasterService.success(this.resourceService.messages.smsg.m0036);
-//           this.router.navigate(['/learn/course', this.batchDetails.courseId, 'batch', this.batchDetails.identifier]);
-//           window.location.reload();
-//         }, (err) => {
-//           this.disableSubmitBtn = false;
-//           this.router.navigate(['/learn']);
-//         });
-//     }, 2000);
-//   }
-// }

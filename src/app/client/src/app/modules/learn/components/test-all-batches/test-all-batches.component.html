@@ -1,10 +1,12 @@
-<!-- This is a section for view all batches -->
-<section class="all-batches-section container-fluid">
-    <mat-tab-group>
+
+<section class="all-batches-section container">
+    <mat-tab-group class="grid">
         <mat-tab label="Ongoing Batches">
-            <mat-grid-list cols="3">
+            <mat-grid-list [cols]="breakpoint" (window:resize)="onResize($event)">
+
             <mat-grid-tile *ngFor="let ongoing of ongoingBatches">
-                <div class="wrapper ">
+
+                     <div class="wrapper ">
                     <mat-card class="styleClass">
                         <mat-card-header>
                             <div mat-card-avatar class="example-header-image"></div>
@@ -31,12 +33,13 @@
                     </mat-card>
                 </div>
             </mat-grid-tile>
+
             </mat-grid-list>
         </mat-tab>
         <mat-tab label="Upcoming Batches">
-            <mat-grid-list cols="3">
-            <mat-grid-tile *ngFor="let upcoming of upcomingBatches">
-                <div class="wrapper">
+            <mat-grid-list [cols]="breakpoint" (window:resize)="onResize($event)">
+                <mat-grid-tile *ngFor="let upcoming of upcomingBatches">
+                  <div class="wrapper">
                     <mat-card class="styleClass">
                         <mat-card-header>
                             <div mat-card-avatar class="example-header-image"></div>
@@ -66,5 +69,11 @@
             </mat-grid-list>
 
         </mat-tab>
+        <mat-tab label="Create Batch">
+            <mat-card>
+                <button class="btn" (click)="createNewBatch()">Add New Batch</button>
+              </mat-card>
+        </mat-tab>
     </mat-tab-group>
 </section>
+
