@@ -11,7 +11,7 @@ import {
   LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
   CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,
   UpdateCourseBatchComponent, CarriculumCardComponent, PreviewCourseComponent, TestAllBatchesComponent,
-  DialogOverviewExampleDialog, CreateBatchCardComponent } from './components';
+  DialogOverviewExampleDialog} from './components';
 import { CourseConsumptionService, CourseBatchService, CourseProgressService, } from './services';
 import { CoreModule } from '@sunbird/core';
 import { NotesModule } from '@sunbird/notes';
@@ -46,7 +46,7 @@ import { UpdateBatchDialogComponent } from './components/test-all-batches/update
   declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
     CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,
     UpdateCourseBatchComponent, CarriculumCardComponent, PreviewCourseComponent, TestAllBatchesComponent,
-    DialogOverviewExampleDialog, CreateBatchCardComponent, CreateBatchDialogComponent, UpdateBatchDialogComponent],
+    DialogOverviewExampleDialog, CreateBatchDialogComponent, UpdateBatchDialogComponent],
     entryComponents: [DialogOverviewExampleDialog, CreateBatchDialogComponent, UpdateBatchDialogComponent],
 })
 export class LearnModule { }

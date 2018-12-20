@@ -1,8 +1,7 @@
 import { NoteListComponent } from '@sunbird/notes';
 import {
   LearnPageComponent, CourseConsumptionPageComponent, CoursePlayerComponent,
-  EnrollBatchComponent, CreateBatchComponent, UpdateCourseBatchComponent, CreateBatchCardComponent
-} from './components';
+  EnrollBatchComponent, CreateBatchComponent, UpdateCourseBatchComponent} from './components';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
@@ -36,7 +35,6 @@ const routes: Routes = [
     data: { telemetry: { env: telemetryEnv } },
     children: [
       {
-        // path: ':courseId', component: CreateBatchCardComponent,
         path: ':courseId', component: TestAllBatchesComponent,
         // path: ':courseId', component: CoursePlayerComponent,
         data: {
