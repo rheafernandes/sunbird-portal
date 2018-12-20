@@ -59,7 +59,11 @@
             </th>
             <th class="two wide UpReviewTableHeader">Course
             </th>
-            <th class="two wide UpReviewTableHeader">Date
+            <th class="two wide UpReviewTableHeader">StartDate
+            </th>
+            <th class="two wide UpReviewTableHeader">EndDate
+            </th>
+            <th class="two wide UpReviewTableHeader">Time
             </th>
             <th class="two wide UpReviewTableHeader">Status
             </th>
@@ -70,8 +74,10 @@
           </tr>
         </thead>
         <tbody>
+
+
           <tr in-view-item class="UpForReviewListHover cursor-pointer" *ngFor="let session of sessionsList">
-            <td>
+            <td (click)="openSession(session)">
               <h5 class="ui image header">
                 <img src="https://images-na.ssl-images-amazon.com/images/I/31E%2BwRLUqNL._US500_.jpg" class="ui tiny image UpReviewTinyImage">
                 <div class="content ">
@@ -91,11 +97,27 @@
             <td>
               <h5 class="ui image header">
                 <div class="content">
-                  <div class="UpReviewSubHeader"> {{session?.sessionDetails?.sessionDate}}
+                  <div class="UpReviewSubHeader"> {{session?.sessionDetails?.sessionStartDate | date}}
                   </div>
                 </div>
               </h5>
             </td>
+            <td>
+                <h5 class="ui image header">
+                  <div class="content">
+                    <div class="UpReviewSubHeader"> {{session?.sessionDetails?.sessionEndDate  | date}}
+                    </div>
+                  </div>
+                </h5>
+              </td>
+              <td>
+                  <h5 class="ui image header">
+                    <div class="content">
+                      <div class="UpReviewSubHeader"> {{session?.sessionDetails?.sessionTime}}
+                      </div>
+                    </div>
+                  </h5>
+                </td>
             <td class="UpForReviewStatusOrange"> <button class="btn btn-primary" (click)="publish(session)" [disabled]="session?.sessionDetails?.status==='published'">{{session?.sessionDetails?.status}}</button></td>
             <td>
               <i class="trash large icon" (click)="deleteSession(session)">

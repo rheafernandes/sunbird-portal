@@ -40,7 +40,7 @@
       <mat-card-header>
         <mat-checkbox
           (click)="onContentCheckBoxClick(child)"
-          [checked]="child.completed"
+          [checked]="child.completed" [disabled]="child.completed"
           color="primary"
         ></mat-checkbox>
         &nbsp; &nbsp; <span [ngClass]="child.icon"></span> &nbsp; {{ child.title }}

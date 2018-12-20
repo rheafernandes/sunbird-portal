@@ -1,6 +1,11 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 @import url('https://fonts.googleapis.com/css?family=Carter+One%7CCabin+Sketch');
-.example-trigger {
-  display: inline-block;
+
+.modal-body a {
+  text-decoration: none;
+}
+
+.modal-body a :hover{
+  text-decoration-color: blue;
 }
 

@@ -22,9 +22,9 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { SessionListComponent } from './components/session-list/session-list.component';
 import { CreateSessionComponent } from './components/create-session/create-session.component';
 import {CourseConsumptionService, CourseProgressService, CourseBatchService} from '../learn/services';
+import { SessionDetailsComponent } from './components/session-details/session-details.component';
 import { SessionService } from './services/session/session.service';
-import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
-
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 
 @NgModule({
   imports: [
@@ -36,9 +36,8 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
     CoreModule,
     ReactiveFormsModule,
     NgInviewModule,
-    OwlDateTimeModule,
-    OwlNativeDateTimeModule,
-    TelemetryModule
+    TelemetryModule,
+    NgxMaterialTimepickerModule.forRoot()
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
@@ -55,10 +54,11 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
     FlagReviewerComponent,
     AllMyContentFilterComponent,
     SessionListComponent,
-    CreateSessionComponent
+    CreateSessionComponent,
+    SessionDetailsComponent
   ],
-  providers: [WorkSpaceService, EditorService, BatchService, CourseConsumptionService, CourseProgressService,
-    CourseBatchService , SessionService],
-  entryComponents: [CreateSessionComponent]
+  providers: [WorkSpaceService, EditorService, BatchService, CourseConsumptionService,
+    CourseProgressService, CourseBatchService , SessionService],
+  entryComponents: [CreateSessionComponent, SessionDetailsComponent]
 })
 export class WorkspaceModule { }

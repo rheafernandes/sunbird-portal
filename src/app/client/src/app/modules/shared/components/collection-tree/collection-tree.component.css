@@ -4,7 +4,7 @@ mat-card{
   text-overflow: ellipsis;
   border-radius: 2%;
   font-size: 15px;
-  height: 5px;
+  height: auto;
   padding: 20px 2px 24px 2px;
   cursor: pointer !important;
 }
