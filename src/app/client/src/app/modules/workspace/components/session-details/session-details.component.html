@@ -1,0 +1,73 @@
+<h4 class="modal-title text-danger">
+  <i class="fa fa-times-circle float-right primary" (click)="onNoClick()"></i>
+</h4>
+<br /><br />
+<div class="modal-content">
+  <div class="modal-header">
+    <h6 class="modal-title text center" id="exampleModalLabel">{{sessions.sessionDetails.sessionTitle}}</h6>
+    <hr />
+  </div>
+  <div class="row m-2">
+    <div class="col-md-6">
+      <h6 class="modal-title" id="ModalLabel">
+        <i class="fas fa-book text-primary"></i>&nbsp;&nbsp; {{sessions.courseAdditionalInfo.courseName}}
+      </h6>
+    </div>
+    <div class="col-md-6">
+      <h5 class="modal-title" id="ModalLabel">
+        <i class="fas fa-group text-primary"></i>&nbsp; &nbsp;{{sessions.name}}
+      </h5>
+    </div>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-sm-6">
+          <p>Description</p>
+      </div>
+      <div class="col-md-6">
+          <p>{{sessions.sessionDetails.sessionDescription}}</p>
+      </div>
+  </div>
+    <p><i class="fa fa-calendar-check-o" aria-hidden="true"></i>Session date <span><i class="fa fa-clock-o" aria-hidden="true">session time</i>
+    </span></p>
+    <p>
+      <a
+        class="text-warning"
+        data-toggle="collapse"
+        href="#collapseExample"
+        aria-expanded="false"
+        aria-controls="collapseExample"
+      >
+        view participants
+      </a>
+    </p>
+    <div class="collapse" id="collapseExample">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <table class="ui upForReviewTable table">
+              <thead>
+                <tr class="table-primary">
+                  <th class="four wide">Participants</th>
+                  <th class="two wide">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr in-view-item *ngFor="let i of sessions.sessionDetails.participants">
+                  <td>partcipant 1</td>
+                  <td>attended</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="onNoClick()">
+      Close
+    </button>
+  </div>
+</div>
+

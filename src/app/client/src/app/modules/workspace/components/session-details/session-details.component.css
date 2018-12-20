@@ -1,10 +1,11 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 @import url('https://fonts.googleapis.com/css?family=Carter+One%7CCabin+Sketch');
-.container1{
-  margin-top:30px;
+
+.modal-body a {
+  text-decoration: none;
 }
 
-.filter-col{
-  padding-left:10px;
-  padding-right:10px;
+.modal-body a :hover{
+  text-decoration-color: blue;
 }
+
