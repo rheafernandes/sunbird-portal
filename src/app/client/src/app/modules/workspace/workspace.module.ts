@@ -55,8 +55,8 @@ import { SessionService } from './services/session/session.service';
     CreateSessionComponent,
     SessionDetailsComponent
   ],
-  providers: [WorkSpaceService, EditorService, BatchService, CourseConsumptionService, CourseProgressService,
-    CourseBatchService , SessionService],
-  entryComponents: [CreateSessionComponent , SessionDetailsComponent]
+  providers: [WorkSpaceService, EditorService, BatchService, CourseConsumptionService,
+    CourseProgressService, CourseBatchService , SessionService],
+  entryComponents: [CreateSessionComponent, SessionDetailsComponent]
 })
 export class WorkspaceModule { }

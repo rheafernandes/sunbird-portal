@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { CreateSessionComponent } from '../create-session/create-session.component';
-<<<<<<< HEAD
-import { SessionDetailsComponent } from '../session-details/session-details.component';
-=======
 import { SessionService } from '../../services/session/session.service';
->>>>>>> 1e84481fc6b15fb13b0cc2ce562d933630407e9f
+
+import { SessionDetailsComponent } from '../session-details/session-details.component';
 @Component({
   selector: 'app-session-list',
   templateUrl: './session-list.component.html',
@@ -30,9 +28,10 @@ export class SessionListComponent implements OnInit {
     });
   }
 
-  openSession(): void {
+  openSession(session): void {
     const sessionDialog = this.dialog.open(SessionDetailsComponent, {
       width: '50%',
+      data: { sessionData: session}
     });
     sessionDialog.afterClosed().subscribe(result => {
     });

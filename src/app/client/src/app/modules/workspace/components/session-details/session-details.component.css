@@ -8,7 +8,4 @@
 .modal-body a :hover{
   text-decoration-color: blue;
 }
-.modal-content {
-  /* overflow-y: scroll;
-  scroll-behavior: auto; */
-}
+

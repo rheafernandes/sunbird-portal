@@ -70,12 +70,10 @@
           </tr>
         </thead>
         <tbody>
-<<<<<<< HEAD
-          <tr in-view-item class="UpForReviewListHover cursor-pointer" *ngFor="let i of [1,2,3]" (click)="openSession()">
-=======
+
+
           <tr in-view-item class="UpForReviewListHover cursor-pointer" *ngFor="let session of sessionsList">
->>>>>>> 1e84481fc6b15fb13b0cc2ce562d933630407e9f
-            <td>
+            <td (click)="openSession(session)">
               <h5 class="ui image header">
                 <img src="https://images-na.ssl-images-amazon.com/images/I/31E%2BwRLUqNL._US500_.jpg" class="ui tiny image UpReviewTinyImage">
                 <div class="content ">

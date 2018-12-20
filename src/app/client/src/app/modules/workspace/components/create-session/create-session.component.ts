@@ -12,6 +12,7 @@ import { SessionService } from '../../services/session/session.service';
 export class CreateSessionComponent implements OnInit, OnDestroy {
 
   existingSessionFlag: Boolean;
+  sessiondata;
   course: any;
   courseid: any;
   coursechapters;
@@ -27,6 +28,7 @@ export class CreateSessionComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     console.log('mat data', this.data);
+    this.sessiondata = this.data;
     if (this.data.create) {
       this.existingSessionFlag = false;
       this.batchData = this.data.sessionData;

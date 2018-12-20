@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 
@@ -8,11 +8,14 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
   styleUrls: ['./session-details.component.css']
 })
 export class SessionDetailsComponent implements OnInit {
-  constructor( public dialogRef: MatDialogRef<SessionDetailsComponent>) { }
+  sessions;
+  constructor( public dialogRef: MatDialogRef<SessionDetailsComponent>,  @Inject(MAT_DIALOG_DATA) private data) { }
   onNoClick(): void {
     this.dialogRef.close();
   }
   ngOnInit() {
+    this.sessions = this.data.sessionData;
+    console.log('sedjsfnsbjfnmdgfmer', this.data);
   }
 
 
