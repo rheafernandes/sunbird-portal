@@ -1,13 +1,11 @@
-import { Component, OnInit, OnDestroy, ElementRef,
-   VERSION, ViewChild, ChangeDetectorRef, Injectable, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild} from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseBatchService } from '../../../services';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { Inject } from '@angular/core';
-import { ConfigService, ToasterService, ResourceService,  ServerResponse  } from '@sunbird/shared';
-import { LearnerService, UserService, SearchParam } from '@sunbird/core';
-import { pluck, takeUntil, tap } from 'rxjs/operators';
+import { ConfigService } from '@sunbird/shared';
+import {  UserService } from '@sunbird/core';
 import { Subject,  of as observableOf, Observable } from 'rxjs';
 import {FormControl} from '@angular/forms';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
@@ -15,10 +13,7 @@ import {MatAutocompleteSelectedEvent, MatChipInputEvent, MatAutocomplete} from '
 import {map, startWith} from 'rxjs/operators';
 import * as _ from 'lodash';
 
-export interface DialogData {
-  shouldSizeUpdate: boolean;
-  title: string;
-}
+
 
 @Component({
   selector: 'app-create-batch-dialog',
@@ -32,17 +27,16 @@ export class CreateBatchDialogComponent implements OnInit {
   breakpoint: number;
   date = new FormControl(new Date());
   serializedDate = new FormControl((new Date()).toISOString());
-  private courseBatchService: CourseBatchService;
   visible = true;
   selectable = true;
   removable = true;
   addOnBlur = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  fruitCtrl = new FormControl();
-  filteredFruits: Observable<string[]>;
-  fruits: string[] = ['Lemon'];
-  allFruits: string[] = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
-  @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
+  mentorCtrl = new FormControl();
+  filteredMentors: Observable<string[]>;
+  mentors = [];
+  allMentors = [];
+  @ViewChild('mentorInput') mentorInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   constructor(
@@ -51,16 +45,18 @@ export class CreateBatchDialogComponent implements OnInit {
     public userService: UserService,
     public configService: ConfigService,
     public dialogRef: MatDialogRef<CreateBatchDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {
+    @Inject(MAT_DIALOG_DATA) public data: any) {
       this.shouldSizeUpdate = data.shouldSizeUpdate;
-      this.filteredFruits = this.fruitCtrl.valueChanges.pipe(
+      this.filteredMentors = this.mentorCtrl.valueChanges.pipe(
         startWith(null),
-        map((fruit: string | null) => fruit ? this._filter(fruit) : this.allFruits.slice()));
+        map((mentor: string | null) => mentor ? this._filterMentor(mentor) : this.allMentors.slice()));
     }
      onNoClick(): void {
     this.dialogRef.close();
   }
   ngOnInit(): void {
+    this.allMentors = this.data.mentorDetail;
+    console.log('Constructor', this.allMentors);
     this.breakpoint = (window.innerWidth <= 550) ? 1 : 1;
     if (this.shouldSizeUpdate) { this.updateSize(); }
     const orddata = {
@@ -76,45 +72,43 @@ export class CreateBatchDialogComponent implements OnInit {
   onResize(event) {
     this.breakpoint = (event.target.innerWidth <= 550) ? 1 : 1;
   }
-  add(event: MatChipInputEvent): void {
-    // Add fruit only when MatAutocomplete is not open
-    // To make sure this does not conflict with OptionSelected Event
+  addMentor(event: MatChipInputEvent): void {
+
     if (!this.matAutocomplete.isOpen) {
       const input = event.input;
       const value = event.value;
 
-      // Add our fruit
       if ((value || '').trim()) {
-        this.fruits.push(value.trim());
+        this.mentors.push(value.trim());
       }
 
-      // Reset the input value
+
       if (input) {
         input.value = '';
       }
 
-      this.fruitCtrl.setValue(null);
+      this.mentorCtrl.setValue(null);
     }
   }
 
-  remove(fruit: string): void {
-    const index = this.fruits.indexOf(fruit);
+  removeMentor(mentor: string): void {
+    const index = this.mentors.indexOf(mentor);
 
     if (index >= 0) {
-      this.fruits.splice(index, 1);
+      this.mentors.splice(index, 1);
     }
   }
 
-  selected(event: MatAutocompleteSelectedEvent): void {
-    this.fruits.push(event.option.viewValue);
-    this.fruitInput.nativeElement.value = '';
-    this.fruitCtrl.setValue(null);
+  selectedMentor(event: MatAutocompleteSelectedEvent): void {
+    this.mentors.push(event.option.viewValue);
+    this.mentorInput.nativeElement.value = '';
+    this.mentorCtrl.setValue(null);
   }
 
-  private _filter(value: string): string[] {
+  private _filterMentor(value: string): string[] {
     const filterValue = value.toLowerCase();
 
-    return this.allFruits.filter(fruit => fruit.toLowerCase().indexOf(filterValue) === 0);
+    return this.allMentors.filter(mentor => mentor.toLowerCase().indexOf(filterValue) === 0);
   }
 }
 

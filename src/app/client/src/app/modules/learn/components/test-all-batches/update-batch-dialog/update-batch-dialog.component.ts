@@ -1,13 +1,11 @@
-import { Component, OnInit, OnDestroy, ElementRef,
-  VERSION, ViewChild, ChangeDetectorRef, Injectable, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild} from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseBatchService } from '../../../services';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { Inject } from '@angular/core';
-import { ConfigService, ToasterService, ResourceService,  ServerResponse  } from '@sunbird/shared';
-import { LearnerService, UserService, SearchParam } from '@sunbird/core';
-import { pluck, takeUntil, tap } from 'rxjs/operators';
+import { ConfigService } from '@sunbird/shared';
+import {  UserService } from '@sunbird/core';
 import { Subject,  of as observableOf, Observable } from 'rxjs';
 import {FormControl} from '@angular/forms';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
@@ -15,10 +13,6 @@ import {MatAutocompleteSelectedEvent, MatChipInputEvent, MatAutocomplete} from '
 import {map, startWith} from 'rxjs/operators';
 import * as _ from 'lodash';
 
-export interface DialogData {
-  shouldSizeUpdate: boolean;
-  title: string;
-}
 @Component({
   selector: 'app-update-batch-dialog',
   templateUrl: './update-batch-dialog.component.html',
@@ -31,7 +25,6 @@ export class UpdateBatchDialogComponent implements OnInit {
   breakpoint: number;
   date = new FormControl(new Date());
   serializedDate = new FormControl((new Date()).toISOString());
-  private courseBatchService: CourseBatchService;
   visible = true;
   selectable = true;
   removable = true;
@@ -50,7 +43,7 @@ export class UpdateBatchDialogComponent implements OnInit {
     public userService: UserService,
     public configService: ConfigService,
     public dialogRef: MatDialogRef<UpdateBatchDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {
+    @Inject(MAT_DIALOG_DATA) public data: any) {
       this.shouldSizeUpdate = data.shouldSizeUpdate;
       this.filteredFruits = this.fruitCtrl.valueChanges.pipe(
         startWith(null),

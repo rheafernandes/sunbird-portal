@@ -28,31 +28,31 @@
     <mat-form-field  style="width: 100% !important">
         <mat-chip-list #chipList>
             <mat-chip
-              *ngFor="let fruit of fruits"
+              *ngFor="let mentor of mentors"
               [selectable]="selectable"
               [removable]="removable"
-              (removed)="remove(fruit)">
-              {{fruit}}
+              (removed)="removeMentor(mentor)">
+              {{mentor}}
               <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
             </mat-chip>
             <input
-              placeholder="New fruit..."
-              #fruitInput
-              [formControl]="fruitCtrl"
+              placeholder="Add Mentors"
+              #mentorInput
+              [formControl]="mentorCtrl"
               [matAutocomplete]="auto"
               [matChipInputFor]="chipList"
               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
               [matChipInputAddOnBlur]="addOnBlur"
-              (matChipInputTokenEnd)="add($event)">
+              (matChipInputTokenEnd)="addMentor($event)">
           </mat-chip-list>
-          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-            <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
-              {{fruit}}
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedMentor($event)">
+            <mat-option *ngFor="let mentor of filteredMentors | async" [value]="mentor">
+              {{mentor}}
             </mat-option>
           </mat-autocomplete>
       </mat-form-field>
  <br>
-      <mat-form-field  style="width: 100% !important">
+     <!--  <mat-form-field  style="width: 100% !important">
           <mat-chip-list #chipList>
               <mat-chip
                 *ngFor="let fruit of fruits"
@@ -77,7 +77,7 @@
                 {{fruit}}
               </mat-option>
             </mat-autocomplete>
-    </mat-form-field>
+    </mat-form-field>-->
   </mat-card-content>
   <mat-card-footer>
     <div class="container">

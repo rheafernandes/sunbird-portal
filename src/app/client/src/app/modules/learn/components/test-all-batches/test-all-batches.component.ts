@@ -12,10 +12,7 @@ import {FormControl} from '@angular/forms';
 import * as _ from 'lodash';
 import { CreateBatchDialogComponent } from './create-batch-dialog/create-batch-dialog.component';
 import { UpdateBatchDialogComponent } from './update-batch-dialog/update-batch-dialog.component';
-export interface DialogData {
-  shouldSizeUpdate: boolean;
-  title: string;
-}
+
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example-dialog.html',
@@ -69,8 +66,9 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
   showUnenroll;
   public unsubscribe = new Subject<void>();
   currentDate = new Date().toJSON().slice(0, 10);
-  animal: string;
-  name: string;
+  // animal: string;
+  // name: string;
+  allMentors = [];
   breakpoint: number;
   public courseMentor;
   ngOnDestroy(): void {
@@ -110,7 +108,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
         const batchdetails = data.result.response.content;
         for (const batch of batchdetails) {
           if (batch.endDate > this.currentDate || batch.endDate === null || batch.endDate === undefined) {
-               this.ongoingBatches.push(batch);
+            this.ongoingBatches.push(batch);
          }
 
     }
@@ -125,6 +123,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
               }
       });
       this.checkRoles();
+      this.getMentorslist();
   }
   openContactDetailsDialog(batch): void {
     this.getUserDetails(batch.createdBy)
@@ -201,18 +200,22 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
   createNewBatch(): void {
     const dialogRef = this.dialog.open(CreateBatchDialogComponent, {
       data : {
-        title : 'create'
+        title : 'create',
+        mentorDetail: this.allMentors
       }
     });
+    console.log('dialog dataa=====', this.allMentors);
     dialogRef.afterClosed().subscribe(result => {
     });
   }
   updateBatch(): void {
     const dialogRef = this.dialog.open(UpdateBatchDialogComponent, {
       data : {
-        title : 'update'
+        title: 'update',
+        mentorDetail: this.allMentors
       }
     });
+    console.log('dialog dataa=====', this.allMentors);
     dialogRef.afterClosed().subscribe(result => {
     });
   }
@@ -226,5 +229,28 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
     } else {
       this.courseMentor = false;
     }
+  }
+  getMentorslist() {
+    const option = {
+      url: this.config.urlConFig.URLS.ADMIN.USER_SEARCH,
+      data: {
+        request: {
+          query: 'COURSE_MENTOR',
+          filters: {
+          },
+        }
+      }
+    };
+    this.learnerService.post(option)
+      .subscribe(
+        data => {
+          const mentorsDetails = data.result.response.content;
+          for (const mentorsDetail of mentorsDetails ) {
+            this.allMentors.push(mentorsDetail.firstName + ' ' + mentorsDetail.lastName);
+            // this.allMentors.push(mentorsDetail.firstName + ' ' + mentorsDetail.lastName );
+          }
+          console.log('mentor details ========', this.allMentors);
+        }
+      );
   }
 }
