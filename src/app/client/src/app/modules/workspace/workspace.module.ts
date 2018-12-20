@@ -23,6 +23,8 @@ import { SessionListComponent } from './components/session-list/session-list.com
 import { CreateSessionComponent } from './components/create-session/create-session.component';
 import {CourseConsumptionService, CourseProgressService, CourseBatchService} from '../learn/services';
 import { SessionService } from './services/session/session.service';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+
 
 @NgModule({
   imports: [
@@ -34,6 +36,8 @@ import { SessionService } from './services/session/session.service';
     CoreModule,
     ReactiveFormsModule,
     NgInviewModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
     TelemetryModule
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
