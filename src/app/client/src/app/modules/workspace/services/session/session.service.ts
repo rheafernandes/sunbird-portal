@@ -6,10 +6,10 @@ import { filter } from 'rxjs/operators';
 })
 export class SessionService {
 
-  sessions = []
+  sessions = [];
   constructor() {
-    if (localStorage.getItem("sessions") !== null) {
-      this.sessions = JSON.parse(localStorage.getItem("sessions"));
+    if (localStorage.getItem('sessions') !== null) {
+      this.sessions = JSON.parse(localStorage.getItem('sessions'));
     }
   }
 
@@ -20,7 +20,7 @@ export class SessionService {
 
   storeSessions() {
     if (localStorage.getItem('sessions') !== null) {
-      localStorage.removeItem("sessions");
+      localStorage.removeItem('sessions');
       localStorage.setItem('sessions', JSON.stringify(this.sessions));
     } else {
       localStorage.setItem('sessions', JSON.stringify(this.sessions));

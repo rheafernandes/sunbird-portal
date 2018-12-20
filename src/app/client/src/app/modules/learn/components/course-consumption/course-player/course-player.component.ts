@@ -19,7 +19,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 // import { PlayContent } from '@sunbird/shared';
 import { checkNoChangesView } from '@angular/core/src/view/view';
 import { SessionService } from '../../../../workspace/services/session/session.service';
-import { MatDialog } from '@angular/material';
+import { MatBottomSheet, MatDialog } from '@angular/material';
 import { ListSessionsComponent } from '../../../list-sessions/list-sessions.component';
 
 @Component({
@@ -148,7 +148,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy, OnChanges {
   public unsubscribe = new Subject<void>();
   public subscribed: Subscription;
   public courseProgressListner: Subscription;
-  constructor(public dialog: MatDialog, contentService: ContentService, activatedRoute: ActivatedRoute, private configService: ConfigService,
+  constructor(public dialog: MatDialog, private bottomSheet: MatBottomSheet, contentService: ContentService, activatedRoute: ActivatedRoute,
+    private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, windowScrollService: WindowScrollService,
     router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
     private toasterService: ToasterService, private resourceService: ResourceService, public breadcrumbsService: BreadcrumbsService,
@@ -571,13 +572,19 @@ export class CoursePlayerComponent implements OnInit, OnDestroy, OnChanges {
       });
   }
 
+  // openDialog(): void {
+  //   this.bottomSheet.open(ListSessionsComponent,{data:this.sessions});
+  // }
+
   openDialog(): void {
     const dialogRef = this.dialog.open(ListSessionsComponent, {
       width: '50%',
-      data: { sessionData: this.sessions }
+      data: this.sessions
     });
+
     dialogRef.afterClosed().subscribe(result => {
+
     });
   }
-  
+
 }

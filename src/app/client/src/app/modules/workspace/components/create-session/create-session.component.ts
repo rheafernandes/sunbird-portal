@@ -26,7 +26,7 @@ export class CreateSessionComponent implements OnInit, OnDestroy {
     this.dialogRef.close();
     this.ngOnDestroy();
   }
-  
+
   ngOnInit() {
     this.sessiondata = this.data;
     if (this.data.create) {
