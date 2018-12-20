@@ -13,6 +13,7 @@ import { AutofillMonitor } from '@angular/cdk/text-field';
 export class SessionListComponent implements OnInit {
   constructor(public dialog: MatDialog, private sessionService: SessionService) { }
   sessionsList;
+
   ngOnInit() {
     this.sessionService.getSessions().subscribe((sessions) => {
       this.sessionsList = sessions;
@@ -31,7 +32,7 @@ export class SessionListComponent implements OnInit {
   openSession(session): void {
     const sessionDialog = this.dialog.open(SessionDetailsComponent, {
       width: '50%',
-      data: { sessionData: session}
+      data: { sessionData: session }
     });
     sessionDialog.afterClosed().subscribe(result => {
     });
@@ -43,6 +44,10 @@ export class SessionListComponent implements OnInit {
   publish(session) {
     console.log('published');
     this.sessionService.publishSession(session);
+  }
+
+  storeSession() {
+    this.sessionService.storeSessions();
   }
 }
 

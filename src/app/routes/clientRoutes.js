@@ -18,11 +18,8 @@ module.exports = (app, keycloak) => {
   app.set('view engine', 'ejs')
 
   app.use(express.static(path.join(__dirname, '../dist'), { extensions: ['ejs'], index: false }))
-
   app.use(express.static(path.join(__dirname, '../')))
-
   app.use(express.static(path.join(__dirname, '../tenant', tenantId)))
-
   if (defaultTenant) {
     app.use(express.static(path.join(__dirname, '../tenant', defaultTenant)))
   }
