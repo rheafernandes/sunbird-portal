@@ -1,16 +1,16 @@
-import { Component, OnInit, ElementRef, ViewChild} from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseBatchService } from '../../../services';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { Inject } from '@angular/core';
 import { ConfigService } from '@sunbird/shared';
-import {  UserService } from '@sunbird/core';
-import { Subject,  of as observableOf, Observable } from 'rxjs';
-import {FormControl} from '@angular/forms';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {MatAutocompleteSelectedEvent, MatChipInputEvent, MatAutocomplete} from '@angular/material';
-import {map, startWith} from 'rxjs/operators';
+import { UserService } from '@sunbird/core';
+import { Subject, of as observableOf, Observable } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { MatAutocompleteSelectedEvent, MatChipInputEvent, MatAutocomplete } from '@angular/material';
+import { map, startWith } from 'rxjs/operators';
 import * as _ from 'lodash';
 
 
@@ -36,6 +36,12 @@ export class CreateBatchDialogComponent implements OnInit {
   filteredMentors: Observable<string[]>;
   mentors = [];
   allMentors = [];
+  memberCtrl = new FormControl();
+  filteredMembers: Observable<string[]>;
+  members = [];
+  allMembers = [];
+  @ViewChild('memberInput') memberInput: ElementRef<HTMLInputElement>;
+  @ViewChild('autoMember') matMemberAutocomplete: MatAutocomplete;
   @ViewChild('mentorInput') mentorInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
@@ -46,29 +52,32 @@ export class CreateBatchDialogComponent implements OnInit {
     public configService: ConfigService,
     public dialogRef: MatDialogRef<CreateBatchDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-      this.shouldSizeUpdate = data.shouldSizeUpdate;
-      this.filteredMentors = this.mentorCtrl.valueChanges.pipe(
-        startWith(null),
-        map((mentor: string | null) => mentor ? this._filterMentor(mentor) : this.allMentors.slice()));
-    }
-     onNoClick(): void {
+    this.shouldSizeUpdate = data.shouldSizeUpdate;
+    this.filteredMentors = this.mentorCtrl.valueChanges.pipe(
+      startWith(null),
+      map((mentor: string | null) => mentor ? this._filterMentor(mentor) : this.allMentors.slice()));
+    this.filteredMembers = this.memberCtrl.valueChanges.pipe(
+      startWith(null),
+      map((member: string | null) => member ? this._filterMentor(member) : this.allMembers.slice()));
+  }
+  onNoClick(): void {
     this.dialogRef.close();
   }
   ngOnInit(): void {
     this.allMentors = this.data.mentorDetail;
-    console.log('Constructor', this.allMentors);
+    this.allMembers = this.data.memberDetail;
     this.breakpoint = (window.innerWidth <= 550) ? 1 : 1;
     if (this.shouldSizeUpdate) { this.updateSize(); }
     const orddata = {
       filters: {
-      courseId: this.courseId
-    }
-  };
+        courseId: this.courseId
+      }
+    };
 
-}
+  }
   updateSize() {
     this.dialogRef.updateSize('600px', '300px');
-}
+  }
   onResize(event) {
     this.breakpoint = (event.target.innerWidth <= 550) ? 1 : 1;
   }
@@ -109,6 +118,42 @@ export class CreateBatchDialogComponent implements OnInit {
     const filterValue = value.toLowerCase();
 
     return this.allMentors.filter(mentor => mentor.toLowerCase().indexOf(filterValue) === 0);
+  }
+  addMember(event: MatChipInputEvent): void {
+
+    if (!this.matMemberAutocomplete.isOpen) {
+      const input = event.input;
+      const value = event.value;
+
+      if ((value || '').trim()) {
+        this.members.push(value.trim());
+      }
+      if (input) {
+        input.value = '';
+      }
+
+      this.memberCtrl.setValue(null);
+    }
+  }
+
+  removeMember(member: string): void {
+    const index = this.members.indexOf(member);
+
+    if (index >= 0) {
+      this.members.splice(index, 1);
+    }
+  }
+
+  selectedMember(event: MatAutocompleteSelectedEvent): void {
+    this.members.push(event.option.viewValue);
+    this.memberInput.nativeElement.value = '';
+    this.memberCtrl.setValue(null);
+  }
+
+  private _filterMember(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.allMembers.filter(member => member.toLowerCase().indexOf(filterValue) === 0);
   }
 }
 
