@@ -10,10 +10,11 @@ import { pluck, takeUntil, tap } from 'rxjs/operators';
 import { Subject,  of as observableOf, Observable } from 'rxjs';
 import {FormControl} from '@angular/forms';
 import * as _ from 'lodash';
+import { CreateBatchDialogComponent } from './create-batch-dialog/create-batch-dialog.component';
+import { UpdateBatchDialogComponent } from './update-batch-dialog/update-batch-dialog.component';
 export interface DialogData {
   shouldSizeUpdate: boolean;
-  animal: string;
-  name: string;
+  title: string;
 }
 @Component({
   selector: 'app-dialog-overview-example-dialog',
@@ -50,52 +51,6 @@ export class DialogOverviewExampleDialog implements OnInit {
   }
 }
 
-@Component({
-  selector: 'app-create-batch-dialog',
-  templateUrl: './create-batch-dialog.html',
-  styleUrls: ['./test-all-batches.component.css'],
-})
-
-// tslint:disable-next-line:component-class-suffix
-export class CreateBatchDialog implements OnInit {
-  courseId = this.route.snapshot.paramMap.get('courseId');
-  shouldSizeUpdate: boolean;
-  breakpoint: number;
-  date = new FormControl(new Date());
-  serializedDate = new FormControl((new Date()).toISOString());
-  private courseBatchService: CourseBatchService;
-  constructor(
-    private route: ActivatedRoute,
-    courseBatchService: CourseBatchService,
-    public userService: UserService,
-    public configService: ConfigService,
-    public dialogRef: MatDialogRef<CreateBatchDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {
-      this.shouldSizeUpdate = data.shouldSizeUpdate;
-    }
-     onNoClick(): void {
-    this.dialogRef.close();
-  }
-  ngOnInit(): void {
-    this.breakpoint = (window.innerWidth <= 550) ? 1 : 1;
-    if (this.shouldSizeUpdate) { this.updateSize(); }
-    const orddata = {
-      filters: {
-      courseId: this.courseId
-  }
-};
-this.getmentorlist();
-  }
-  getmentorlist(requestParam: SearchParam = {}): any {
-
-  }
-  updateSize() {
-    this.dialogRef.updateSize('600px', '300px');
-}
-  onResize(event) {
-    this.breakpoint = (event.target.innerWidth <= 550) ? 1 : 1;
-  }
-}
 
 @Component({
   selector: 'app-test-all-batches',
@@ -135,7 +90,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
     this.userId = this.userService.userid;
   }
   ngOnInit(): void {
-    this.breakpoint = (window.innerWidth <= 550) ? 1 : 3;
+    this.breakpoint = (window.innerWidth <= 550) ? 1 : (window.innerWidth > 550 && window.innerWidth < 880) ? 2 : 3;
     this.ongoingSearch = {
       filters: {
         status: '1',
@@ -249,17 +204,25 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
   }
 
   createNewBatch(): void {
-    const dialogRef = this.dialog.open(CreateBatchDialog, {
-      data: {name: this.name, animal: this.animal}
+    const dialogRef = this.dialog.open(CreateBatchDialogComponent, {
+      data : {
+        title : 'create'
+      }
     });
-
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.animal = result;
+    });
+  }
+  updateBatch(): void {
+    const dialogRef = this.dialog.open(UpdateBatchDialogComponent, {
+      data : {
+        title : 'update'
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
     });
   }
 
   onResize(event) {
-    this.breakpoint = (event.target.innerWidth <= 550) ? 1 : 3 ;
+    this.breakpoint = (event.target.innerWidth <= 550) ? 1 : (event.target.innerWidth > 550 && window.innerWidth < 880) ? 2 : 3 ;
   }
 }

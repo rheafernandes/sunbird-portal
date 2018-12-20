@@ -3,11 +3,20 @@
     <mat-tab-group class="grid">
         <mat-tab label="Ongoing Batches">
             <mat-grid-list [cols]="breakpoint" (window:resize)="onResize($event)">
-
+                <mat-card>
+                    <button class="btn" (click)="createNewBatch()">Add New Batch</button>
+                  </mat-card>
             <mat-grid-tile *ngFor="let ongoing of ongoingBatches">
 
                      <div class="wrapper ">
+
                     <mat-card class="styleClass">
+                        <div class="edit-btn">
+                            <button mat-icon-button color="primary" (click)="updateBatch()">
+                                <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
+                              </button>
+                            </div>
+
                         <mat-card-header>
                             <div mat-card-avatar class="example-header-image"></div>
                             <mat-card-title>{{ongoing?.name}}</mat-card-title>
@@ -38,10 +47,21 @@
         </mat-tab>
         <mat-tab label="Upcoming Batches">
             <mat-grid-list [cols]="breakpoint" (window:resize)="onResize($event)">
+                <mat-card>
+                    <button class="btn" (click)="createNewBatch()">Add New Batch</button>
+                  </mat-card>
                 <mat-grid-tile *ngFor="let upcoming of upcomingBatches">
                   <div class="wrapper">
                     <mat-card class="styleClass">
+                      <div class="edit-btn">
+                        <button mat-icon-button color="primary" (click)="updateBatch()">
+                            <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
+                          </button>
+                        </div>
                         <mat-card-header>
+                            <!-- <button mat-icon-button color="primary">
+                                <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
+                              </button> -->
                             <div mat-card-avatar class="example-header-image"></div>
                             <mat-card-title>{{upcoming?.name}}</mat-card-title>
                             <mat-card-subtitle>{{upcoming?.enrollmentType}}</mat-card-subtitle>
@@ -69,11 +89,11 @@
             </mat-grid-list>
 
         </mat-tab>
-        <mat-tab label="Create Batch">
+        <!-- <mat-tab label="Create Batch">
             <mat-card>
                 <button class="btn" (click)="createNewBatch()">Add New Batch</button>
               </mat-card>
-        </mat-tab>
+        </mat-tab> -->
     </mat-tab-group>
 </section>
 
