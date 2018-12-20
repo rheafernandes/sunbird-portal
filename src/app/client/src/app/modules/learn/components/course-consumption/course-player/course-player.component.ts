@@ -19,6 +19,8 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 // import { PlayContent } from '@sunbird/shared';
 import { checkNoChangesView } from '@angular/core/src/view/view';
 import { SessionService } from '../../../../workspace/services/session/session.service';
+import { MatDialog } from '@angular/material';
+import { ListSessionsComponent } from '../../../list-sessions/list-sessions.component';
 
 @Component({
   selector: 'app-course-player',
@@ -131,6 +133,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy, OnChanges {
 
   showExtContentMsg = false;
 
+  // stores the sessions for this particular batch and courseId combination
+  sessions = [];
+
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
     loaderMessage: 'Fetching content details!'
@@ -143,7 +148,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy, OnChanges {
   public unsubscribe = new Subject<void>();
   public subscribed: Subscription;
   public courseProgressListner: Subscription;
-  constructor(contentService: ContentService, activatedRoute: ActivatedRoute, private configService: ConfigService,
+  constructor(public dialog: MatDialog, contentService: ContentService, activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, windowScrollService: WindowScrollService,
     router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
     private toasterService: ToasterService, private resourceService: ResourceService, public breadcrumbsService: BreadcrumbsService,
@@ -231,14 +236,17 @@ export class CoursePlayerComponent implements OnInit, OnDestroy, OnChanges {
         this.courseProgressData = courseProgressData;
       });
 
-
     this.sessionService.getSessionsFilter(this.batchId, this.courseId).subscribe((data) => {
       console.group('session details');
       console.warn('session for this particular batch', data);
       console.groupEnd();
+      this.sessions.push(data);
     });
 
   }
+
+
+
 
   ngOnChanges() {
     this.getEnrolledCourseBatchDetails();
@@ -562,4 +570,14 @@ export class CoursePlayerComponent implements OnInit, OnDestroy, OnChanges {
         // handle error
       });
   }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(ListSessionsComponent, {
+      width: '50%',
+      data: { sessionData: this.sessions }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
+  
 }

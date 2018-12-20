@@ -24,6 +24,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatDividerModule} from '@angular/material/divider';
 import { CreateBatchDialogComponent } from './components/test-all-batches/create-batch-dialog/create-batch-dialog.component';
 import { UpdateBatchDialogComponent } from './components/test-all-batches/update-batch-dialog/update-batch-dialog.component';
+import { ListSessionsComponent } from './list-sessions/list-sessions.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -46,7 +47,7 @@ import { UpdateBatchDialogComponent } from './components/test-all-batches/update
   declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
     CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,
     UpdateCourseBatchComponent, CarriculumCardComponent, PreviewCourseComponent, TestAllBatchesComponent,
-    DialogOverviewExampleDialog, CreateBatchDialogComponent, UpdateBatchDialogComponent],
-    entryComponents: [DialogOverviewExampleDialog, CreateBatchDialogComponent, UpdateBatchDialogComponent],
+    DialogOverviewExampleDialog, CreateBatchDialogComponent, UpdateBatchDialogComponent, ListSessionsComponent],
+    entryComponents: [DialogOverviewExampleDialog, CreateBatchDialogComponent, UpdateBatchDialogComponent, ListSessionsComponent],
 })
 export class LearnModule { }

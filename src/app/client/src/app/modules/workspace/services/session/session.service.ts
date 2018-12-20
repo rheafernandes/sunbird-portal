@@ -1,18 +1,16 @@
 import { Injectable, OnInit } from '@angular/core';
-import { of } from 'rxjs';
+import { of, from } from 'rxjs';
 import { filter } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class SessionService implements OnInit {
+export class SessionService {
 
-  sessions = [];
+  sessions = []
   constructor() {
-  }
-
-
-  ngOnInit() {
-    this.sessions.push(JSON.parse(localStorage.getItem('sessions')));
+    if (localStorage.getItem("sessions") !== null) {
+      this.sessions = JSON.parse(localStorage.getItem("sessions"));
+    }
   }
 
   addSession(sessionDelta) {
@@ -21,7 +19,12 @@ export class SessionService implements OnInit {
   }
 
   storeSessions() {
-    localStorage.setItem('sessions', JSON.stringify(this.sessions));
+    if (localStorage.getItem('sessions') !== null) {
+      localStorage.removeItem("sessions");
+      localStorage.setItem('sessions', JSON.stringify(this.sessions));
+    } else {
+      localStorage.setItem('sessions', JSON.stringify(this.sessions));
+    }
   }
 
   getSessions() {
@@ -29,9 +32,9 @@ export class SessionService implements OnInit {
   }
 
   getSessionsFilter(batchId, courseId) {
-    return of(this.sessions).pipe(
+    return from(this.sessions).pipe(
       filter((batch: any) => {
-        if (batch.id === batchId && batch.courseID === courseId && batch.sessionDetails.status === 'published') {
+        if (batch.id === batchId && batch.courseId === courseId && batch.sessionDetails.status === 'published') {
           return true;
         } else {
           return false;

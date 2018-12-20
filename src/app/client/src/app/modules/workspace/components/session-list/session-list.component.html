@@ -1,54 +1,55 @@
 <div class="container">
   <!--filerStart -->
   <div class="container1">
-  <div class="row">
+    <div class="row">
       <div id="filter-panel" class="collapse filter-panel">
-          <div class="panel panel-default">
-              <div class="panel-body">
-                  <form class="form-inline" role="form">
-                      <div class="">
-                          <label class="filter-col" style="margin-right:0;" for="pref-perpage">Session Title</label>
-                       <input type="text" class="form-control input-sm" style="margin-right: 1rem;" placeholder="Title"/>
-                      </div>
-                      <!-- form group [rows] -->
-                      <div class="">
-                          <label class="filter-col" style="margin-right:0;" for="pref-search" placeholder="name">Course Name</label>
-                          <input type="text" class="form-control input-sm" style="margin-right: 1rem;" id="pref-search">
-                      </div><!-- form group [search] -->
-                      <div class="">
-                          <label class="filter-col" style="margin-right:0;" for="pref-orderby">Batch</label>
-                          <select id="pref-orderby" class="form-control" style="margin-right: 1rem;" placeholder="select batch">
-                              <option>batch 1</option>
-                               <option>batch 2</option>
-                          </select>
-                      </div>
-                       <div class="">
-                          <label class="filter-col" style="margin-right:0;" for="pref-orderby">Status</label>
-                          <select id="pref-orderby" class="form-control" style="margin-right: 1rem;" placeholder="Session status">
-                              <option>Draft</option>
-                               <option>Released</option>
-                          </select>
-                      </div>
-                       <div class="">
-                          <label class="filter-col" style="margin-right:0;" for="pref-orderby">Select</label>
-                          <select id="pref-orderby" class="form-control" style="margin-right: 1rem;" placeholder=" status">
-                              <option>Completed</option>
-                               <option>Not Completed</option>
-                          </select>
-                      </div>
-                      <!-- form group [order by] -->
-
-                  </form>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <form class="form-inline" role="form">
+              <div class="">
+                <label class="filter-col" style="margin-right:0;" for="pref-perpage">Session Title</label>
+                <input type="text" class="form-control input-sm" style="margin-right: 1rem;" placeholder="Title" />
               </div>
+              <!-- form group [rows] -->
+              <div class="">
+                <label class="filter-col" style="margin-right:0;" for="pref-search" placeholder="name">Course Name</label>
+                <input type="text" class="form-control input-sm" style="margin-right: 1rem;" id="pref-search">
+              </div><!-- form group [search] -->
+              <div class="">
+                <label class="filter-col" style="margin-right:0;" for="pref-orderby">Batch</label>
+                <select id="pref-orderby" class="form-control" style="margin-right: 1rem;" placeholder="select batch">
+                  <option>batch 1</option>
+                  <option>batch 2</option>
+                </select>
+              </div>
+              <div class="">
+                <label class="filter-col" style="margin-right:0;" for="pref-orderby">Status</label>
+                <select id="pref-orderby" class="form-control" style="margin-right: 1rem;" placeholder="Session status">
+                  <option>Draft</option>
+                  <option>Released</option>
+                </select>
+              </div>
+              <div class="">
+                <label class="filter-col" style="margin-right:0;" for="pref-orderby">Select</label>
+                <select id="pref-orderby" class="form-control" style="margin-right: 1rem;" placeholder=" status">
+                  <option>Completed</option>
+                  <option>Not Completed</option>
+                </select>
+              </div>
+              <!-- form group [order by] -->
+
+            </form>
           </div>
+        </div>
       </div>
       <button type="button" class="btn btn-primary mt-2" data-toggle="collapse" data-target="#filter-panel">
-          <span class="glyphicon glyphicon-cog"></span> Session Filters
+        <span class="glyphicon glyphicon-cog"></span> Session Filters
       </button>
 
-      <button class="btn btn-primary" (click)="storeSession()">Store Sessions</button>
-</div>
-</div>
+      <button class="btn btn-primary mt-2" (click)="storeSession()"><span class="glyphicon glyphicon-cog">Session
+        Store</span></button>
+    </div>
+  </div>
   <!--filter end-->
   <br>
   <br>
