@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
-// import { ToasterService } from 'src/app/modules/shared';
+import { Injectable, OnInit } from '@angular/core';
+import { of, from } from 'rxjs';
+import { filter } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
@@ -8,17 +8,38 @@ export class SessionService {
 
   sessions = [];
   constructor() {
+    if (localStorage.getItem('sessions') !== null) {
+      this.sessions = JSON.parse(localStorage.getItem('sessions'));
+    }
   }
 
-  // create session
   addSession(sessionDelta) {
+    console.log('new session', sessionDelta);
     this.sessions.push(sessionDelta);
-    // this.toasterService.info("session successfully added");
   }
 
-  // returns all sessions
+  storeSessions() {
+    if (localStorage.getItem('sessions') !== null) {
+      localStorage.removeItem('sessions');
+      localStorage.setItem('sessions', JSON.stringify(this.sessions));
+    } else {
+      localStorage.setItem('sessions', JSON.stringify(this.sessions));
+    }
+  }
+
   getSessions() {
     return of(this.sessions);
+  }
+
+  getSessionsFilter(batchId, courseId) {
+    return from(this.sessions).pipe(
+      filter((batch: any) => {
+        if (batch.id === batchId && batch.courseId === courseId && batch.sessionDetails.status === 'published') {
+          return true;
+        } else {
+          return false;
+        }
+      }));
   }
 
   updateSession(session) {
@@ -31,10 +52,7 @@ export class SessionService {
       }
       return false;
     });
-
     this.sessions[batchIndex] = session;
-    // this.toasterService.info("session successfully updated");
-
   }
 
   deleteSession(session) {
@@ -48,8 +66,6 @@ export class SessionService {
       return false;
     });
     this.sessions.splice(batchIndex, 1);
-    // this.toasterService.info("session successfully removed");
-
   }
 
 
@@ -64,10 +80,5 @@ export class SessionService {
       return false;
     });
     this.sessions[batchIndex].sessionDetails.status = 'published';
-    // this.toasterService.info("session successfully published");
-
   }
-
-
-
 }

@@ -1,8 +1,7 @@
 import { NoteListComponent } from '@sunbird/notes';
 import {
   LearnPageComponent, CourseConsumptionPageComponent, CoursePlayerComponent,
-  EnrollBatchComponent, CreateBatchComponent, UpdateCourseBatchComponent
-} from './components';
+  EnrollBatchComponent, CreateBatchComponent, UpdateCourseBatchComponent} from './components';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
@@ -50,7 +49,13 @@ const routes: Routes = [
             path: 'enroll/batch/:batchId', component: EnrollBatchComponent,
             data: {
               telemetry: { env: telemetryEnv, pageid: 'batch-enroll', type: 'view', object: { ver: '1.0', type: 'batch' } }
-            }
+            },
+          },
+          {
+            path: 'unenroll/batch/:batchId', component: EnrollBatchComponent,
+            // data: {
+            //   telemetry: { env: telemetryEnv, pageid: 'batch-enroll', type: 'view', object: { ver: '1.0', type: 'batch' } }
+            // },
           },
           {
             path: 'update/batch/:batchId', component: UpdateCourseBatchComponent, canActivate: [AuthGuard],
@@ -60,7 +65,7 @@ const routes: Routes = [
             }
           },
           {
-            path: 'create/batch', component: CreateBatchComponent, canActivate: [AuthGuard],
+            path: 'create/batch', component: CreateBatchComponent,
             data: { telemetry: { env: telemetryEnv, pageid: 'batch-create', type: 'view' }, roles: 'coursebacthesRole' }
           }
         ]

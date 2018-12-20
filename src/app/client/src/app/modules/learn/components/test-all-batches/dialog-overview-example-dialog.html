@@ -1,20 +1,14 @@
-<h1 mat-dialog-title class="align-content">Request for Enrollment</h1>
-<div mat-dialog-content>
-  <mat-card >
+<h4 class="text-secondary" style="text-align: center">Request for Enrollment</h4>
+<div class="example-container">
+  <mat-card style="width: 100% !important;">
     <mat-card-header class="align-content">
       <div mat-card-avatar class="example-header-image"></div>
       <mat-card-title >{{mentorDetail.firstName}} {{mentorDetail.lastName}}</mat-card-title>
     </mat-card-header>
-    <mat-card-content>
-      <p>
-        Email : {{mentorDetail.email}}
-      </p>
-    </mat-card-content>
-    <mat-card-actions class="align-content">
-        <div mat-dialog-actions >
-            <button mat-button (click)="onNoClick()">OK</button>
-          </div>
-    </mat-card-actions>
-  </mat-card>
-</div>
-
+<mat-card-content>
+  <p style="overflow-wrap: break-word">
+    Email : {{mentorDetail.email}}
+  </p>
+  </mat-card-content>
+    </mat-card>
+  </div>

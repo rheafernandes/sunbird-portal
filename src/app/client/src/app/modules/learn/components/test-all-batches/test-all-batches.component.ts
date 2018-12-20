@@ -1,16 +1,21 @@
-
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, Injectable, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy,  VERSION, ViewChild, ChangeDetectorRef, Injectable, OnChanges, SimpleChanges } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseBatchService } from '../../services';
-import {MAT_DIALOG_DATA} from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material';
 import { Inject } from '@angular/core';
-
-import { ConfigService, ToasterService, ResourceService  } from '@sunbird/shared';
-import { LearnerService, UserService, } from '@sunbird/core';
+import { ConfigService, ToasterService, ResourceService,  ServerResponse  } from '@sunbird/shared';
+import { LearnerService, UserService, SearchParam, PermissionService } from '@sunbird/core';
 import { pluck, takeUntil, tap } from 'rxjs/operators';
-import { Subject } from 'rxjs';
-
+import { Subject,  of as observableOf, Observable } from 'rxjs';
+import {FormControl} from '@angular/forms';
+import * as _ from 'lodash';
+import { CreateBatchDialogComponent } from './create-batch-dialog/create-batch-dialog.component';
+import { UpdateBatchDialogComponent } from './update-batch-dialog/update-batch-dialog.component';
+export interface DialogData {
+  shouldSizeUpdate: boolean;
+  title: string;
+}
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example-dialog.html',
@@ -19,6 +24,8 @@ import { Subject } from 'rxjs';
 // tslint:disable-next-line:component-class-suffix
 export class DialogOverviewExampleDialog implements OnInit {
   mentorDetail;
+  shouldSizeUpdate: boolean;
+  breakpoint: number;
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -26,14 +33,26 @@ export class DialogOverviewExampleDialog implements OnInit {
     public learnerService: LearnerService,
     public toasterService: ToasterService
   ) {
+    this.shouldSizeUpdate = data.shouldSizeUpdate;
   }
   ngOnInit(): void {
+    this.breakpoint = (window.innerWidth <= 550) ? 1 : 1;
+    if (this.shouldSizeUpdate) { this.updateSize(); }
     this.mentorDetail = this.data.mentorDetail;
- }
+  }
   onNoClick(): void {
     this.dialogRef.close();
   }
+  updateSize() {
+    this.dialogRef.updateSize('300px', '200px');
 }
+  onResize(event) {
+    this.breakpoint = (event.target.innerWidth <= 550) ? 1 : 1;
+  }
+
+}
+
+
 @Component({
   selector: 'app-test-all-batches',
   templateUrl: './test-all-batches.component.html',
@@ -49,6 +68,11 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
   userId;
   showUnenroll;
   public unsubscribe = new Subject<void>();
+  currentDate = new Date().toJSON().slice(0, 10);
+  animal: string;
+  name: string;
+  breakpoint: number;
+  public courseMentor;
   ngOnDestroy(): void {
   }
 
@@ -62,41 +86,54 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
     public activatedRoute: ActivatedRoute,
     public userService: UserService,
     public toasterService: ToasterService,
-    public resourceService: ResourceService
+    public resourceService: ResourceService,
+    public permissionService: PermissionService,
   ) {
     this.userId = this.userService.userid;
   }
   ngOnInit(): void {
+    this.breakpoint = (window.innerWidth <= 550) ? 1 : (window.innerWidth > 550 && window.innerWidth < 880) ? 2 : 3;
     this.ongoingSearch = {
-      filters: {
-        status: '0',
-        courseId: this.courseId
-      }
-    };
-    this.upcomingSearch = {
       filters: {
         status: '1',
         courseId: this.courseId
       }
     };
+    this.upcomingSearch = {
+      filters: {
+        status: '0',
+        courseId: this.courseId
+      }
+    };
     this.courseBatchService.getAllBatchDetails(this.ongoingSearch)
       .subscribe((data: any) => {
-        this.ongoingBatches = data.result.response.content;
+        const batchdetails = data.result.response.content;
+        for (const batch of batchdetails) {
+          if (batch.endDate > this.currentDate || batch.endDate === null || batch.endDate === undefined) {
+               this.ongoingBatches.push(batch);
+         }
+
+    }
       });
     this.courseBatchService.getAllBatchDetails(this.upcomingSearch)
       .subscribe((resp: any) => {
-        this.upcomingBatches = resp.result.response.content;
+        const batchdetails = resp.result.response.content;
+                for (const batch of batchdetails) {
+                if (this.currentDate < batch.startDate)  {
+                    this.upcomingBatches.push(batch);
+                }
+              }
       });
+      this.checkRoles();
   }
   openContactDetailsDialog(batch): void {
-    console.log('BATCH Details', batch);
     this.getUserDetails(batch.createdBy)
       .pipe(tap((data) => {
         this.mentorContactDetail = data;
       }))
       .subscribe((data) => {
         const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-          width: '50vw',
+          // width: '50vw',
           data: {
             mentorDetail: this.mentorContactDetail
           }
@@ -127,7 +164,6 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
     this.courseBatchService.enrollToCourse(request).pipe(
       takeUntil(this.unsubscribe))
       .subscribe((data) => {
-        console.log('data', data);
         if (data.result.response === 'SUCCESS') {
           this.showUnenroll = true;
         }
@@ -138,6 +174,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
   }
   unEnroll(batch) {
     this.courseBatchService.setEnrollToBatchDetails(batch);
+    this.router.navigate(['unenroll/batch', batch.identifier], { relativeTo: this.activatedRoute });
     this.unEnrollToCourse(batch);
 
   }
@@ -152,26 +189,42 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
     this.courseBatchService.unEnrollToCourse(request).pipe(
       takeUntil(this.unsubscribe))
       .subscribe((data) => {
-        console.log('data', data);
+        if (data.result.response === 'SUCCESS') {
+          this.showUnenroll = false;
+        }
         this.toasterService.success('You have successfully un-enrolled from this batch');
       }, (err) => {
         this.toasterService.error('Unsuccesful, try again later');
       });
   }
+
+  createNewBatch(): void {
+    const dialogRef = this.dialog.open(CreateBatchDialogComponent, {
+      data : {
+        title : 'create'
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
+  updateBatch(): void {
+    const dialogRef = this.dialog.open(UpdateBatchDialogComponent, {
+      data : {
+        title : 'update'
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
+
+  onResize(event) {
+    this.breakpoint = (event.target.innerWidth <= 550) ? 1 : (event.target.innerWidth > 550 && window.innerWidth < 880) ? 2 : 3 ;
+  }
+  checkRoles() {
+    if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
+      this.courseMentor = true;
+    } else {
+      this.courseMentor = false;
+    }
+  }
 }
-//   fetchEnrolledCourseData() {
-//     setTimeout(() => {
-//       this.coursesService.getEnrolledCourses().pipe(
-//         takeUntil(this.unsubscribe))
-//         .subscribe(() => {
-//           this.disableSubmitBtn = false;
-//           this.toasterService.success(this.resourceService.messages.smsg.m0036);
-//           this.router.navigate(['/learn/course', this.batchDetails.courseId, 'batch', this.batchDetails.identifier]);
-//           window.location.reload();
-//         }, (err) => {
-//           this.disableSubmitBtn = false;
-//           this.router.navigate(['/learn']);
-//         });
-//     }, 2000);
-//   }
-// }

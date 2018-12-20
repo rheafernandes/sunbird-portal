@@ -44,7 +44,7 @@
   font-size: 1.8rem;
   padding: 2.2rem 0rem;
    font-family: 'Carter One', cursive;
-    background: -webkit-linear-gradient(orange 50%, #920663 50% ) !important;
+    background: -webkit-linear-gradient(blue ) !important;
    -webkit-background-clip: text !important;
    -webkit-text-fill-color: transparent !important;
 }
@@ -59,13 +59,15 @@
   margin-left: 2rem;
   font-size: 1.8rem;
    font-family: 'Carter One', cursive;
-    background: -webkit-linear-gradient(orange 60%, #920663 50% ) !important;
+    background: -webkit-linear-gradient(blue ) !important;
    -webkit-background-clip: text !important;
    -webkit-text-fill-color: transparent !important;
 }
 .navbar {
   margin-bottom :0;
   border-radius: 0;
+       position:unset ;
+      padding: 0rem;
 }
 #search-bar{
   margin-left: 1rem;

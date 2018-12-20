@@ -24,8 +24,7 @@ import { CreateSessionComponent } from './components/create-session/create-sessi
 import {CourseConsumptionService, CourseProgressService, CourseBatchService} from '../learn/services';
 import { SessionDetailsComponent } from './components/session-details/session-details.component';
 import { SessionService } from './services/session/session.service';
-import {MatExpansionModule} from '@angular/material/expansion';
-
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 
 @NgModule({
   imports: [
@@ -38,7 +37,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
     ReactiveFormsModule,
     NgInviewModule,
     TelemetryModule,
-    MatExpansionModule
+    NgxMaterialTimepickerModule.forRoot()
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
@@ -61,6 +60,5 @@ import {MatExpansionModule} from '@angular/material/expansion';
   providers: [WorkSpaceService, EditorService, BatchService, CourseConsumptionService,
     CourseProgressService, CourseBatchService , SessionService],
   entryComponents: [CreateSessionComponent, SessionDetailsComponent],
-  exports: [MatExpansionModule]
 })
 export class WorkspaceModule { }

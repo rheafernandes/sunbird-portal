@@ -17,6 +17,7 @@ import { CacheStorageAbstract } from 'ng2-cache-service/dist/src/services/storag
 import { CacheSessionStorage } from 'ng2-cache-service/dist/src/services/storage/session-storage/cache-session-storage.service';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -35,6 +36,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     WebExtensionModule.forRoot(),
     TelemetryModule.forRoot(),
     DeviceDetectorModule.forRoot(),
+
     PublicModule,
     ...PluginModules,
     AppRoutingModule // don't add any module below this because it contains wildcard route

@@ -1,29 +1,27 @@
-<form #sessionForm="ngForm">
-    <h5 class="modal-title" id="ModalLabel"> {{existingSessionFlag ? "Update" : "Create" }} Sessions
+<div style="overflow-y: auto">
+<form #sessionForm="ngForm" novalidate >
+    <h5 class="modal-title" id="ModalLabel" style="text-align: center;font-weight: bold;"> {{existingSessionFlag ? "Update" : "Create" }} Sessions
         <i class="fas fa-times-circle float-right" (click)="onNoClick()"></i>
       </h5>
       <hr/>
-      <div class="row m-2">
+      <div class="row ml-5">
         <div class="col-md-6">
           <h5 class="modal-title" id="ModalLabel">
-            <i class="fas fa-book"></i>&nbsp;&nbsp; {{sessiondata.sessionData.courseAdditionalInfo.courseName}}
+            <i class="fas fa-book" style="color:blue;"></i>&nbsp;&nbsp; {{sessiondata.sessionData.courseAdditionalInfo.courseName}}
           </h5>
         </div>
         <div class="col-md-6">
           <h5 class="modal-title" id="ModalLabel">
-            <i class="fas fa-group"></i>&nbsp; &nbsp;{{sessiondata.sessionData.name}}
+            <i class="fas fa-group" style="color:blue;"></i>&nbsp; &nbsp;{{sessiondata.sessionData.name}}
           </h5>
         </div>
       </div>
-    <!-- <h6 class="modal-title text-center align-cnter" id="ModalLabel"><i class="fas fa-book" ></i>&nbsp;&nbsp;{{sessiondata.sessionData.courseAdditionalInfo.courseName}}
-       &nbsp; &nbsp;  &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span><i class="fas fa-group"></i>&nbsp; &nbsp;{{sessiondata.sessionData.name}}</span>
-    </h6> -->
   <br>
   <div class="form-group">
-      <label for="sessionTitle">Name of Session</label>
+      <label for="sessionTitle"><i class="	fa fa-pencil-square-o" style="color:blue;"></i>&nbsp;&nbsp; Name of Session</label>
       <input [ngModel]="existingSessionFlag ? (session.sessionDetails.sessionTitle) : ''" #title="ngModel" name="sessionTitle"
         type="text" class="form-control" id="sessionTitle" placeholder="session name"   required minlength="4" >
-        <div *ngIf="title.invalid && (title.dirty || title.touched)"
+        <div *ngIf="title.invalid && (title.dirty || title.touched) "
       class="alert alert-danger">
 
     <div *ngIf="title.errors.required">
@@ -32,39 +30,36 @@
     <div *ngIf="title.errors.minlength">
       Name must be at least 4 characters long.
     </div>
-    </div>
-    </div>
-  <!-- [value]="existingSessionFlag ? (session.sessionDetails.sessionDescription) : ''" -->
-  <div class="form-group">
-    <label for="sessionDescription">Description </label>
-    <textarea [ngModel]="existingSessionFlag ? (session.sessionDetails.sessionDescription) : ''" #description="ngModel"
-      name="sessionDescription" class="form-control" id="sessionDescription" rows="3" placeholder="session Description" required ></textarea>
-      <div *ngIf="description.invalid && (description.dirty || description.touched)"
+  </div>
+  </div>
+  <br>
+    <div class="form-group">
+    <label for="sessionDescription"><i class="fa fa-commenting-o" style="color:blue;"></i> &nbsp;&nbsp;Description </label>
+    <textarea [ngModel]="existingSessionFlag ? (session.sessionDetails.sessionDescription) : ''" #description="ngModel"   name="sessionDescription" class="form-control" id="sessionDescription" rows="3" placeholder="session Description" required ></textarea>
+      <div *ngIf="description.invalid && (description.dirty || description.touched) "
       class="alert alert-danger">
-
-    <div *ngIf="description.errors.required">
-      Description is required.
-    </div>
+      <div *ngIf="description.errors.required">
+        Description is required.
+      </div>
     </div>
   </div>
   <div class="form-group">
-    <label for="courseUnit">Course Units</label>
+    <label for="courseUnit"><i class="	fa fa-book" style="color:blue;"></i>&nbsp;&nbsp;Course Units</label>
     <select class="form-control" id="courseUnit" [ngModel]="existingSessionFlag ? (session.sessionDetails.courseUnit) : ''"
       #courseUnit="ngModel" name="courseUnit" required>
       <option [value]="courseName?.code" *ngFor='let courseName of coursechapters'>{{courseName.name}}</option>
     </select>
-    <div *ngIf="courseUnit.invalid && (courseUnit.dirty || courseUnit.touched)"
-    class="alert alert-danger">
+    <div *ngIf="courseUnit.invalid && (courseUnit.dirty || courseUnit.touched)" class="alert alert-danger">
 
-  <div *ngIf="courseUnit.errors.required">
-    Unit is required.
-  </div>
-  </div>
+      <div *ngIf="courseUnit.errors.required">
+        Unit is required.
+      </div>
+    </div>
   </div>
   <div class="form-group">
     <label for="sessionUrl">Meeting Url</label>
     <input [ngModel]="existingSessionFlag ? (session.sessionDetails.sessionUrl) : ''" #url="ngModel" name="sessionUrl"
-      type="email" class="form-control" id="sessionUrl" placeholder="http://example.com" pattern="http?://.+" required/>
+      type="email" class="form-control" id="sessionUrl" placeholder="http://example.com" pattern="^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$" required/>
       <div *ngIf="url.invalid && (url.dirty || url.touched)"
     class="alert alert-danger">
     <div *ngIf="url.errors.required">Site is required</div>
@@ -72,18 +67,33 @@
   </div>
   </div>
   <div class="form-group">
-      <!-- <mat-form-field>
-          <input matInput [matDatepicker]="picker" placeholder="Choose a date" required>
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field> -->
-
+     <label for="sessionStartDate">Session Start Date</label> &nbsp;
+      <mat-form-field style="width:25% !important">
+          <input matInput [matDatepicker]="Startpicker" placeholder="Choose a date" name="sessionStartDate" [ngModel]="existingSessionFlag ? (session.sessionDetails.sessionStartDate) : ''" #startDate="ngModel" required/>
+          <mat-datepicker-toggle matSuffix [for]="Startpicker"></mat-datepicker-toggle>
+          <mat-datepicker #Startpicker></mat-datepicker>
+      </mat-form-field>
+      &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+    <label for="sessionEndDate">Session End Date</label> &nbsp;
+      <mat-form-field style="width:25% !important">
+          <input matInput [matDatepicker]="Endpicker" [ngModel]="existingSessionFlag ? (session.sessionDetails.sessionEndDate) : ''" name="sessionEndDate" #endDate="ngModel" placeholder="Choose a date" required/>
+          <mat-datepicker-toggle matSuffix [for]="Endpicker"></mat-datepicker-toggle>
+          <mat-datepicker #Endpicker></mat-datepicker>
+      </mat-form-field>
   </div>
+  <div class="form-group">
+    <div class="12hr-example">
+        <label for="sessionTime">Session Time</label>
+      <input placeholder="Choose a Time" aria-label="12hr format" [ngModel]="existingSessionFlag ? (session.sessionDetails.sessionTime) : ''" name="sessionTime" #time="ngModel" class="form-control" [ngxTimepicker]="default" readonly required/>
+      <ngx-material-timepicker #default></ngx-material-timepicker>
+ </div>
+ </div>
   <div>
-    <button *ngIf="!existingSessionFlag" type="button" class="btn btn-secondary" style="float:right;" (click)="saveSession(sessionForm,'draft')">Save</button>
-    <button *ngIf="existingSessionFlag" type="button" class="btn btn-primary" style="float:right;margin-right: 1rem;"
-      (click)="updateSession(sessionForm)">Update</button>
-    <button *ngIf="!existingSessionFlag" type="button" class="btn btn-primary" style="float:right;margin-right: 1rem;"
-      (click)="saveSession(sessionForm,'published')">Publish</button>
+    <button *ngIf="!existingSessionFlag " [disabled]="sessionForm.invalid"  class="btn btn-secondary" style="float:right;" (click)="saveSession(sessionForm,'draft')" >Save</button>
+    <button *ngIf="existingSessionFlag"  class="btn btn-primary" style="float:right;margin-right: 1rem;"
+      (click)="updateSession(sessionForm)" [disabled]="sessionForm.invalid" >Update</button>
+    <button *ngIf="!existingSessionFlag"  class="btn btn-primary" style="float:right;margin-right: 1rem;"
+      (click)="saveSession(sessionForm,'published')" [disabled]="sessionForm.invalid" >Publish</button>
   </div>
 </form>
+</div>
