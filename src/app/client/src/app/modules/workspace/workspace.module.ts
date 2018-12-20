@@ -24,6 +24,8 @@ import { CreateSessionComponent } from './components/create-session/create-sessi
 import {CourseConsumptionService, CourseProgressService, CourseBatchService} from '../learn/services';
 import { SessionDetailsComponent } from './components/session-details/session-details.component';
 import { SessionService } from './services/session/session.service';
+import {MatExpansionModule} from '@angular/material/expansion';
+
 
 @NgModule({
   imports: [
@@ -35,7 +37,8 @@ import { SessionService } from './services/session/session.service';
     CoreModule,
     ReactiveFormsModule,
     NgInviewModule,
-    TelemetryModule
+    TelemetryModule,
+    MatExpansionModule
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
@@ -57,6 +60,7 @@ import { SessionService } from './services/session/session.service';
   ],
   providers: [WorkSpaceService, EditorService, BatchService, CourseConsumptionService,
     CourseProgressService, CourseBatchService , SessionService],
-  entryComponents: [CreateSessionComponent, SessionDetailsComponent]
+  entryComponents: [CreateSessionComponent, SessionDetailsComponent],
+  exports: [MatExpansionModule]
 })
 export class WorkspaceModule { }

@@ -31,6 +31,7 @@ export class SessionListComponent implements OnInit {
   openSession(session): void {
     const sessionDialog = this.dialog.open(SessionDetailsComponent, {
       width: '50%',
+      height: '70%',
       data: { sessionData: session}
     });
     sessionDialog.afterClosed().subscribe(result => {
