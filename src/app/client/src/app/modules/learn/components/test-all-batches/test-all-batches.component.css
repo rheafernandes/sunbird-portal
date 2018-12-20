@@ -27,9 +27,7 @@
 .example-container > * {
   width: 100%;
 } */
-.edit-btn {
-  left:51vh !important;
-}
+
 
 @media only screen and (max-width:  640px) {
   /* .example-container {
@@ -47,16 +45,9 @@
 @media only screen and (min-width:  1000px) {
 .wrapper{
 max-width: 300px;
-max-height: 35vh;
 margin-left: 1vh;
 margin-bottom: 1vh;
 }
-.edit-button {
-  left:55vh !important;
+
 }
-}
-@media only screen and (min-width:  1440px) {
-  .edit-button {
-    left:48vh !important;
-  }
-  }
+

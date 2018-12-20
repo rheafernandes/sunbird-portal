@@ -58,7 +58,7 @@ export class CreateBatchDialogComponent implements OnInit {
       map((mentor: string | null) => mentor ? this._filterMentor(mentor) : this.allMentors.slice()));
     this.filteredMembers = this.memberCtrl.valueChanges.pipe(
       startWith(null),
-      map((member: string | null) => member ? this._filterMentor(member) : this.allMembers.slice()));
+      map((member: string | null) => member ? this._filterMember(member) : this.allMembers.slice()));
   }
   onNoClick(): void {
     this.dialogRef.close();
@@ -66,6 +66,7 @@ export class CreateBatchDialogComponent implements OnInit {
   ngOnInit(): void {
     this.allMentors = this.data.mentorDetail;
     this.allMembers = this.data.memberDetail;
+    this.allMembers.push(this.allMentors);
     this.breakpoint = (window.innerWidth <= 550) ? 1 : 1;
     if (this.shouldSizeUpdate) { this.updateSize(); }
     const orddata = {

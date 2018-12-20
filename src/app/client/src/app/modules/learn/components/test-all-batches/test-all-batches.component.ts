@@ -69,6 +69,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
   // animal: string;
   // name: string;
   allMentors = [];
+  allMembers = [];
   breakpoint: number;
   public courseMentor;
   ngOnDestroy(): void {
@@ -124,6 +125,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       });
       this.checkRoles();
       this.getMentorslist();
+      this.getMemberslist();
   }
   openContactDetailsDialog(batch): void {
     this.getUserDetails(batch.createdBy)
@@ -201,21 +203,22 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(CreateBatchDialogComponent, {
       data : {
         title : 'create',
-        mentorDetail: this.allMentors
+        mentorDetail: this.allMentors,
+        memberDetail: this.allMembers
       }
     });
-    console.log('dialog dataa=====', this.allMentors);
     dialogRef.afterClosed().subscribe(result => {
     });
   }
-  updateBatch(): void {
+  updateBatch(batchDetail): void {
     const dialogRef = this.dialog.open(UpdateBatchDialogComponent, {
       data : {
         title: 'update',
-        mentorDetail: this.allMentors
+        mentorDetail: this.allMentors,
+        memberDetail: this.allMembers,
+        batchDetail: batchDetail,
       }
     });
-    console.log('dialog dataa=====', this.allMentors);
     dialogRef.afterClosed().subscribe(result => {
     });
   }
@@ -247,9 +250,28 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
           const mentorsDetails = data.result.response.content;
           for (const mentorsDetail of mentorsDetails ) {
             this.allMentors.push(mentorsDetail.firstName + ' ' + mentorsDetail.lastName);
-            // this.allMentors.push(mentorsDetail.firstName + ' ' + mentorsDetail.lastName );
           }
-          console.log('mentor details ========', this.allMentors);
+        }
+      );
+  }
+  getMemberslist() {
+    const option = {
+      url: this.config.urlConFig.URLS.ADMIN.USER_SEARCH,
+      data: {
+        request: {
+          query: '',
+          filters: {
+          },
+        }
+      }
+    };
+    this.learnerService.post(option)
+      .subscribe(
+        data => {
+          const membersDetails = data.result.response.content;
+          for (const memberDetail of membersDetails ) {
+            this.allMembers.push(memberDetail.firstName + ' ' + memberDetail.lastName);
+          }
         }
       );
   }

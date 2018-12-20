@@ -11,11 +11,11 @@
                      <div class="wrapper ">
 
                     <mat-card class="styleClass">
-                        <div class="edit-btn">
-                            <button mat-icon-button color="primary" (click)="updateBatch()"  *ngIf="courseMentor === true ">
+                        <div class="edit-btn container text-right">
+                            <button mat-icon-button color="primary" (click)="updateBatch(ongoing)"  *ngIf="courseMentor === true ">
                                 <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
-                              </button>
-                            </div>
+                            </button>
+                        </div>
 
                         <mat-card-header>
                             <div mat-card-avatar class="example-header-image"></div>
@@ -54,7 +54,7 @@
                   <div class="wrapper">
                     <mat-card class="styleClass">
                       <div class="edit-btn">
-                        <button mat-icon-button color="primary" (click)="updateBatch()"  *ngIf="courseMentor === true ">
+                        <button mat-icon-button color="primary" (click)="updateBatch(upcoming)"  *ngIf="courseMentor === true ">
                             <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
                           </button>
                         </div>
