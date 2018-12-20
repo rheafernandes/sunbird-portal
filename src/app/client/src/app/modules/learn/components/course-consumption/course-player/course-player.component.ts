@@ -18,6 +18,7 @@ import {
 import { DeviceDetectorService } from 'ngx-device-detector';
 // import { PlayContent } from '@sunbird/shared';
 import { checkNoChangesView } from '@angular/core/src/view/view';
+import { SessionService } from '../../../../workspace/services/session/session.service';
 
 @Component({
   selector: 'app-course-player',
@@ -149,7 +150,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy, OnChanges {
     private cdr: ChangeDetectorRef, public courseBatchService: CourseBatchService, public permissionService: PermissionService,
     public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService,
     private courseProgressService: CourseProgressService, private deviceDetectorService: DeviceDetectorService,
-    public player: PlayContent) {
+    public player: PlayContent,
+    private sessionService: SessionService) {
     this.contentService = contentService;
     this.activatedRoute = activatedRoute;
     this.windowScrollService = windowScrollService;
@@ -228,6 +230,14 @@ export class CoursePlayerComponent implements OnInit, OnDestroy, OnChanges {
       .subscribe((courseProgressData) => {
         this.courseProgressData = courseProgressData;
       });
+
+
+    this.sessionService.getSessionsFilter(this.batchId, this.courseId).subscribe((data) => {
+      console.group('session details');
+      console.warn('session for this particular batch', data);
+      console.groupEnd();
+    });
+
   }
 
   ngOnChanges() {

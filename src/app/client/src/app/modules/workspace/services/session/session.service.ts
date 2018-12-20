@@ -1,24 +1,42 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { of } from 'rxjs';
-// import { ToasterService } from 'src/app/modules/shared';
+import { filter } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class SessionService {
+export class SessionService implements OnInit {
 
   sessions = [];
   constructor() {
   }
 
-  // create session
-  addSession(sessionDelta) {
-    this.sessions.push(sessionDelta);
-    // this.toasterService.info("session successfully added");
+
+  ngOnInit() {
+    this.sessions.push(JSON.parse(localStorage.getItem('sessions')));
   }
 
-  // returns all sessions
+  addSession(sessionDelta) {
+    console.log('new session', sessionDelta);
+    this.sessions.push(sessionDelta);
+  }
+
+  storeSessions() {
+    localStorage.setItem('sessions', JSON.stringify(this.sessions));
+  }
+
   getSessions() {
     return of(this.sessions);
+  }
+
+  getSessionsFilter(batchId, courseId) {
+    return of(this.sessions).pipe(
+      filter((batch: any) => {
+        if (batch.id === batchId && batch.courseID === courseId && batch.sessionDetails.status === 'published') {
+          return true;
+        } else {
+          return false;
+        }
+      }));
   }
 
   updateSession(session) {
@@ -31,10 +49,7 @@ export class SessionService {
       }
       return false;
     });
-
     this.sessions[batchIndex] = session;
-    // this.toasterService.info("session successfully updated");
-
   }
 
   deleteSession(session) {
@@ -48,8 +63,6 @@ export class SessionService {
       return false;
     });
     this.sessions.splice(batchIndex, 1);
-    // this.toasterService.info("session successfully removed");
-
   }
 
 
@@ -64,10 +77,5 @@ export class SessionService {
       return false;
     });
     this.sessions[batchIndex].sessionDetails.status = 'published';
-    // this.toasterService.info("session successfully published");
-
   }
-
-
-
 }

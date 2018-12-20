@@ -44,5 +44,10 @@ export class SessionListComponent implements OnInit {
     console.log('published');
     this.sessionService.publishSession(session);
   }
+
+
+  storeSession() {
+    this.sessionService.storeSessions();
+  }
 }
 

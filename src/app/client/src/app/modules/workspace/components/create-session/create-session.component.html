@@ -1,50 +1,45 @@
 <form #sessionForm="ngForm">
-    <h5 class="modal-title" id="ModalLabel"> {{existingSessionFlag ? "Update" : "Create" }} Sessions
-        <i class="fas fa-times-circle float-right" (click)="onNoClick()"></i>
+  <h5 class="modal-title" id="ModalLabel"> {{existingSessionFlag ? "Update" : "Create" }} Sessions
+    <i class="fas fa-times-circle float-right" (click)="onNoClick()"></i>
+  </h5>
+  <hr />
+  <div class="row m-2">
+    <div class="col-md-6">
+      <h5 class="modal-title" id="ModalLabel">
+        <i class="fas fa-book"></i>&nbsp;&nbsp; {{sessiondata.sessionData.courseAdditionalInfo.courseName}}
       </h5>
-      <hr/>
-      <div class="row m-2">
-        <div class="col-md-6">
-          <h5 class="modal-title" id="ModalLabel">
-            <i class="fas fa-book"></i>&nbsp;&nbsp; {{sessiondata.sessionData.courseAdditionalInfo.courseName}}
-          </h5>
-        </div>
-        <div class="col-md-6">
-          <h5 class="modal-title" id="ModalLabel">
-            <i class="fas fa-group"></i>&nbsp; &nbsp;{{sessiondata.sessionData.name}}
-          </h5>
-        </div>
-      </div>
-    <!-- <h6 class="modal-title text-center align-cnter" id="ModalLabel"><i class="fas fa-book" ></i>&nbsp;&nbsp;{{sessiondata.sessionData.courseAdditionalInfo.courseName}}
-       &nbsp; &nbsp;  &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span><i class="fas fa-group"></i>&nbsp; &nbsp;{{sessiondata.sessionData.name}}</span>
-    </h6> -->
+    </div>
+    <div class="col-md-6">
+      <h5 class="modal-title" id="ModalLabel">
+        <i class="fas fa-group"></i>&nbsp; &nbsp;{{sessiondata.sessionData.name}}
+      </h5>
+    </div>
+  </div>
   <br>
   <div class="form-group">
-      <label for="sessionTitle">Name of Session</label>
-      <input [ngModel]="existingSessionFlag ? (session.sessionDetails.sessionTitle) : ''" #title="ngModel" name="sessionTitle"
-        type="text" class="form-control" id="sessionTitle" placeholder="session name"   required minlength="4" >
-        <div *ngIf="title.invalid && (title.dirty || title.touched)"
-      class="alert alert-danger">
-
-    <div *ngIf="title.errors.required">
-      Name is required.
+    <label for="sessionTitle">Name of Session</label>
+    <input [ngModel]="existingSessionFlag ? (session.sessionDetails.sessionTitle) : ''" #title="ngModel" name="sessionTitle"
+      type="text" class="form-control" id="sessionTitle" placeholder="session name" required minlength="4">
+    <div *ngIf="title.invalid && (title.dirty || title.touched)" class="alert alert-danger">
+      <div *ngIf="title.errors.required">
+        Name is required.
+      </div>
+      <div *ngIf="title.errors.minlength">
+        Name must be at least 4 characters long.
+      </div>
     </div>
-    <div *ngIf="title.errors.minlength">
-      Name must be at least 4 characters long.
-    </div>
-    </div>
-    </div>
+  </div>
   <!-- [value]="existingSessionFlag ? (session.sessionDetails.sessionDescription) : ''" -->
   <div class="form-group">
     <label for="sessionDescription">Description </label>
     <textarea [ngModel]="existingSessionFlag ? (session.sessionDetails.sessionDescription) : ''" #description="ngModel"
-      name="sessionDescription" class="form-control" id="sessionDescription" rows="3" placeholder="session Description" required ></textarea>
-      <div *ngIf="description.invalid && (description.dirty || description.touched)"
-      class="alert alert-danger">
+      name="sessionDescription" class="form-control" id="sessionDescription" rows="3" placeholder="session Description"
+      required></textarea>
+    <div *ngIf="description.invalid && (description.dirty || description.touched)" class="alert alert-danger">
 
-    <div *ngIf="description.errors.required">
-      Description is required.
-    </div>
+      <div *ngIf="description.errors.required">
+        Description is required.
+      </div>
     </div>
   </div>
   <div class="form-group">
@@ -53,31 +48,28 @@
       #courseUnit="ngModel" name="courseUnit" required>
       <option [value]="courseName?.code" *ngFor='let courseName of coursechapters'>{{courseName.name}}</option>
     </select>
-    <div *ngIf="courseUnit.invalid && (courseUnit.dirty || courseUnit.touched)"
-    class="alert alert-danger">
+    <div *ngIf="courseUnit.invalid && (courseUnit.dirty || courseUnit.touched)" class="alert alert-danger">
 
-  <div *ngIf="courseUnit.errors.required">
-    Unit is required.
-  </div>
-  </div>
+      <div *ngIf="courseUnit.errors.required">
+        Unit is required.
+      </div>
+    </div>
   </div>
   <div class="form-group">
     <label for="sessionUrl">Meeting Url</label>
     <input [ngModel]="existingSessionFlag ? (session.sessionDetails.sessionUrl) : ''" #url="ngModel" name="sessionUrl"
-      type="email" class="form-control" id="sessionUrl" placeholder="http://example.com" pattern="http?://.+" required/>
-      <div *ngIf="url.invalid && (url.dirty || url.touched)"
-    class="alert alert-danger">
-    <div *ngIf="url.errors.required">Site is required</div>
-    <div *ngIf="url.errors.pattern">Must be a valid site URL</div>
-  </div>
+      type="email" class="form-control" id="sessionUrl" placeholder="http://example.com" pattern="http?://.+" required />
+    <div *ngIf="url.invalid && (url.dirty || url.touched)" class="alert alert-danger">
+      <div *ngIf="url.errors.required">Site is required</div>
+      <div *ngIf="url.errors.pattern">Must be a valid site URL</div>
+    </div>
   </div>
   <div class="form-group">
-      <!-- <mat-form-field>
+    <!-- <mat-form-field>
           <input matInput [matDatepicker]="picker" placeholder="Choose a date" required>
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
       </mat-form-field> -->
-
   </div>
   <div>
     <button *ngIf="!existingSessionFlag" type="button" class="btn btn-secondary" style="float:right;" (click)="saveSession(sessionForm,'draft')">Save</button>
