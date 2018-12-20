@@ -5,7 +5,7 @@ import { CourseBatchService } from '../../services';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { Inject } from '@angular/core';
 import { ConfigService, ToasterService, ResourceService,  ServerResponse  } from '@sunbird/shared';
-import { LearnerService, UserService, SearchParam } from '@sunbird/core';
+import { LearnerService, UserService, SearchParam, PermissionService } from '@sunbird/core';
 import { pluck, takeUntil, tap } from 'rxjs/operators';
 import { Subject,  of as observableOf, Observable } from 'rxjs';
 import {FormControl} from '@angular/forms';
@@ -49,6 +49,7 @@ export class DialogOverviewExampleDialog implements OnInit {
   onResize(event) {
     this.breakpoint = (event.target.innerWidth <= 550) ? 1 : 1;
   }
+
 }
 
 
@@ -71,7 +72,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
   animal: string;
   name: string;
   breakpoint: number;
-
+  public courseMentor;
   ngOnDestroy(): void {
   }
 
@@ -85,7 +86,8 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
     public activatedRoute: ActivatedRoute,
     public userService: UserService,
     public toasterService: ToasterService,
-    public resourceService: ResourceService
+    public resourceService: ResourceService,
+    public permissionService: PermissionService,
   ) {
     this.userId = this.userService.userid;
   }
@@ -103,14 +105,6 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
         courseId: this.courseId
       }
     };
-    // this.courseBatchService.getAllBatchDetails(this.ongoingSearch)
-    //   .subscribe((data: any) => {
-    //     this.ongoingBatches = data.result.response.content;
-    //   });
-    // this.courseBatchService.getAllBatchDetails(this.upcomingSearch)
-    //   .subscribe((resp: any) => {
-    //     this.upcomingBatches = resp.result.response.content;
-    //   });
     this.courseBatchService.getAllBatchDetails(this.ongoingSearch)
       .subscribe((data: any) => {
         const batchdetails = data.result.response.content;
@@ -130,6 +124,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
                 }
               }
       });
+      this.checkRoles();
   }
   openContactDetailsDialog(batch): void {
     this.getUserDetails(batch.createdBy)
@@ -224,5 +219,12 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
 
   onResize(event) {
     this.breakpoint = (event.target.innerWidth <= 550) ? 1 : (event.target.innerWidth > 550 && window.innerWidth < 880) ? 2 : 3 ;
+  }
+  checkRoles() {
+    if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
+      this.courseMentor = true;
+    } else {
+      this.courseMentor = false;
+    }
   }
 }
