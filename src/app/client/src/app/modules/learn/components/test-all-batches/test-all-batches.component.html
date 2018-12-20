@@ -1,44 +1,22 @@
-<!-- This is a section for view all batches -->
-<section class="all-batches-section container-fluid">
-    <mat-tab-group>
-        <mat-tab label="Ongoing Batches">
-            <mat-grid-list cols="3">
-            <mat-grid-tile *ngFor="let upcoming of upcomingBatches">
-                <div class="wrapper">
-                    <mat-card class="styleClass">
-                        <mat-card-header>
-                            <div mat-card-avatar class="example-header-image"></div>
-                            <mat-card-title>{{upcoming?.name}}</mat-card-title>
-                            <mat-card-subtitle>{{upcoming?.enrollmentType}}</mat-card-subtitle>
-                        </mat-card-header>
-                        <mat-card-content>
-                            <p>
-                                Description :{{upcoming?.description}}
-                            </p>
-                            <p>
-                                Start Date : {{upcoming?.startDate|date}}
-                            </p>
-                            <p>
-                                End Date : {{upcoming?.endDate|date}}
-                            </p>
-                        </mat-card-content>
-                        <mat-card-actions class="align-content">
-                            <button mat-button *ngIf="upcoming.enrollmentType==='open' && !(upcoming?.participant.hasOwnProperty(userId))"
-                                (click)="openEnrollDetailsDialog(upcoming)">Enroll</button>
-                            <button mat-button *ngIf="upcoming.enrollmentType==='invite-only'" (click)="openContactDetailsDialog(upcoming)">Contact</button>
-                            <button mat-button *ngIf="upcoming?.participant && upcoming?.participant.hasOwnProperty(userId)" (click)="unEnroll(upcoming)">UnEnroll</button>
-                        </mat-card-actions>
-                    </mat-card>
-                </div>
-            </mat-grid-tile>
-            </mat-grid-list>
 
-        </mat-tab>
-        <mat-tab label="Upcoming Batches">
-            <mat-grid-list cols="3">
+<section class="all-batches-section container">
+    <mat-tab-group class="grid">
+        <mat-tab label="Ongoing Batches">
+            <mat-grid-list [cols]="breakpoint" (window:resize)="onResize($event)">
+                <mat-card>
+                    <button class="btn" (click)="createNewBatch()"  *ngIf="courseMentor === true ">Add New Batch</button>
+                  </mat-card>
             <mat-grid-tile *ngFor="let ongoing of ongoingBatches">
-                <div class="wrapper ">
+
+                     <div class="wrapper ">
+
                     <mat-card class="styleClass">
+                        <div class="edit-btn">
+                            <button mat-icon-button color="primary" (click)="updateBatch()"  *ngIf="courseMentor === true ">
+                                <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
+                              </button>
+                            </div>
+
                         <mat-card-header>
                             <div mat-card-avatar class="example-header-image"></div>
                             <mat-card-title>{{ongoing?.name}}</mat-card-title>
@@ -56,15 +34,66 @@
                             </p>
                         </mat-card-content>
                         <mat-card-actions class="align-content">
-                            <button class="btn" mat-button *ngIf="ongoing.enrollmentType==='open' && !(ongoing?.participant.hasOwnProperty(userId))"
+                            <button class="btn" mat-button *ngIf="ongoing?.enrollmentType==='open' && !(ongoing?.participant.hasOwnProperty(userId)) && !showUnenroll"
                                 (click)="openEnrollDetailsDialog(ongoing)">Enroll</button>
                             <button class="btn" mat-button *ngIf="ongoing?.enrollmentType==='invite-only'" (click)="openContactDetailsDialog(ongoing)">Contact</button>
-                            <button mat-button *ngIf="ongoing?.participant && ongoing?.participant.hasOwnProperty(userId)" (click)="unEnroll(ongoing)">UnEnroll</button>
+                            <button mat-button *ngIf="ongoing?.enrollmentType==='open' && ongoing?.participant && (ongoing?.participant.hasOwnProperty(userId) || showUnenroll)" (click)="unEnroll(ongoing)">UnEnroll</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+            </mat-grid-tile>
+
+            </mat-grid-list>
+        </mat-tab>
+        <mat-tab label="Upcoming Batches">
+            <mat-grid-list [cols]="breakpoint" (window:resize)="onResize($event)">
+                <mat-card *ngIf="courseMentor === true ">
+                    <button class="btn" (click)="createNewBatch()">Add New Batch</button>
+                  </mat-card>
+                <mat-grid-tile *ngFor="let upcoming of upcomingBatches">
+                  <div class="wrapper">
+                    <mat-card class="styleClass">
+                      <div class="edit-btn">
+                        <button mat-icon-button color="primary" (click)="updateBatch()"  *ngIf="courseMentor === true ">
+                            <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
+                          </button>
+                        </div>
+                        <mat-card-header>
+                            <!-- <button mat-icon-button color="primary">
+                                <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
+                              </button> -->
+                            <div mat-card-avatar class="example-header-image"></div>
+                            <mat-card-title>{{upcoming?.name}}</mat-card-title>
+                            <mat-card-subtitle>{{upcoming?.enrollmentType}}</mat-card-subtitle>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <p>
+                                Description :{{upcoming?.description}}
+                            </p>
+                            <p>
+                                Start Date : {{upcoming?.startDate|date}}
+                            </p>
+                            <p>
+                                End Date : {{upcoming?.endDate|date}}
+                            </p>
+                        </mat-card-content>
+                        <mat-card-actions class="align-content">
+                            <button mat-button *ngIf="upcoming?.enrollmentType==='open' && !(upcoming?.participant.hasOwnProperty(userId)) && !showUnenroll"
+                                (click)="openEnrollDetailsDialog(upcoming)">Enroll</button>
+                            <button mat-button *ngIf="upcoming?.enrollmentType==='invite-only'" (click)="openContactDetailsDialog(upcoming)">Contact</button>
+                            <button mat-button *ngIf="upcoming?.enrollmentType==='open' && upcoming?.participant && (upcoming?.participant.hasOwnProperty(userId) ||  showUnenroll)" (click)="unEnroll(upcoming)">UnEnroll</button>
                         </mat-card-actions>
                     </mat-card>
                 </div>
             </mat-grid-tile>
             </mat-grid-list>
+
         </mat-tab>
+        <!-- <mat-tab label="Create Batch">
+            <mat-card>
+                <button class="btn" (click)="createNewBatch()">Add New Batch</button>
+              </mat-card>
+        </mat-tab> -->
     </mat-tab-group>
 </section>
+

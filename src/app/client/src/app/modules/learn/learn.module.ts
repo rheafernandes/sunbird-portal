@@ -11,7 +11,7 @@ import {
   LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
   CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,
   UpdateCourseBatchComponent, CarriculumCardComponent, PreviewCourseComponent, TestAllBatchesComponent,
-  DialogOverviewExampleDialog } from './components';
+  DialogOverviewExampleDialog} from './components';
 import { CourseConsumptionService, CourseBatchService, CourseProgressService, } from './services';
 import { CoreModule } from '@sunbird/core';
 import { NotesModule } from '@sunbird/notes';
@@ -22,6 +22,8 @@ import {MatCardModule} from '@angular/material/card';
 import {MatSidenavModule, MatDrawerContainer} from '@angular/material/sidenav';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatDividerModule} from '@angular/material/divider';
+import { CreateBatchDialogComponent } from './components/test-all-batches/create-batch-dialog/create-batch-dialog.component';
+import { UpdateBatchDialogComponent } from './components/test-all-batches/update-batch-dialog/update-batch-dialog.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -39,10 +41,12 @@ import {MatDividerModule} from '@angular/material/divider';
     MaterialUi
   ],
   providers: [CourseConsumptionService, CourseBatchService, CourseProgressService, PlayContent],
-  exports: [MatCardModule, MatDrawerContainer, MatExpansionModule, MatDividerModule],
+  exports: [MatCardModule, MatDrawerContainer, MatExpansionModule, MatDividerModule, UpdateBatchDialogComponent,
+    CreateBatchDialogComponent],
   declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
     CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,
-    UpdateCourseBatchComponent, CarriculumCardComponent, PreviewCourseComponent, TestAllBatchesComponent, DialogOverviewExampleDialog],
-    entryComponents: [DialogOverviewExampleDialog],
+    UpdateCourseBatchComponent, CarriculumCardComponent, PreviewCourseComponent, TestAllBatchesComponent,
+    DialogOverviewExampleDialog, CreateBatchDialogComponent, UpdateBatchDialogComponent],
+    entryComponents: [DialogOverviewExampleDialog, CreateBatchDialogComponent, UpdateBatchDialogComponent],
 })
 export class LearnModule { }

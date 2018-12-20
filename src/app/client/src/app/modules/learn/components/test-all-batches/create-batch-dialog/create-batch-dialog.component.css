@@ -1,0 +1,14 @@
+.example-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.example-container > * {
+  width: 100%;
+}
+@media only screen and (max-width:  640px) {
+  .example-container {
+    height: 50%;
+    width:100%;
+  }
+}
