@@ -1,5 +1,5 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Component, OnInit, Inject, OnDestroy , ChangeDetectionStrategy } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDatepicker } from '@angular/material';
 import { CourseConsumptionService } from '../../../learn/services';
 import { SessionService } from '../../services/session/session.service';
 
@@ -7,6 +7,7 @@ import { SessionService } from '../../services/session/session.service';
   selector: 'app-create-session',
   templateUrl: './create-session.component.html',
   styleUrls: ['./create-session.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   // providers: [CourseConsumptionService]
 })
 export class CreateSessionComponent implements OnInit, OnDestroy {
@@ -18,6 +19,7 @@ export class CreateSessionComponent implements OnInit, OnDestroy {
   coursechapters;
   batchData;
   session;
+  items = Array.from({length: 100000}).map((_, i) => `Item #${i}`);
   constructor(private courseConsumptionService: CourseConsumptionService,
     public dialogRef: MatDialogRef<CreateSessionComponent>,
     @Inject(MAT_DIALOG_DATA) private data, private sessionService: SessionService) { }
@@ -48,7 +50,6 @@ export class CreateSessionComponent implements OnInit, OnDestroy {
       status: status, participantCount: this.batchData.hasOwnProperty('participant') ? Object.keys(this.batchData.participant).length : 0,
       enrolledCount: 0, participants: this.batchData.hasOwnProperty('participant') ? this.batchData.participant : {}, createdBy: 'ravinder'
     }, formElement.value);
-
     // addes the session delta to the batch details object
     const resultBatchData = Object.assign({ sessionDetails: sessionDelta }, this.batchData);
     this.sessionService.addSession(resultBatchData);

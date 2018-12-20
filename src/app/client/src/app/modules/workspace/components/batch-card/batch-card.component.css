@@ -33,4 +33,5 @@
     font-family: 'sunbirdregularfont';
     font-size: 0.875em;
     color: #7c7b7b;
+    overflow: auto;
 }

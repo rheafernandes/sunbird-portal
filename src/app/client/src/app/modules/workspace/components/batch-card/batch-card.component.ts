@@ -5,6 +5,7 @@ import { Ibatch } from './../../interfaces';
 import { WorkSpaceService, BatchService } from '../../services';
 import { MatDialog } from '@angular/material';
 import { CreateSessionComponent } from '../create-session/create-session.component';
+import { Overlay } from '@angular/cdk/overlay';
 /**
 * This display a batch card
 */
@@ -51,7 +52,8 @@ export class BatchCardComponent {
     batchService: BatchService,
     activatedRoute: ActivatedRoute,
     route: Router,
-    public dialog: MatDialog) {
+    public dialog: MatDialog,
+    public overlay: Overlay) {
     this.batchService = batchService;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -64,11 +66,13 @@ export class BatchCardComponent {
   openDialog(): void {
     const dialogRef = this.dialog.open(CreateSessionComponent, {
       width: '50%',
+      height: '100%',
+      scrollStrategy: this.overlay.scrollStrategies.reposition(),
       data: {sessionData: this.batch , create: true}
     });
 
     dialogRef.afterClosed().subscribe(result => {
-
+console.log('result', result);
     });
   }
 
