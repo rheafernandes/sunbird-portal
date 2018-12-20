@@ -23,6 +23,7 @@ import { SessionListComponent } from './components/session-list/session-list.com
 import { CreateSessionComponent } from './components/create-session/create-session.component';
 import {CourseConsumptionService, CourseProgressService, CourseBatchService} from '../learn/services';
 import { SessionDetailsComponent } from './components/session-details/session-details.component';
+import { SessionService } from './services/session/session.service';
 
 @NgModule({
   imports: [
@@ -54,7 +55,8 @@ import { SessionDetailsComponent } from './components/session-details/session-de
     CreateSessionComponent,
     SessionDetailsComponent
   ],
-  providers: [WorkSpaceService, EditorService, BatchService, CourseConsumptionService, CourseProgressService, CourseBatchService],
+  providers: [WorkSpaceService, EditorService, BatchService, CourseConsumptionService,
+    CourseProgressService, CourseBatchService , SessionService],
   entryComponents: [CreateSessionComponent, SessionDetailsComponent]
 })
 export class WorkspaceModule { }
