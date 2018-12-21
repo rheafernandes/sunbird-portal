@@ -11,13 +11,13 @@
   <div class="row m-2">
     <div class="col-md-6">
       <h6 class="modal-title" id="ModalLabel">
-        <i class="fas fa-book text-primary"></i>&nbsp;&nbsp; {{sessions?.courseAdditionalInfo?.courseName}}
+        <i class="fas fa-book text-primary"></i>&nbsp;&nbsp; Course - {{sessions?.courseAdditionalInfo?.courseName}}
       </h6>
 
     </div>
     <div class="col-sm-4">
       <h6 class="modal-title" id="ModalLabel">
-        <i class="fas fa-group text-primary"></i>&nbsp; &nbsp;{{sessions?.name}}
+        <i class="fas fa-group text-primary"></i>&nbsp; &nbsp; Batch - {{sessions?.name}}
       </h6>
     </div>
   </div>
@@ -55,11 +55,11 @@
                                     </tr>
                                     <tr>
                                       <td in-view-item><i class="fa fa-calendar-check-o" aria-hidden="true"></i>&nbsp;date</td>
-                                      <td>12/13</td>
+                                      <td>{{sessions?.sessionDetails?.sessionStartDate | date}} - {{sessions?.sessionDetails?.sessionEndDate | date}} </td>
                                     </tr>
                                     <tr>
                                       <td in-view-item><i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;time</td>
-                                      <td>12pm</td>
+                                      <td>{{sessions?.sessionDetails?.sessionTime}}</td>
                                     </tr>
                                     <tr>
                                       <td in-view-item> participants</td>
@@ -88,14 +88,14 @@
                                     <table class="ui upForReviewTable table">
                                       <thead>
                                         <tr class="table-primary">
-                                          <th class="four wide">Participants</th>
+                                          <th class="two wide">Participants</th>
                                           <th class="two wide">Status</th>
                                         </tr>
                                       </thead>
                                       <tbody>
                                         <tr in-view-item *ngFor="let item of participantsDetails">
                                           <td>{{item.firstName}} {{item.lastName}}</td>
-                                          <td><i class="fas fa-check text-success" style="margin-left: 19rem"></i></td>
+                                          <td><i class="fas fa-check text-success"></i></td>
                                         </tr>
                                       </tbody>
                                     </table>
@@ -114,15 +114,15 @@
                                     <div class="container">
                                         <div class="row">
                                           <div class="col-md-12">
-                                            <table class="table table-borderless table-sm justify-content-center">
+                                            <table class="table table-sm justify-content-center">
                                               <tbody>
                                                 <tr>
-                                                  <th scope="row">course name</th>
-                                                  <td>{{sessions?.courseAdditionalInfo?.courseName}}</td>
+                                                  <th class="one wide">course</th>
+                                                  <td class="four wide">{{sessions?.courseAdditionalInfo?.courseName}}</td>
                                                 </tr>
                                                 <tr>
-                                                  <th scope="row">Description</th>
-                                                  <td>{{sessions?.courseAdditionalInfo?.description}}</td>
+                                                  <th class="one wide">Description</th>
+                                                  <td class="four wide text-justify">{{sessions?.courseAdditionalInfo?.description}}</td>
                                                 </tr>
                                               </tbody>
                                             </table>

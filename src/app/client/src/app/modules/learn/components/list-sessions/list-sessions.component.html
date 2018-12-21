@@ -5,7 +5,7 @@
         <mat-expansion-panel-header>
           <mat-panel-description style="font-weight: bold;">
             {{session.sessionDetails.sessionTitle}}
-              <i class="fas fa-tv" style="margin-left: 19rem"></i>
+              <i class="fas fa-tv" style="margin-left: auto;"></i>
            </mat-panel-description>
         </mat-expansion-panel-header>
         <div class="modal-body">
@@ -19,7 +19,7 @@
                               <th class="">End date</th>
                               <th class="">Time </th>
                               <th class="">Url </th>
-                              <th><a href="{{session.sessionDetails.sessionUrl}}" mat-button style="margin-left: auto;" color="primary">Join Now</a></th>
+                              <th><a href="{{session.sessionDetails.sessionUrl}}" target="_blank" mat-button style="margin-left: auto;" color="primary">Join Now</a></th>
                             </tr>
                           </thead>
                       <tbody>
@@ -29,7 +29,7 @@
                           <td>{{session.sessionDetails.sessionTime}}</td>
                           <td>{{session.sessionDetails.sessionUrl}}</td>
                           <td>
-                            <button mat-button style="margin-left: auto;" color="primary" (click)="openSessionDetail()">More Info</button></td>
+                            <button mat-button style="margin-left: auto;" color="primary" (click)="openSession(session)">More Info</button></td>
                         </tr>
                         </tbody>
                         </table>

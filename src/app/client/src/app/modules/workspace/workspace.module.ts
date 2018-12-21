@@ -57,6 +57,7 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
     CreateSessionComponent,
     SessionDetailsComponent
   ],
+  exports: [SessionDetailsComponent],
   providers: [WorkSpaceService, EditorService, BatchService, CourseConsumptionService,
     CourseProgressService, CourseBatchService , SessionService],
   entryComponents: [CreateSessionComponent, SessionDetailsComponent],
