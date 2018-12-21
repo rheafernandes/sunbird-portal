@@ -18,7 +18,7 @@ import * as _ from 'lodash';
   styleUrls: ['./update-batch-dialog.component.css']
 })
 export class UpdateBatchDialogComponent implements OnInit {
-  courseId = this.route.snapshot.paramMap.get('courseId');
+  existingBatchDetail;
   shouldSizeUpdate: boolean;
   breakpoint: number;
   date = new FormControl(new Date());
@@ -36,10 +36,12 @@ export class UpdateBatchDialogComponent implements OnInit {
   filteredMembers: Observable<string[]>;
   members = [];
   allMembers = [];
-  existingBatchDetail;
-  mentorIds = [];
-  mentorsDetails = [];
-  participantIds = [];
+  mentorIds;
+  mentorsDetails = {};
+  membersDetails = {};
+  allMentorsDetails = {};
+  allMembersDetails = {};
+  participantIds;
 
   @ViewChild('memberInput') memberInput: ElementRef<HTMLInputElement>;
   @ViewChild('autoMember') matMemberAutocomplete: MatAutocomplete;
@@ -57,10 +59,10 @@ export class UpdateBatchDialogComponent implements OnInit {
     console.log('Batch Detail', this.data.batchDetail);
     this.existingBatchDetail = this.data.batchDetail;
     if (this.data.batchDetail.mentors.length > 0) {
-      this.mentorIds = this.data.batchDetail.mentors;
+      this.mentorIds = _.union(this.data.batchDetail.mentors);
     }
     if (this.data.batchDetail.participant !== undefined || this.data.batchDetail.participant !== null) {
-      this.participantIds = Object.keys(this.data.batchDetail.participant );
+      this.participantIds = _.union(_.keys(this.data.batchDetail.participant ));
     }
     this.shouldSizeUpdate = data.shouldSizeUpdate;
     this.filteredMentors = this.mentorCtrl.valueChanges.pipe(
@@ -70,26 +72,17 @@ export class UpdateBatchDialogComponent implements OnInit {
       startWith(null),
       map((member: string | null) => member ? this._filterMember(member) : this.allMembers.slice()));
   }
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
+
   ngOnInit(): void {
-    this.allMentors = this.data.mentorDetail;
-    this.allMembers = this.data.memberDetail;
-    this.allMembers.push(this.allMentors);
+    this.allMembersDetails = this.data.memberDetail;
+    this.allMentorsDetails = this.data.mentorDetail;
+    this.allMentors = _.values(this.data.mentorDetail);
+    this.allMembers = _.values(this.data.memberDetail);
+    this.allMembers = _.concat(this.allMentors, this.allMembers);
     this.breakpoint = (window.innerWidth <= 550) ? 1 : 1;
     if (this.shouldSizeUpdate) { this.updateSize(); }
-    const orddata = {
-      filters: {
-        courseId: this.courseId
-      }
-    };
-    for (const mentorId of this.mentorIds) {
-          this.getMentorDetails(mentorId);
-    }
-    for (const participantId of this.participantIds) {
-      this.getParticipantDetails(participantId);
-}
+    this.getMemberslist();
+    this.getMentorslist();
   }
 
   updateSize() {
@@ -164,32 +157,76 @@ export class UpdateBatchDialogComponent implements OnInit {
 
     return this.allMembers.filter(member => member.toLowerCase().indexOf(filterValue) === 0);
   }
-  getMentorDetails(userId) {
-    const option = {
-      url: `${this.config.urlConFig.URLS.USER.GET_PROFILE}${userId}`,
-      param: this.config.urlConFig.params.userReadParam
-    };
-    const response = this.learnerService.get(option).pipe(pluck('result', 'response'));
-    response.subscribe((data: any) => {
-        this.mentorsDetails.push(data);
-        if (data.firstName !== undefined && data.lastName !== undefined) {
-          this.mentors.push(data.firstName + ' ' + data.lastName);
-        }
-    }
-    );
+
+  onSubmit(title, description, startDate, endDate) {
+    // const requestBody = {
+    //   id: this.batchId,
+    //   name: this.batchUpdateForm.value.name,
+    //   description: this.batchUpdateForm.value.description,
+    //   enrollmentType: this.batchUpdateForm.value.enrollmentType,
+    //   startDate: startDate,
+    //   endDate: endDate || null,
+    //   createdFor: this.userService.userProfile.organisationIds,
+    //   mentors: _.compact(mentors)
+    // };
+    console.log('Submitted');
+    console.log(title);
+    console.log(description);
+    startDate = new Date(Date.parse(startDate)).toISOString().slice(0, 10);
+    endDate = new Date(Date.parse(endDate)).toISOString().slice(0, 10);
+    console.log(this.mentors);
+    console.log(this.members);
+    console.log(startDate);
+    console.log(endDate);
+    this.dialogRef.close();
   }
-  getParticipantDetails(userId) {
+  getMentorslist() {
     const option = {
-      url: `${this.config.urlConFig.URLS.USER.GET_PROFILE}${userId}`,
-      param: this.config.urlConFig.params.userReadParam
-    };
-    const response = this.learnerService.get(option).pipe(pluck('result', 'response'));
-    response.subscribe((data: any) => {
-      if (data.firstName !== undefined && data.lastName !== undefined) {
-        this.members.push(data.firstName + ' ' + data.lastName);
+      url: this.config.urlConFig.URLS.ADMIN.USER_SEARCH,
+      data: {
+        request: {
+          filters: {
+            identifier : this.mentorIds,
+          },
+        }
       }
-    }
-    );
+    };
+    this.learnerService.post(option)
+      .subscribe(
+        data => {
+          const mentorsDetails = data.result.response.content;
+          for (const mentorDetail of mentorsDetails ) {
+            if (mentorDetail.firstName !== undefined && mentorDetail.lastName !== undefined) {
+              this.mentorsDetails[mentorDetail.identifier] = mentorDetail.firstName + ' ' + mentorDetail.lastName;
+              this.mentors = _.values(this.mentorsDetails);
+            }
+          }
+        }
+      );
+  }
+  getMemberslist() {
+    const option = {
+      url: this.config.urlConFig.URLS.ADMIN.USER_SEARCH,
+      data: {
+        request: {
+          filters: {
+            identifier: this.participantIds,
+          },
+        }
+      }
+    };
+    this.learnerService.post(option)
+      .subscribe(
+        data => {
+          const membersDetails = data.result.response.content;
+          for (const memberDetail of membersDetails ) {
+            if (memberDetail.firstName !== undefined && memberDetail.lastName !== undefined) {
+              this.membersDetails[memberDetail.identifier] = memberDetail.firstName + ' ' + memberDetail.lastName;
+              this.members = _.values(this.membersDetails);
+            }
+          }
+        }
+      );
   }
 }
 

@@ -40,6 +40,10 @@ export class CreateBatchDialogComponent implements OnInit {
   filteredMembers: Observable<string[]>;
   members = [];
   allMembers = [];
+  mentorsDetails = {};
+  membersDetails = {};
+  allMentorsDetails = {};
+  allMembersDetails = {};
   @ViewChild('memberInput') memberInput: ElementRef<HTMLInputElement>;
   @ViewChild('autoMember') matMemberAutocomplete: MatAutocomplete;
   @ViewChild('mentorInput') mentorInput: ElementRef<HTMLInputElement>;
@@ -64,9 +68,11 @@ export class CreateBatchDialogComponent implements OnInit {
     this.dialogRef.close();
   }
   ngOnInit(): void {
-    this.allMentors = this.data.mentorDetail;
-    this.allMembers = this.data.memberDetail;
-    this.allMembers.push(this.allMentors);
+    this.allMembersDetails = this.data.memberDetail;
+    this.allMentorsDetails = this.data.mentorDetail;
+    this.allMentors = _.values(this.data.mentorDetail);
+    this.allMembers = _.values(this.data.memberDetail);
+    this.allMembers = _.concat(this.allMentors, this.allMembers);
     this.breakpoint = (window.innerWidth <= 550) ? 1 : 1;
     if (this.shouldSizeUpdate) { this.updateSize(); }
     const orddata = {
