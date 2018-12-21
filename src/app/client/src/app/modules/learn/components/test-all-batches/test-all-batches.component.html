@@ -11,17 +11,16 @@
                      <div class="wrapper ">
 
                     <mat-card class="styleClass">
-
+                        <div class="edit-btn container text-right">
+                            <button mat-icon-button color="primary" (click)="updateBatch(ongoing)"  *ngIf="courseMentor === true ">
+                                <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
+                            </button>
+                        </div>
 
                         <mat-card-header>
                             <div mat-card-avatar class="example-header-image"></div>
                             <mat-card-title>{{ongoing?.name}}</mat-card-title>
                             <mat-card-subtitle>{{ongoing?.enrollmentType}}</mat-card-subtitle>
-                            <div class="edit-btn">
-                                <button mat-icon-button color="primary" (click)="updateBatch()"  *ngIf="courseMentor === true ">
-                                    <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
-                                  </button>
-                                </div>
                         </mat-card-header>
                         <mat-card-content>
                             <p>
@@ -54,23 +53,15 @@
                 <mat-grid-tile *ngFor="let upcoming of upcomingBatches">
                   <div class="wrapper">
                     <mat-card class="styleClass">
-                      <div class="edit-btn">
-                        <button mat-icon-button color="primary" (click)="updateBatch()"  *ngIf="courseMentor === true ">
+                      <div class="edit-btn container text-right">
+                        <button mat-icon-button color="primary" (click)="updateBatch(upcoming)"  *ngIf="courseMentor === true ">
                             <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
                           </button>
                         </div>
                         <mat-card-header>
-                            <!-- <button mat-icon-button color="primary">
-                                <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
-                              </button> -->
                             <div mat-card-avatar class="example-header-image"></div>
                             <mat-card-title>{{upcoming?.name}}</mat-card-title>
                             <mat-card-subtitle>{{upcoming?.enrollmentType}}</mat-card-subtitle>
-                            <div class="edit-btn">
-                                <button mat-icon-button color="primary" (click)="updateBatch()"  *ngIf="courseMentor === true ">
-                                    <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
-                                  </button>
-                                </div>
                         </mat-card-header>
                         <mat-card-content>
                             <p>

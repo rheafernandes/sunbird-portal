@@ -38,8 +38,7 @@ import {MatChipsModule} from '@angular/material/chips';
     MatDatepickerModule,
     FormsModule,
     ReactiveFormsModule,
-    MatChipsModule
-
+    MatChipsModule,
   ],
   exports: [MatCheckboxModule,
     MatSidenavModule,
@@ -61,9 +60,7 @@ import {MatChipsModule} from '@angular/material/chips';
     MatDatepickerModule,
     FormsModule,
     ReactiveFormsModule,
-    MatChipsModule
-
-
+    MatChipsModule,
   ],
 })
 

@@ -86,7 +86,6 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
   showUnenroll;
   public unsubscribe = new Subject<void>();
   currentDate = new Date().toJSON().slice(0, 10);
-
   allMentors = {};
   allMembers = {};
   breakpoint: number;
@@ -255,11 +254,13 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {});
   }
-  updateBatch(): void {
+  updateBatch(batch): void {
     const dialogRef = this.dialog.open(UpdateBatchDialogComponent, {
       data: {
         title: 'update',
-        mentorDetail: this.allMentors
+        mentorDetail: this.allMentors,
+        memberDetail: this.allMembers,
+        batchDetail: batch
       }
     });
 
@@ -293,10 +294,12 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
     };
     this.learnerService.post(option).subscribe(data => {
       const mentorsDetails = data.result.response.content;
-      for (const mentorsDetail of mentorsDetails) {
-        this.allMentors[mentorsDetail.identifier] = mentorsDetail.firstName + ' ' + mentorsDetail.lastName;
+      for (const mentorDetail of mentorsDetails) {
+        if (mentorDetail.firstName !== undefined && mentorDetail.lastName !== undefined) {
+        this.allMentors[mentorDetail.identifier] = mentorDetail.firstName + ' ' + mentorDetail.lastName;
         // this.allMentors = _values(this.allMentors);
       }
+    }
       console.log('this mentors', this.allMentors);
      });
       }
@@ -314,8 +317,10 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
     this.learnerService.post(option).subscribe(data => {
       const membersDetails = data.result.response.content;
       for (const memberDetail of membersDetails) {
+        if (memberDetail.firstName !== undefined && memberDetail.lastName !== undefined) {
         this.allMembers[memberDetail.identifier] = memberDetail.firstName + ' ' + memberDetail.lastName;
       }
+    }
     });
   }
 }
