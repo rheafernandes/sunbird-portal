@@ -1,7 +1,42 @@
-<mat-nav-list>
-  <a mat-list-item *ngFor="let session of sessionsList">
-      <mat-icon mat-list-icon>live_tv</mat-icon>
-      <h4 mat-line>{{session.sessionDetails.sessionTitle}}</h4>
-      <p mat-line> {{session.sessionDetails.startDate}} </p>
-  </a>
-</mat-nav-list>
+<div style="overflow-y: auto;">
+  <mat-accordion class="example-headers-align">
+    <mat-expansion-panel (opened)="panelOpenState = true" *ngFor="let session of sessionsList"
+    (closed)="panelOpenState = false" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-description style="font-weight: bold;">
+            {{session.sessionDetails.sessionTitle}}
+              <i class="fas fa-tv" style="margin-left: 19rem"></i>
+           </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="modal-body">
+            <div class="container">
+                <div class="row">
+                  <div class="col-md-12">
+                    <table class="ui upForReviewTable table">
+                        <thead>
+                            <tr class="table-primary">
+                              <th class="">start date</th>
+                              <th class="">End date</th>
+                              <th class="">Time </th>
+                              <th class="">Url </th>
+                              <th><a href="{{session.sessionDetails.sessionUrl}}" mat-button style="margin-left: auto;" color="primary">Join Now</a></th>
+                            </tr>
+                          </thead>
+                      <tbody>
+                        <tr>
+                          <td in-view-item>{{session.sessionDetails.sessionStartDate | date}}</td>
+                          <td>{{session.sessionDetails.sessionEndDate | date}}</td>
+                          <td>{{session.sessionDetails.sessionTime}}</td>
+                          <td>{{session.sessionDetails.sessionUrl}}</td>
+                          <td>
+                            <button mat-button style="margin-left: auto;" color="primary" (click)="openSessionDetail()">More Info</button></td>
+                        </tr>
+                        </tbody>
+                        </table>
+                  </div>
+                </div>
+              </div>
+              </div>
+        </mat-expansion-panel>
+        </mat-accordion>
+  </div>
