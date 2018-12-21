@@ -1,5 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA, MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+import { SessionDetailsComponent } from '../../workspace/components/session-details/session-details.component';
+import { Overlay } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-list-sessions',
@@ -8,7 +10,8 @@ import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA, MatDialogRef, MAT_DIALOG_DATA
 })
 export class ListSessionsComponent implements OnInit {
   sessionsList;
-  constructor(public dialogRef: MatDialogRef<ListSessionsComponent>,
+  step = 0;
+  constructor(public dialogRef: MatDialogRef<ListSessionsComponent>, public dialog: MatDialog, public overlay: Overlay,
     @Inject(MAT_DIALOG_DATA) private data) { }
 
   ngOnInit() {
@@ -21,4 +24,27 @@ export class ListSessionsComponent implements OnInit {
   openLink(): void {
 
   }
+    setStep(index: number) {
+    this.step = index;
+  }
+
+  nextStep() {
+    this.step++;
+  }
+
+  prevStep() {
+    this.step--;
+  }
+  openSessionDetail(): void {
+    const dialogRef = this.dialog.open(SessionDetailsComponent, {
+      width: '50%',
+      height: '70%',
+      scrollStrategy: this.overlay.scrollStrategies.reposition(),
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+console.log('result', result);
+    });
+  }
+
 }
