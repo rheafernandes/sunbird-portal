@@ -47,7 +47,7 @@
     <label for="courseUnit"><i class="	fa fa-book" style="color:blue;"></i>&nbsp;&nbsp;Course Units</label>
     <select class="form-control" id="courseUnit" [ngModel]="existingSessionFlag ? (session.sessionDetails.courseUnit) : ''"
       #courseUnit="ngModel" name="courseUnit" required>
-      <option [value]="courseName?.code" *ngFor='let courseName of coursechapters'>{{courseName.name}}</option>
+      <option [value]="courseName?.identifier" *ngFor='let courseName of coursechapters'>{{courseName.name}}</option>
     </select>
     <div *ngIf="courseUnit.invalid && (courseUnit.dirty || courseUnit.touched)" class="alert alert-danger">
 

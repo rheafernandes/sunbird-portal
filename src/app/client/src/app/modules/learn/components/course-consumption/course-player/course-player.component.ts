@@ -177,7 +177,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy, OnChanges {
   public unsubscribe = new Subject<void>();
   public subscribed: Subscription;
   public courseProgressListner: Subscription;
-  constructor(public dialog: MatDialog, private bottomSheet: MatBottomSheet, contentService: ContentService, activatedRoute: ActivatedRoute,
+  constructor(private dialog: MatDialog, private bottomSheet: MatBottomSheet, contentService: ContentService,
+    activatedRoute: ActivatedRoute,
     private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, windowScrollService: WindowScrollService,
     router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
