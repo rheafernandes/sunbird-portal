@@ -32,4 +32,8 @@ export class ListSessionsComponent implements OnInit {
     sessionDialog.afterClosed().subscribe(result => {
     });
   }
+
+  joinSession(session) {
+    console.log('Session to join', session);
+  }
 }
