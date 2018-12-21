@@ -46,7 +46,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { checkNoChangesView } from '@angular/core/src/view/view';
 import { SessionService } from '../../../../workspace/services/session/session.service';
 import { MatBottomSheet, MatDialog } from '@angular/material';
-import { ListSessionsComponent } from '../../../list-sessions/list-sessions.component';
+import { ListSessionsComponent } from '../../list-sessions/list-sessions.component';
 
 @Component({
   selector: 'app-course-player',
