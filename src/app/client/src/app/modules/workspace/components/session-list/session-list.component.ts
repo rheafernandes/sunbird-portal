@@ -13,11 +13,11 @@ import { UserService } from '@sunbird/core';
 })
 export class SessionListComponent implements OnInit {
   constructor(public dialog: MatDialog, private sessionService: SessionService , private userService: UserService) { }
-  sessionsList=[];
+  sessionsList = [];
 
   ngOnInit() {
-    this.sessionService.getSessions(this.userService.userid).subscribe((data:any) => {
-      console.log("Results from the api" , data);
+    this.sessionService.getSessions(this.userService.userid).subscribe((data: any) => {
+      console.log('Results from the api' , data);
       this.sessionsList = data.sessions;
     });
   }

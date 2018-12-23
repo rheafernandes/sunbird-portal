@@ -15,11 +15,11 @@ export class SessionService {
 
   addSession(sessionDelta: {}): any {
     // console.log('new session', JSON.stringify(sessionDelta));
-    const result = this.http.post("http://13.233.213.245:8080/create-session", sessionDelta);
+    const result = this.http.post('http://13.233.213.245:8080/create-session', sessionDelta);
     result.subscribe((data) => {
       console.log(data);
     }, (err) => {
-      console.log("Error", err);
+      console.log('Error', err);
     });
   }
 
@@ -34,7 +34,7 @@ export class SessionService {
 
   getSessions(userId) {
     // return of(this.sessions);
-    return this.http.post("http://13.233.213.245:8080/user-sessions", { "userId": userId })
+    return this.http.post('http://13.233.213.245:8080/user-sessions', { 'userId': userId });
   }
 
   getSessionsFilter(batchId, courseId) {
@@ -59,9 +59,9 @@ export class SessionService {
     //   return false;
     // });
     // this.sessions[batchIndex] = session;
-    this.http.post("http://13.233.213.245:8080/update-session", session).subscribe((data) => {
-      console.log("updated method called", data);
-    })
+    this.http.post('http://13.233.213.245:8080/update-session', session).subscribe((data) => {
+      console.log('updated method called', data);
+    });
   }
 
   deleteSession(session) {
@@ -76,10 +76,10 @@ export class SessionService {
     // });
     // this.sessions.splice(batchIndex, 1);
 
-    console.log("delete session " , session);
+    console.log('delete session ' , session);
 
-    this.http.post("http://13.233.213.245:8080/delete-session", session).subscribe((data) => {
-      console.log("deletion methods caled", data);
+    this.http.post('http://13.233.213.245:8080/delete-session', session).subscribe((data) => {
+      console.log('deletion methods caled', data);
     });
 
   }
