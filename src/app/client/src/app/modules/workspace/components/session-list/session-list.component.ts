@@ -5,18 +5,20 @@ import { SessionService } from '../../services/session/session.service';
 
 import { SessionDetailsComponent } from '../session-details/session-details.component';
 import { AutofillMonitor } from '@angular/cdk/text-field';
+import { UserService } from '@sunbird/core';
 @Component({
   selector: 'app-session-list',
   templateUrl: './session-list.component.html',
   styleUrls: ['./session-list.component.css']
 })
 export class SessionListComponent implements OnInit {
-  constructor(public dialog: MatDialog, private sessionService: SessionService) { }
-  sessionsList;
+  constructor(public dialog: MatDialog, private sessionService: SessionService , private userService: UserService) { }
+  sessionsList=[];
 
   ngOnInit() {
-    this.sessionService.getSessions().subscribe((sessions) => {
-      this.sessionsList = sessions;
+    this.sessionService.getSessions(this.userService.userid).subscribe((data:any) => {
+      console.log("Results from the api" , data);
+      this.sessionsList = data.sessions;
     });
   }
   openDialog(session): void {
