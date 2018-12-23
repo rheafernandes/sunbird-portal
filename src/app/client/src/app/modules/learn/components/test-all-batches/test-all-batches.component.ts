@@ -86,8 +86,8 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
   showUnenroll;
   public unsubscribe = new Subject<void>();
   currentDate = new Date().toJSON().slice(0, 10);
-  allMentors = {};
-  allMembers = {};
+  allMentors = [];
+  allMembers = [];
   breakpoint: number;
   public courseMentor;
   ngOnDestroy(): void {}
@@ -248,7 +248,8 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       data: {
         title: 'create',
         mentorDetail: this.allMentors,
-        memberDetail: this.allMembers
+        memberDetail: this.allMembers,
+        courseId: this.courseId,
       }
     });
 
@@ -260,7 +261,8 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
         title: 'update',
         mentorDetail: this.allMentors,
         memberDetail: this.allMembers,
-        batchDetail: batch
+        batchDetail: batch,
+        courseId: this.courseId,
       }
     });
 
@@ -296,8 +298,10 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       const mentorsDetails = data.result.response.content;
       for (const mentorDetail of mentorsDetails) {
         if (mentorDetail.firstName !== undefined && mentorDetail.lastName !== undefined) {
-        this.allMentors[mentorDetail.identifier] = mentorDetail.firstName + ' ' + mentorDetail.lastName;
-        // this.allMentors = _values(this.allMentors);
+          const obj = [];
+          obj['name'] = mentorDetail.firstName + ' ' + mentorDetail.lastName;
+             obj['id'] = mentorDetail.identifier;
+             this.allMentors.push(obj);
       }
     }
       console.log('this mentors', this.allMentors);
@@ -318,7 +322,10 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       const membersDetails = data.result.response.content;
       for (const memberDetail of membersDetails) {
         if (memberDetail.firstName !== undefined && memberDetail.lastName !== undefined) {
-        this.allMembers[memberDetail.identifier] = memberDetail.firstName + ' ' + memberDetail.lastName;
+          const obj = [];
+          obj['name'] = memberDetail.firstName + ' ' + memberDetail.lastName;
+             obj['id'] = memberDetail.identifier;
+             this.allMembers.push(obj);
       }
     }
     });

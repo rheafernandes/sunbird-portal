@@ -1,4 +1,4 @@
-<h3 class="text-secondary" style="text-align: center" *ngIf="data.title === 'create'">Create New Batch</h3>
+<div class="dialog-container">
 <h3 class="text-secondary" style="text-align: center" *ngIf="data.title === 'update'">Update Batch</h3>
 <div class="example-container">
   <mat-card style="width: 100% !important;">
@@ -14,6 +14,7 @@
           <!-- <label>Description of Batch</label> -->
           <textarea matInput placeholder="Description" [ngModel]="existingBatchDetail? existingBatchDetail.description :''"
             name="description" #description="ngModel"></textarea>
+
         </mat-form-field>
         <br>
         <mat-form-field style="width: 45% !important">
@@ -72,4 +73,5 @@
       </mat-card-footer>
     </form>
   </mat-card>
+</div>
 </div>

@@ -5,7 +5,7 @@ import { CourseBatchService } from '../../../services';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { Inject } from '@angular/core';
 import { ConfigService, ToasterService } from '@sunbird/shared';
-import { UserService } from '@sunbird/core';
+import { UserService, LearnerService } from '@sunbird/core';
 import { Subject, of as observableOf, Observable } from 'rxjs';
 import {
   FormControl,
@@ -19,13 +19,18 @@ import {
 } from '@angular/material';
 import { map, startWith } from 'rxjs/operators';
 import * as _ from 'lodash';
-
+export class DetailModel {
+  name: string;
+  id: string;
+}
 @Component({
   selector: 'app-create-batch-dialog',
   templateUrl: './create-batch-dialog.component.html',
   styleUrls: ['./create-batch-dialog.component.css']
 })
 export class CreateBatchDialogComponent implements OnInit {
+  public courseId;
+  minDate = new Date();
   shouldSizeUpdate: boolean;
   breakpoint: number;
   visible = true;
@@ -34,14 +39,14 @@ export class CreateBatchDialogComponent implements OnInit {
   addOnBlur = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];
   mentorCtrl = new FormControl();
-  filteredMentors: Observable<string[]>;
+  filteredMentors: Observable<any>;
   mentors = [];
   allMentors = [];
   allMentorsDetails;
   @ViewChild('mentorInput') mentorInput: ElementRef<HTMLInputElement>;
   @ViewChild('autoMentor') matMentorAutocomplete: MatAutocomplete;
   memberCtrl = new FormControl();
-  filteredMembers: Observable<string[]>;
+  filteredMembers: Observable<any>;
   members = [];
   allMembers = [];
   allMembersDetails;
@@ -50,25 +55,23 @@ export class CreateBatchDialogComponent implements OnInit {
   @ViewChild('autoMember') matMemberAutocomplete: MatAutocomplete;
   serializedDate = new FormControl(new Date().toISOString());
   date = new FormControl(new Date(), [Validators.required]);
-  startDate = new Date(Date.parse(this.date.value)).toLocaleDateString();
-  endDate = new Date(
-    Date.parse(this.serializedDate.value)
-  ).toLocaleDateString();
+  startDate = '';
+  endDate = '';
   batchDescriptCtrl = new FormControl('', [Validators.required]);
   batchnameCtrl = new FormControl('', [Validators.required]);
   dateBooleanvalue: Boolean;
-
+  submitbtn: Boolean;
   constructor(
     private route: ActivatedRoute,
-    courseBatchService: CourseBatchService,
+    public courseBatchService: CourseBatchService,
     public userService: UserService,
+    public learnerService: LearnerService,
     public toasterService: ToasterService,
     public configService: ConfigService,
     public dialogRef: MatDialogRef<CreateBatchDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.shouldSizeUpdate = data.shouldSizeUpdate;
-
     this.filteredMentors = this.mentorCtrl.valueChanges.pipe(
       startWith(null),
       map((mentor: string | null) =>
@@ -85,10 +88,12 @@ export class CreateBatchDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.allMentorsDetails = this.data.mentorDetail;
-    this.allMembersDetails = this.data.memberDetail;
-    this.allMentors = _.values(this.data.mentorDetail);
-    this.allMembers = _.values(this.data.memberDetail);
+    this.courseId = this.data.courseId;
+    console.log('courseId', this.courseId);
+    // this.allMentorsDetails = this.data.mentorDetail;
+    // this.allMembersDetails = this.data.memberDetail;
+    this.allMentors = this.data.mentorDetail;
+    this.allMembers = this.data.memberDetail;
     this.allMembers = _.concat(this.allMentors, this.allMembers);
     this.breakpoint = window.innerWidth <= 550 ? 1 : 1;
     if (this.shouldSizeUpdate) {
@@ -124,22 +129,22 @@ export class CreateBatchDialogComponent implements OnInit {
   }
 
   selectedMentor(event: MatAutocompleteSelectedEvent): void {
-    this.mentors.push(event.option.viewValue);
+    this.mentors.push(event.option.value);
     this.mentorInput.nativeElement.value = '';
     this.mentorCtrl.setValue(null);
   }
 
   private _filterMentor(value: string): string[] {
     const filterValue = value.toLowerCase();
-    return this.allMentors.filter(
-      mentor => mentor.toLowerCase().indexOf(filterValue) === 0
-    );
+
+    return this.allMentors.filter(mentor => mentor.name.toLowerCase().indexOf(filterValue) === 0);
   }
 
   addMember(event: MatChipInputEvent): void {
     if (!this.matMemberAutocomplete.isOpen) {
       const input = event.input;
       const value = event.value;
+
       if ((value || '').trim()) {
         this.members.push(value.trim());
       }
@@ -152,33 +157,71 @@ export class CreateBatchDialogComponent implements OnInit {
 
   removeMember(member: string): void {
     const index = this.members.indexOf(member);
-
+    console.log('Removed Member ', member);
     if (index >= 0) {
       this.members.splice(index, 1);
     }
   }
 
   selectedMember(event: MatAutocompleteSelectedEvent): void {
-    this.members.push(event.option.viewValue);
+    console.log(event.option);
+    this.members.push(event.option.value);
     this.memberInput.nativeElement.value = '';
     this.memberCtrl.setValue(null);
   }
 
   private _filterMember(value: string): string[] {
     const filterValue = value.toLowerCase();
-    return this.allMembers.filter(
-      member => member.toLowerCase().indexOf(filterValue) === 0
-    );
+
+    return this.allMembers.filter(member => member.name.toLowerCase().indexOf(filterValue) === 0);
   }
-  submit() {
-    if (this.date.value > this.serializedDate.value) {
+  submit(startDate, endDate) {
+
+    startDate = new Date(Date.parse(startDate)).toISOString().slice(0, 10);
+    endDate = new Date(Date.parse(endDate)).toISOString().slice(0, 10);
+    if (this.date.value > this.serializedDate.value && this.date.value ) {
+      this.submitbtn = false;
       this.toasterService.error('End Date should be greater than start date');
+    } else {
+      this.submitbtn = true;
     }
-    console.log('name of batch', this.batchnameCtrl.value);
-    console.log('description of batch', this.batchDescriptCtrl.value);
-    console.log('startdate', this.startDate);
-    console.log('enddate', this.endDate);
-    console.log('member ', this.mentors);
-    console.log('mentor', this.members);
+    const mentorIds = [];
+    for (const mentor of this.mentors) {
+      mentorIds.push(mentor.id);
+    }
+    const requestBody = {
+      courseId: this.courseId,
+      name: this.batchnameCtrl.value,
+      description: this.batchDescriptCtrl.value,
+      // tslint:disable-next-line:quotemark
+      enrollmentType: "open",
+      startDate: startDate,
+      endDate: endDate || null,
+      createdBy: this.userService.userid,
+      createdFor: this.userService.userProfile.organisationIds,
+      mentors: _.compact(mentorIds)
+    };
+    console.log('request body', requestBody);
+    console.log('submit check', this.submitbtn);
+    const option = {
+      url: this.configService.urlConFig.URLS.BATCH.CREATE,
+      data: {
+        request: requestBody
+      }
+    };
+
+    console.log('request', this.learnerService.post(option));
+    // this.courseBatchService.createBatch(requestBody)
+    // .subscribe(
+    //   (data) => {
+
+    //     console.log('data ', data);
+    //     this.toasterService.success('You have successfully created the batch');
+    //   },
+    //   (err) => {
+    //     console.log(err);
+    //     this.toasterService.error('User Doesnt belong to rootOrg, Cannot create batch');
+    //   });
+
   }
 }

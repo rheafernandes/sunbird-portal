@@ -1,3 +1,4 @@
+<div class="dialog-container">
 <h3
   class="text-secondary"
   style="text-align: center"
@@ -6,9 +7,9 @@
   Create New Batch
 </h3>
 <div class="example-container">
-  <mat-card style="width: 100% !important;">
+  <mat-card  class = "field-width">
     <mat-card-content>
-      <mat-form-field style="width: 100% !important">
+      <mat-form-field  class = "field-width">
         <input
           matInput
           placeholder="Batch Name"
@@ -19,7 +20,7 @@
         </mat-error>
       </mat-form-field>
       <br />
-      <mat-form-field style="width:100% !important">
+      <mat-form-field class = "field-width">
         <textarea
           matInput
           #message
@@ -36,8 +37,10 @@
           matInput
           [matDatepicker]="picker3"
           placeholder="startdate"
-          [formControl]="date"
-        />
+          [ngModel]="startDate"
+          #startDate="ngModel"
+          [min]="minDate"
+          />
         <mat-datepicker-toggle
           matSuffix
           [for]="picker3"
@@ -50,7 +53,9 @@
           matInput
           [matDatepicker]="picker2"
           placeholder="Value binding"
-          [formControl]="serializedDate"
+          [ngModel]="endDate"
+          #endDate="ngModel"
+          [min]="minDate"
         />
         <mat-datepicker-toggle
           matSuffix
@@ -60,7 +65,7 @@
       </mat-form-field>
 
       <br />
-      <mat-form-field style="width: 100% !important">
+      <mat-form-field  class = "field-width chiplist" >
         <mat-chip-list #mentorList>
           <mat-chip
             *ngFor="let mentor of mentors"
@@ -68,7 +73,7 @@
             [removable]="removable"
             (removed)="removeMentor(mentor)"
           >
-            {{ mentor }}
+            {{ mentor.name }}
             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
           </mat-chip>
           <input
@@ -90,12 +95,12 @@
             *ngFor="let mentor of (filteredMentors | async)"
             [value]="mentor"
           >
-            {{ mentor }}
+            {{ mentor.name }}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
       <br />
-      <mat-form-field style="width: 100% !important">
+      <mat-form-field  class = "field-width chiplist">
         <mat-chip-list #memberList>
           <mat-chip
             *ngFor="let member of members"
@@ -103,7 +108,7 @@
             [removable]="removable"
             (removed)="removeMember(member)"
           >
-            {{ member }}
+            {{ member.name }}
             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
           </mat-chip>
           <input
@@ -125,7 +130,7 @@
             *ngFor="let member of (filteredMembers | async)"
             [value]="member"
           >
-            {{ member }}
+            {{ member.name}}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
@@ -134,11 +139,12 @@
       <div class="container text-center">
             <button
               mat-button
-              (click)="submit()"
+              (click)="submit(startDate.value,endDate.value)"
               style="height: 6vh;font-size: 15px;width:-webkit-full-available;background: black;color: white;">
               Create Batch
             </button>
       </div>
     </mat-card-footer>
   </mat-card>
+</div>
 </div>
