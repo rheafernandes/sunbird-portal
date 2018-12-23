@@ -6,6 +6,7 @@ import {
 import * as _ from 'lodash';
 import { ICollectionTreeNodes, ICollectionTreeOptions, MimeTypeTofileType } from '../../interfaces';
 import { ResourceService, PlayContent } from '../../services/index';
+import { Session } from 'protractor';
 // import {Subscription , Subject} from 'rxjs';
 @Component({
   selector: 'app-collection-tree',
@@ -19,6 +20,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
   @Output() public contentSelect: EventEmitter<{ id: string, title: string }> = new EventEmitter();
   @Input() contentStatus: any;
   @Input() nodeRoot: any;
+  @Input() Session = [];
   private rootNode: any;
   public rootChildrens: any;
   public enrolledCourseDetailsRendered: boolean ;
