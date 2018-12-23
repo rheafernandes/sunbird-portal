@@ -47,7 +47,7 @@
     <label for="courseUnit"><i class="	fa fa-book" style="color:blue;"></i>&nbsp;&nbsp;Course Units</label>
     <select class="form-control" id="courseUnit" [ngModel]="existingSessionFlag ? (session.sessionDetails.courseUnit) : ''"
       #courseUnit="ngModel" name="courseUnit" required>
-      <option [value]="courseName?.code" *ngFor='let courseName of coursechapters'>{{courseName.name}}</option>
+      <option [value]="courseName?.identifier" *ngFor='let courseName of coursechapters'>{{courseName.name}}</option>
     </select>
     <div *ngIf="courseUnit.invalid && (courseUnit.dirty || courseUnit.touched)" class="alert alert-danger">
 
@@ -73,6 +73,14 @@
           <mat-datepicker-toggle matSuffix [for]="Startpicker"></mat-datepicker-toggle>
           <mat-datepicker #Startpicker></mat-datepicker>
       </mat-form-field>
+      <div *ngIf="startDate.invalid && (startDate.dirty || startDate.touched)" class="alert alert-danger">
+          <div *ngIf="startDate.errors.required">
+            Date is required.
+          </div>
+        </div>
+        <div class="alert alert-danger" *ngIf="((currentDate | date:'shortDate') > (startDate.value | date:'shortDate'))">
+            Please enter valid Start Date.
+          </div>
       &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
     <label for="sessionEndDate">Session End Date</label> &nbsp;
       <mat-form-field style="width:25% !important">
@@ -80,6 +88,14 @@
           <mat-datepicker-toggle matSuffix [for]="Endpicker"></mat-datepicker-toggle>
           <mat-datepicker #Endpicker></mat-datepicker>
       </mat-form-field>
+      <div *ngIf="endDate.invalid && (endDate.dirty || endDate.touched)" class="alert alert-danger">
+          <div *ngIf="endDate.errors.required">
+            Date is required.
+          </div>
+        </div>
+        <div class="alert alert-danger"  *ngIf="((startDate.value | date:'shortDate') > (endDate.value | date:'shortDate'))">
+            Please enter valid Start Date.
+          </div>
   </div>
   <div class="form-group">
     <div class="12hr-example">
