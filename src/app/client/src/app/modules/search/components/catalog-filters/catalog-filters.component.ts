@@ -121,7 +121,7 @@ export class CatalogFiltersComponent implements OnInit, OnDestroy, OnChanges {
     this.formInputData = {};
     this.activatedRoute.paramMap.subscribe((paramMap: any) => {
       if (paramMap.params.cat) {
-       this.browsingCategory = paramMap.params.cat;
+        this.browsingCategory = paramMap.params.cat;
       }
     });
     this.getQueryParams();
@@ -273,6 +273,12 @@ export class CatalogFiltersComponent implements OnInit, OnDestroy, OnChanges {
     this.refresh = false;
     this.cdr.detectChanges();
     this.refresh = true;
+    const allInputs = document.getElementsByTagName('input');
+    for (let i = 0, max = allInputs.length; i < max; i++) {
+      if (allInputs[i].type === 'checkbox') {
+        allInputs[i].checked = false;
+      }
+    }
   }
 
   resetFilters2(name) {
@@ -382,7 +388,7 @@ export class CatalogFiltersComponent implements OnInit, OnDestroy, OnChanges {
 
   onFilterChange(event) {
     const { name, value } = event.target;
-    console.log('name' , name , 'value' , value);
+    console.log('name', name, 'value', value);
     if (event.target.checked) {
       if (!(name in this.formInputData)) {
         this.formInputData[name] = [];
