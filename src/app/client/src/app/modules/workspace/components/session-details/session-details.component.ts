@@ -14,24 +14,20 @@ export class SessionDetailsComponent implements OnInit {
   participants = [];
   userIds = [];
   participantsDetails = [];
-  constructor( public dialogRef: MatDialogRef<SessionDetailsComponent>,  @Inject(MAT_DIALOG_DATA) private data,
-   private userService: UserService, public learnerService: LearnerService,
-  public config: ConfigService, public dialog: MatDialog) { }
+  constructor(public dialogRef: MatDialogRef<SessionDetailsComponent>, @Inject(MAT_DIALOG_DATA) private data,
+    private userService: UserService, public learnerService: LearnerService,
+    public config: ConfigService) { }
   onNoClick(): void {
     this.dialogRef.close();
   }
   ngOnInit() {
     this.sessions = this.data.sessionData;
-    this.participants = this.sessions.sessionDetails.participants;
+    this.participants = this.sessions.hasOwnProperty('participant') ? this.sessions.participant : {};
     this.userIds = Object.keys(this.participants);
-    console.log('participants', this.participants);
-    console.log('sedjsfnsbjfnmdgfmer', this.data);
     for (const userId of this.userIds) {
       this.getParticipantsDetails(userId);
     }
-    console.log('user details', this.participantsDetails);
   }
-
 
   getParticipantsDetails(userId) {
     const option = {
@@ -45,15 +41,15 @@ export class SessionDetailsComponent implements OnInit {
     }
     );
   }
-  openAttendance() {
-    const attendanceDialog = this.dialog.open(AttendanceComponent, {
-      width: '50%',
-      height: '70%',
-      data: {
-              sessions : this.data.sessionData ,
-              }
-    });
-    attendanceDialog.afterClosed().subscribe(result => {
-    });
-  }
+  // openAttendance() {
+  //   const attendanceDialog = this.dialog.open(AttendanceComponent, {
+  //     width: '50%',
+  //     height: '70%',
+  //     data: {
+  //             sessions : this.data.sessionData ,
+  //             }
+  //   });
+  //   attendanceDialog.afterClosed().subscribe(result => {
+  //   });
+  // }
 }

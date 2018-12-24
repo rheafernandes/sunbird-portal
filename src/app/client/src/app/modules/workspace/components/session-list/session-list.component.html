@@ -95,7 +95,7 @@
             <td>
               <h5 class="ui image header">
                 <div class="content ">
-                  <div class="UpReviewHeader">{{session?.courseAdditionalInfo?.courseName}}</div>
+                  <div class="UpReviewSubHeader">{{session?.courseAdditionalInfo?.courseName}}</div>
                 </div>
               </h5>
             </td>
@@ -133,7 +133,7 @@
             </td>
             <td>
                 <div class="content">
-                    <a class="item" [routerLink]="['/workspace/content/attendance']" [class.active]="router.isAcive('workspace/content/sessions')" ></a>
+                    <a class="item" [routerLink]="['/workspace/content/sessions/1']">View Attendance</a>
                   </div>
               </td>
           </tr>
@@ -142,6 +142,5 @@
     </div>
   </div>
 </div>
-
 
 <router-outlet> </router-outlet>

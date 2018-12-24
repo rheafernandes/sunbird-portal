@@ -6,9 +6,11 @@ import {
   GenericEditorComponent, UploadedComponent, DataDrivenComponent, FlaggedComponent, UpForReviewComponent,
   BatchListComponent, UpdateBatchComponent, UpforreviewContentplayerComponent, ReviewsubmissionsContentplayerComponent,
   FlagConentplayerComponent, PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
-  AllContentComponent, FlagReviewerComponent} from './components';
+  AllContentComponent, FlagReviewerComponent
+} from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 import { SessionListComponent } from './components/session-list/session-list.component';
+import { AttendanceComponent } from './components/attendance/attendance.component';
 const telemetryEnv = 'workspace';
 const objectType = 'workspace';
 const routes: Routes = [
@@ -193,7 +195,6 @@ const routes: Routes = [
           }
         }]
       },
-
       {
         path: 'sessions', component: SessionListComponent, canActivate: [AuthGuard],
         data: {
@@ -202,7 +203,18 @@ const routes: Routes = [
             type: 'list', mode: 'create', object: { type: objectType, ver: '1.0' }
           }, roles: 'coursebacthesRole',
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' },
-           { label: 'Sessions', url: '' }]
+          { label: 'Sessions', url: '' }]
+        },
+      },
+      {
+        path: 'sessions/:sessionId', component: AttendanceComponent, canActivate: [AuthGuard],
+        data: {
+          telemetry: {
+            env: telemetryEnv, pageid: 'workspace-course-batch', subtype: 'paginate', uri: '/workspace/sessions',
+            type: 'list', mode: 'create', object: { type: objectType, ver: '1.0' }
+          }, roles: 'coursebacthesRole',
+          breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' },
+          { label: 'Sessions', url: '' }]
         },
       },
       {
