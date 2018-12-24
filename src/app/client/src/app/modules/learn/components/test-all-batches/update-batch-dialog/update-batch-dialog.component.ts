@@ -3,7 +3,7 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { Inject } from '@angular/core';
-import { ConfigService } from '@sunbird/shared';
+import { ConfigService , ToasterService  } from '@sunbird/shared';
 import { UserService, LearnerService } from '@sunbird/core';
 import { Subject, of as observableOf, Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
@@ -11,6 +11,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatAutocompleteSelectedEvent, MatChipInputEvent, MatAutocomplete } from '@angular/material';
 import { map, startWith, pluck } from 'rxjs/operators';
 import * as _ from 'lodash';
+import { CourseBatchService } from '../../../services';
 
 @Component({
   selector: 'app-update-batch-dialog',
@@ -18,6 +19,7 @@ import * as _ from 'lodash';
   styleUrls: ['./update-batch-dialog.component.css']
 })
 export class UpdateBatchDialogComponent implements OnInit {
+  public courseId;
   existingBatchDetail;
   shouldSizeUpdate: boolean;
   breakpoint: number;
@@ -29,18 +31,19 @@ export class UpdateBatchDialogComponent implements OnInit {
   addOnBlur = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];
   mentorCtrl = new FormControl();
-  filteredMentors: Observable<string[]>;
+  filteredMentors: Observable<any>;
   mentors = [];
   allMentors = [];
   memberCtrl = new FormControl();
-  filteredMembers: Observable<string[]>;
+  filteredMembers: Observable<any>;
   members = [];
   allMembers = [];
   mentorIds;
-  mentorsDetails = {};
-  membersDetails = {};
-  allMentorsDetails = {};
-  allMembersDetails = {};
+  batchId;
+  // mentorsDetails = [];
+  membersDetails = [];
+  // allMentorsDetails = {};
+  // allMembersDetails = {};
   participantIds;
 
   @ViewChild('memberInput') memberInput: ElementRef<HTMLInputElement>;
@@ -53,6 +56,8 @@ export class UpdateBatchDialogComponent implements OnInit {
     public userService: UserService,
     public learnerService: LearnerService,
     public config: ConfigService,
+    public toasterService: ToasterService,
+    public courseBatchService: CourseBatchService,
     public dialogRef: MatDialogRef<UpdateBatchDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -74,10 +79,11 @@ export class UpdateBatchDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.allMembersDetails = this.data.memberDetail;
-    this.allMentorsDetails = this.data.mentorDetail;
-    this.allMentors = _.values(this.data.mentorDetail);
-    this.allMembers = _.values(this.data.memberDetail);
+    this.courseId = this.data.courseId;
+    // this.allMembersDetails = this.data.memberDetail;
+    // this.allMentorsDetails = this.data.mentorDetail;
+    this.allMentors = this.data.mentorDetail;
+    this.allMembers = this.data.memberDetail;
     this.allMembers = _.concat(this.allMentors, this.allMembers);
     this.breakpoint = (window.innerWidth <= 550) ? 1 : 1;
     if (this.shouldSizeUpdate) { this.updateSize(); }
@@ -119,7 +125,7 @@ export class UpdateBatchDialogComponent implements OnInit {
   }
 
   selectedMentor(event: MatAutocompleteSelectedEvent): void {
-    this.mentors.push(event.option.viewValue);
+    this.mentors.push(event.option.value);
     this.mentorInput.nativeElement.value = '';
     this.mentorCtrl.setValue(null);
   }
@@ -147,7 +153,7 @@ export class UpdateBatchDialogComponent implements OnInit {
   }
 
   selectedMember(event: MatAutocompleteSelectedEvent): void {
-    this.members.push(event.option.viewValue);
+    this.members.push(event.option.value);
     this.memberInput.nativeElement.value = '';
     this.memberCtrl.setValue(null);
   }
@@ -155,31 +161,10 @@ export class UpdateBatchDialogComponent implements OnInit {
   private _filterMember(value: string): string[] {
     const filterValue = value.toLowerCase();
 
-    return this.allMembers.filter(member => member.toLowerCase().indexOf(filterValue) === 0);
+    return this.allMembers.filter(member => member.name.toLowerCase().indexOf(filterValue) === 0);
   }
 
-  onSubmit(title, description, startDate, endDate) {
-    // const requestBody = {
-    //   id: this.batchId,
-    //   name: this.batchUpdateForm.value.name,
-    //   description: this.batchUpdateForm.value.description,
-    //   enrollmentType: this.batchUpdateForm.value.enrollmentType,
-    //   startDate: startDate,
-    //   endDate: endDate || null,
-    //   createdFor: this.userService.userProfile.organisationIds,
-    //   mentors: _.compact(mentors)
-    // };
-    console.log('Submitted');
-    console.log(title);
-    console.log(description);
-    startDate = new Date(Date.parse(startDate)).toISOString().slice(0, 10);
-    endDate = new Date(Date.parse(endDate)).toISOString().slice(0, 10);
-    console.log(this.mentors);
-    console.log(this.members);
-    console.log(startDate);
-    console.log(endDate);
-    this.dialogRef.close();
-  }
+
   getMentorslist() {
     const option = {
       url: this.config.urlConFig.URLS.ADMIN.USER_SEARCH,
@@ -197,8 +182,12 @@ export class UpdateBatchDialogComponent implements OnInit {
           const mentorsDetails = data.result.response.content;
           for (const mentorDetail of mentorsDetails ) {
             if (mentorDetail.firstName !== undefined && mentorDetail.lastName !== undefined) {
-              this.mentorsDetails[mentorDetail.identifier] = mentorDetail.firstName + ' ' + mentorDetail.lastName;
-              this.mentors = _.values(this.mentorsDetails);
+              const obj = {};
+              obj['name'] = mentorDetail.firstName + ' ' + mentorDetail.lastName;
+              obj['id'] = mentorDetail.identifier;
+              this.mentors.push(obj);
+              // this.mentorsDetails[mentorDetail.identifier] = mentorDetail.firstName + ' ' + mentorDetail.lastName;
+              // this.mentors = _.values(this.mentorsDetails);
             }
           }
         }
@@ -221,12 +210,51 @@ export class UpdateBatchDialogComponent implements OnInit {
           const membersDetails = data.result.response.content;
           for (const memberDetail of membersDetails ) {
             if (memberDetail.firstName !== undefined && memberDetail.lastName !== undefined) {
-              this.membersDetails[memberDetail.identifier] = memberDetail.firstName + ' ' + memberDetail.lastName;
-              this.members = _.values(this.membersDetails);
+              const obj = {};
+              obj['name'] = memberDetail.firstName + ' ' + memberDetail.lastName;
+              obj['id'] = memberDetail.identifier;
+              this.members.push(obj);
             }
           }
         }
       );
+  }
+
+  onSubmit(title, description, startDate, endDate) {
+    startDate = new Date(Date.parse(startDate)).toISOString().slice(0, 10);
+    endDate = new Date(Date.parse(endDate)).toISOString().slice(0, 10);
+    if (this.date.value > this.serializedDate.value) {
+      this.toasterService.error('End Date should be greater than start date');
+    } else {
+      const mentorIds = [];
+      for (const mentor of this.mentors) {
+        mentorIds.push(mentor.id);
+      }
+      const requestBody = {
+        id: this.data.batchDetail.identifier,
+        name: title,
+        description: description,
+        // tslint:disable-next-line:quotemark
+        enrollmentType: "open",
+        startDate: startDate,
+        endDate: endDate || null,
+        createdFor: this.userService.userProfile.organisationIds,
+        mentors: _.compact(mentorIds)
+      };
+      console.log('request body', requestBody);
+      this.courseBatchService.updateBatch(requestBody)
+      .subscribe(
+        (data) => {
+          console.log(data);
+          this.toasterService.success('You successfully updated the batch');
+        },
+        (err) => {
+          console.log(err);
+          this.toasterService.error('Cant update. ' + err.error.params.errmsg);
+        }
+      );
+      this.dialogRef.close();
+    }
   }
 }
 

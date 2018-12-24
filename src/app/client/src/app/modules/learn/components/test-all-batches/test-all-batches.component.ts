@@ -86,11 +86,11 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
   showUnenroll;
   public unsubscribe = new Subject<void>();
   currentDate = new Date().toJSON().slice(0, 10);
-  allMentors = {};
-  allMembers = {};
+  allMentors = [];
+  allMembers = [];
   breakpoint: number;
   public courseMentor;
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void { }
 
   constructor(
     public dialog: MatDialog,
@@ -112,8 +112,8 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       window.innerWidth <= 550
         ? 1
         : window.innerWidth > 550 && window.innerWidth < 880
-        ? 2
-        : 3;
+          ? 2
+          : 3;
     this.ongoingSearch = {
       filters: {
         status: '1',
@@ -248,11 +248,12 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       data: {
         title: 'create',
         mentorDetail: this.allMentors,
-        memberDetail: this.allMembers
+        memberDetail: this.allMembers,
+        courseId: this.courseId,
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {});
+    dialogRef.afterClosed().subscribe(result => { });
   }
   updateBatch(batch): void {
     const dialogRef = this.dialog.open(UpdateBatchDialogComponent, {
@@ -260,11 +261,12 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
         title: 'update',
         mentorDetail: this.allMentors,
         memberDetail: this.allMembers,
-        batchDetail: batch
+        batchDetail: batch,
+        courseId: this.courseId,
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {});
+    dialogRef.afterClosed().subscribe(result => { });
   }
 
   onResize(event) {
@@ -272,8 +274,8 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       event.target.innerWidth <= 550
         ? 1
         : event.target.innerWidth > 550 && window.innerWidth < 880
-        ? 2
-        : 3;
+          ? 2
+          : 3;
   }
   checkRoles() {
     if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
@@ -296,13 +298,14 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       const mentorsDetails = data.result.response.content;
       for (const mentorDetail of mentorsDetails) {
         if (mentorDetail.firstName !== undefined && mentorDetail.lastName !== undefined) {
-        this.allMentors[mentorDetail.identifier] = mentorDetail.firstName + ' ' + mentorDetail.lastName;
-        // this.allMentors = _values(this.allMentors);
+          const obj = [];
+          obj['name'] = mentorDetail.firstName + ' ' + mentorDetail.lastName;
+          obj['id'] = mentorDetail.identifier;
+          this.allMentors.push(obj);
+        }
       }
-    }
-      console.log('this mentors', this.allMentors);
-     });
-      }
+    });
+  }
 
   getMemberslist() {
     const option = {
@@ -318,9 +321,12 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       const membersDetails = data.result.response.content;
       for (const memberDetail of membersDetails) {
         if (memberDetail.firstName !== undefined && memberDetail.lastName !== undefined) {
-        this.allMembers[memberDetail.identifier] = memberDetail.firstName + ' ' + memberDetail.lastName;
+          const obj = [];
+          obj['name'] = memberDetail.firstName + ' ' + memberDetail.lastName;
+          obj['id'] = memberDetail.identifier;
+          this.allMembers.push(obj);
+        }
       }
-    }
     });
   }
 }
