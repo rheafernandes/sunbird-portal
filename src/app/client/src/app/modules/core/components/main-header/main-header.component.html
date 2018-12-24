@@ -177,7 +177,6 @@
       <button *ngFor="let subItem of category?.terms" mat-menu-item (click)="filter(category?.code , subItem?.name)">
         <mat-icon>note</mat-icon>
         <span>{{ subItem?.name }}</span>
-        {{ subItem?.name }}
       </button>
     </mat-menu>
   </ng-container>
