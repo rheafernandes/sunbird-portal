@@ -1,3 +1,4 @@
+@import '../../../../../../../node_modules/bootstrap/dist/css/bootstrap-grid.min.css';
 .example-container {
   display: flex;
   flex-direction: column;
@@ -8,7 +9,19 @@
 }
 @media only screen and (max-width:  640px) {
   .example-container {
-    height: 50%;
+    height: 100%;
     width:100%;
   }
+}
+.dialog-container {
+  max-height:70vh;
+  overflow-y: scroll;
+}
+.field-width {
+  width: 100% !important;
+}
+.chiplist {
+  max-height: 30vh !important;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }

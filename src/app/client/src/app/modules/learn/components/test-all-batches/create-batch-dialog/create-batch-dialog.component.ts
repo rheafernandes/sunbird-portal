@@ -30,7 +30,7 @@ export class DetailModel {
 })
 export class CreateBatchDialogComponent implements OnInit {
   public courseId;
-
+  minDate = new Date();
   shouldSizeUpdate: boolean;
   breakpoint: number;
   visible = true;
@@ -60,7 +60,6 @@ export class CreateBatchDialogComponent implements OnInit {
   batchDescriptCtrl = new FormControl('', [Validators.required]);
   batchnameCtrl = new FormControl('', [Validators.required]);
   dateBooleanvalue: Boolean;
-
   constructor(
     private route: ActivatedRoute,
     public courseBatchService: CourseBatchService,
