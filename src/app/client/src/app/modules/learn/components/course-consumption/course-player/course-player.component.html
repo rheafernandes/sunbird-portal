@@ -17,29 +17,27 @@
           <mat-expansion-panel-header>
             <mat-panel-title>course schedule</mat-panel-title>
           </mat-expansion-panel-header>
-          <mat-card>
-            <mat-card-header>{{ enrolledBatchInfo.name }}</mat-card-header>
-            <mat-card-content>
-              <i class="material-icons">schedule</i>&nbsp;
+          <mat-panel-description class="mat-expansion-panel-header-description">
+            <h6 class="text-center">{{ enrolledBatchInfo.name }}</h6>
+            <p> <i class="fa fa-calendar" aria-hidden="true"></i>
+              &nbsp;
               <span>{{ enrolledBatchInfo.startDate | date }}</span
               >&nbsp;<span *ngIf="enrolledBatchInfo.endDate" class="date">
                 - {{ enrolledBatchInfo.endDate | date }}</span
-              >
-            </mat-card-content>
-            <mat-divider></mat-divider>
-            <mat-card-footer>
-              <span class="left-float">&nbsp;
+              ></p>
+              <mat-divider></mat-divider>
+              <p>
+              <span class="left-float" *ngIf="enrolledBatchInfo.participant.length>0">&nbsp;
                 {{ enrolledBatchInfo.participant.length }}
                 {{ resourceService.frmelmnts.lbl.learners }}
               </span>
               &nbsp; &nbsp; &nbsp;
-              <span
+              <span class="mentor"
                 >{{ enrolledBatchInfo.mentors.length }}
                 {{ resourceService.frmelmnts.lbl.mentors }} &nbsp;</span
-              >
-            </mat-card-footer>
-          </mat-card>
-        </mat-expansion-panel>
+              ></p>
+          </mat-panel-description>
+          </mat-expansion-panel>
       </mat-accordion>
     </div>
     <app-collection-tree [session]="sessions"
