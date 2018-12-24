@@ -69,7 +69,7 @@
   <div class="form-group">
      <label for="sessionStartDate">Session Start Date</label> &nbsp;
       <mat-form-field style="width:25% !important">
-          <input matInput [matDatepicker]="Startpicker" placeholder="Choose a date" name="sessionStartDate" [ngModel]="existingSessionFlag ? (session.sessionDetails.sessionStartDate) : ''" #startDate="ngModel" required/>
+          <input matInput [matDatepicker]="Startpicker" placeholder="Choose a date" [min]="minDate" name="sessionStartDate" [ngModel]="existingSessionFlag ? (session.sessionDetails.sessionStartDate) : ''" #startDate="ngModel" required/>
           <mat-datepicker-toggle matSuffix [for]="Startpicker"></mat-datepicker-toggle>
           <mat-datepicker #Startpicker></mat-datepicker>
       </mat-form-field>
@@ -84,7 +84,7 @@
       &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
     <label for="sessionEndDate">Session End Date</label> &nbsp;
       <mat-form-field style="width:25% !important">
-          <input matInput [matDatepicker]="Endpicker" [ngModel]="existingSessionFlag ? (session.sessionDetails.sessionEndDate) : ''" name="sessionEndDate" #endDate="ngModel" placeholder="Choose a date" required/>
+          <input matInput [matDatepicker]="Endpicker" [min]="minDate" [ngModel]="existingSessionFlag ? (session.sessionDetails.sessionEndDate) : ''" name="sessionEndDate" #endDate="ngModel" placeholder="Choose a date" required/>
           <mat-datepicker-toggle matSuffix [for]="Endpicker"></mat-datepicker-toggle>
           <mat-datepicker #Endpicker></mat-datepicker>
       </mat-form-field>

@@ -29,7 +29,7 @@
                               <th class="">End date</th>
                               <th class="">Time </th>
                               <th class="">Url </th>
-                              <th><a href="{{session.sessionDetails.sessionUrl}}" target="_blank" mat-button  color="primary">Join Now</a></th>
+                              <th><a href="{{session.sessionDetails.sessionUrl}}" target="_blank" mat-button style="margin-left: auto;" color="primary" (click)="joinSession(session)">Join Now</a></th>
                             </tr>
                           </thead>
                       <tbody>

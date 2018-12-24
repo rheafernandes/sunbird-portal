@@ -25,6 +25,8 @@ import {CourseConsumptionService, CourseProgressService, CourseBatchService} fro
 import { SessionDetailsComponent } from './components/session-details/session-details.component';
 import { SessionService } from './services/session/session.service';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { FilterSessionPipe } from './pipes/filter-session.pipe';
+import { AttendanceComponent } from './components/attendance/attendance.component';
 
 @NgModule({
   imports: [
@@ -55,11 +57,13 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
     AllMyContentFilterComponent,
     SessionListComponent,
     CreateSessionComponent,
-    SessionDetailsComponent
+    SessionDetailsComponent,
+    FilterSessionPipe,
+    AttendanceComponent
   ],
   exports: [SessionDetailsComponent],
   providers: [WorkSpaceService, EditorService, BatchService, CourseConsumptionService,
     CourseProgressService, CourseBatchService , SessionService],
-  entryComponents: [CreateSessionComponent, SessionDetailsComponent],
+  entryComponents: [CreateSessionComponent, SessionDetailsComponent, AttendanceComponent],
 })
 export class WorkspaceModule { }

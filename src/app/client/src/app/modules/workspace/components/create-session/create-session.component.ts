@@ -1,7 +1,8 @@
-import { Component, OnInit, Inject, OnDestroy , ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDatepicker } from '@angular/material';
 import { CourseConsumptionService } from '../../../learn/services';
 import { SessionService } from '../../services/session/session.service';
+import { UserService } from '@sunbird/core';
 
 @Component({
   selector: 'app-create-session',
@@ -19,12 +20,14 @@ export class CreateSessionComponent implements OnInit, OnDestroy {
   coursechapters;
   batchData;
   session;
-  currentDate = new Date().toJSON().slice(0, 10);
-  items = Array.from({length: 100000}).map((_, i) => `Item #${i}`);
+  items = Array.from({ length: 100000 }).map((_, i) => `Item #${i}`);
+  currentDate =  new Date().toJSON().slice(0, 10);
+  minDate = new Date();
   constructor(private courseConsumptionService: CourseConsumptionService,
     public dialogRef: MatDialogRef<CreateSessionComponent>,
-    @Inject(MAT_DIALOG_DATA) private data, private sessionService: SessionService) { }
-
+    @Inject(MAT_DIALOG_DATA) private data,
+    private sessionService: SessionService,
+    private userService: UserService) { }
   onNoClick(): void {
     this.dialogRef.close();
     this.ngOnDestroy();
@@ -49,7 +52,8 @@ export class CreateSessionComponent implements OnInit, OnDestroy {
     // creates the session delta
     const sessionDelta = Object.assign({
       status: status, participantCount: this.batchData.hasOwnProperty('participant') ? Object.keys(this.batchData.participant).length : 0,
-      enrolledCount: 0, participants: this.batchData.hasOwnProperty('participant') ? this.batchData.participant : {}, createdBy: 'ravinder'
+      enrolledCount: 0, participants: this.batchData.hasOwnProperty('participant') ? this.batchData.participant : {},
+      createdBy: this.userService.userid
     }, formElement.value);
     // addes the session delta to the batch details object
     const resultBatchData = Object.assign({ sessionDetails: sessionDelta }, this.batchData);

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark"*ngIf="!showExploreHeader">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark "*ngIf="!showExploreHeader" >
      <a class="navbar-brand" href="#">
        <img src="../../../../../../../tenant/sunbird/sunbird_logo .png"  alt ="logo" class="logo" />
      </a>
@@ -139,7 +139,7 @@
         </div>
 
         <ng-template #showLoginBtn>
-          <a
+          <!-- <a
             id="explore-align"
             *ngIf="
               router.isActive('', true) && exploreButtonVisibility === 'true'
@@ -148,7 +148,7 @@
             href="/explore"
             >{{ resourceService.frmelmnts?.lbl?.explore }}
             {{ resourceService.instance }}</a
-          >
+          > -->
           <a
             id="signup"
             appTelemetryInteract

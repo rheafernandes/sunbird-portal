@@ -1,4 +1,4 @@
-import { Component, OnInit , Input} from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { CreateSessionComponent } from '../create-session/create-session.component';
 import { SessionService } from '../../services/session/session.service';
@@ -33,7 +33,7 @@ export class SessionListComponent implements OnInit {
     const sessionDialog = this.dialog.open(SessionDetailsComponent, {
       width: '50%',
       height: '70%',
-      data: { sessionData: session}
+      data: { sessionData: session }
     });
     sessionDialog.afterClosed().subscribe(result => {
     });
@@ -49,6 +49,10 @@ export class SessionListComponent implements OnInit {
 
   storeSession() {
     this.sessionService.storeSessions();
+  }
+
+  showValues(value) {
+    console.log('form data' , value);
   }
 }
 

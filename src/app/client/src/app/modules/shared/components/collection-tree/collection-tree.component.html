@@ -17,11 +17,15 @@
       *ngIf="child.children.length > 0"
       (opened)="panelOpenState = true"
       (closed)="panelOpenState = false"
-      class="mat-expanded mat-expansion-panel-spacing"
+      class="mat-expansion-panel-spacing"
     >
       <mat-expansion-panel-header>
         <mat-panel-title>
           <span [ngClass]="child.icon"></span> {{ child.title }} &nbsp;&nbsp;
+          <div *ngFor="let item of session">
+            <i *ngIf="item.sessionDetails.courseUnit == child.id" class="material-icons float-right" (click)="openSession(item)">
+                live_tv</i>
+          </div>
         </mat-panel-title>
           <mat-panel-description>
           </mat-panel-description>
