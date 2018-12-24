@@ -47,9 +47,6 @@
       <button type="button" class="btn btn-primary mt-2" data-toggle="collapse" data-target="#filter-panel">
         <span class="glyphicon glyphicon-cog"></span> Session Filters
       </button>
-
-      <button class="btn btn-primary mt-2" (click)="storeSession()"><span class="glyphicon glyphicon-cog">Session
-          Store</span></button>
     </div>
   </div>
   <!--filter end-->
@@ -133,7 +130,7 @@
             </td>
             <td>
                 <div class="content">
-                    <a class="item" [routerLink]="['/workspace/content/sessions/1']">View Attendance</a>
+                    <a class="item" [routerLink]="['/workspace/content/sessions/session.sessionDetails.sessionId']">Attendance</a>
                   </div>
               </td>
           </tr>

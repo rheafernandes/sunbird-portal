@@ -20,10 +20,6 @@ export class SessionService {
     });
   }
 
-  storeSessions() {
-
-  }
-
   getSessions(userId) {
     return this.http.post('http://13.233.213.245:8080/user-sessions', { 'userId': userId })
       .pipe(tap((data) => {
@@ -32,18 +28,7 @@ export class SessionService {
   }
 
   getSessionsFilter(batchId, courseId) {
-    return this.http.post('http://13.233.213.245:8080/getsessions', { 'batchId': batchId })
-      .pipe(
-        tap((data) => console.log('get sessions filters' , data))
-        // filter((batch: any) => {
-        //   if (batch.id === batchId && batch.sessionDetails.status === 'published') {
-        //     return true;
-        //   } else {
-        //     return false;
-        //   }
-        // })
-
-        );
+    return this.http.post('http://13.233.213.245:8080/getsessions', { 'batchId': batchId });
   }
 
   updateSession(session) {

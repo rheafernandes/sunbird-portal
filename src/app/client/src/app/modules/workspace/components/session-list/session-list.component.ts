@@ -54,10 +54,6 @@ export class SessionListComponent implements OnInit {
     this.sessionService.publishSession(session);
   }
 
-  storeSession() {
-    this.sessionService.storeSessions();
-  }
-
   showValues(value) {
     console.log('form data', value);
   }
