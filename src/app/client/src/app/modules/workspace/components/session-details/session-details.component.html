@@ -1,144 +1,142 @@
 <div style="overflow: auto">
   <h4 class="modal-title text-danger">
-  <i class="fa fa-times-circle float-right primary" (click)="onNoClick()"></i>
-</h4>
-<br /><br />
-<div class="modal-content">
-  <div class="modal-title">
-    <h4 class="modal-title align-center text-center" id="exampleModalLabel">{{sessions?.sessionDetails?.sessionTitle}}</h4>
-    <hr />
-  </div>
-  <div class="row m-2">
-    <div class="col-md-6">
-      <h6 class="modal-title" id="ModalLabel">
-        <i class="fas fa-book text-primary"></i>&nbsp;&nbsp; Course - {{sessions?.courseAdditionalInfo?.courseName}}
-      </h6>
+    <i class="fa fa-times-circle float-right primary" (click)="onNoClick()"></i>
+  </h4>
+  <br /><br />
+  <div class="modal-content">
+    <div class="modal-title">
+      <h4 class="modal-title align-center text-center" id="exampleModalLabel">{{sessions?.sessionDetails?.sessionTitle}}</h4>
+      <hr />
+    </div>
+    <div class="row m-2">
+      <div class="col-md-6">
+        <h6 class="modal-title" id="ModalLabel">
+          <i class="fas fa-book text-primary"></i>&nbsp;&nbsp; Course - {{sessions?.courseAdditionalInfo?.courseName}}
+        </h6>
+
+      </div>
+      <div class="col-sm-4">
+        <h6 class="modal-title" id="ModalLabel">
+          <i class="fas fa-group text-primary"></i>&nbsp; &nbsp; Batch - {{sessions?.name}}
+        </h6>
+      </div>
+    </div>
+    <div class="modal-body">
+      <mat-accordion class="example-headers-align">
+        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              session details
+            </mat-panel-title>
+            <mat-panel-description>
+
+              <i class="fas fa-tv" style="margin-left: 19rem"></i>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <table class="ui upForReviewTable table">
+                  <thead>
+                    <tr class="table-primary">
+                      <th class="one wide">Property</th>
+                      <th class="four wide">Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td in-view-item>Description</td>
+                      <td>{{sessions?.sessionDetails?.sessionDescription}}</td>
+                    </tr>
+                    <tr>
+                      <td in-view-item>Url</td>
+                      <td> {{sessions?.sessionDetails?.sessionUrl}}</td>
+                    </tr>
+                    <tr>
+                      <td in-view-item><i class="fa fa-calendar-check-o" aria-hidden="true"></i>&nbsp;date</td>
+                      <td>{{sessions?.sessionDetails?.sessionStartDate | date}} -
+                        {{sessions?.sessionDetails?.sessionEndDate | date}} </td>
+                    </tr>
+                    <tr>
+                      <td in-view-item><i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;time</td>
+                      <td>{{sessions?.sessionDetails?.sessionTime}}</td>
+                    </tr>
+                    <tr>
+                      <td in-view-item> participants</td>
+                      <td>{{sessions?.sessionDetails?.participantCount}}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>View participants </mat-panel-title>
+            <mat-panel-description>
+              <!-- Type your name and age -->
+              <i class="fas fa-group float-right" style="margin-left: 19rem"></i>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <table class="ui upForReviewTable table">
+                  <thead>
+                    <tr class="table-primary">
+                      <th class="one wide">Participants</th>
+                      <th class="four wide">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr in-view-item *ngFor="let item of participantsDetails">
+                      <td>{{item.firstName}} {{item.lastName}}</td>
+                      <td><i class="fas fa-check text-success"></i></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>course details</mat-panel-title>
+            <mat-panel-description>
+              <!-- Type your name and age -->
+              <i class="fas fa-book float-right" style="margin-left: 19rem"></i> </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <table class="table table-sm justify-content-center">
+                  <tbody>
+                    <tr>
+                      <th class="one wide">course</th>
+                      <td class="four wide">{{sessions?.courseAdditionalInfo?.courseName}}</td>
+                    </tr>
+                    <tr>
+                      <th class="one wide">Description</th>
+                      <td class="four wide text-justify">{{sessions?.courseAdditionalInfo?.description}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </mat-expansion-panel>
+      </mat-accordion>
 
     </div>
-    <div class="col-sm-4">
-      <h6 class="modal-title" id="ModalLabel">
-        <i class="fas fa-group text-primary"></i>&nbsp; &nbsp; Batch - {{sessions?.name}}
-      </h6>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="onNoClick()">
+        Close
+      </button>
     </div>
   </div>
-  <div class="modal-body">
-            <mat-accordion class="example-headers-align">
-                <mat-expansion-panel (opened)="panelOpenState = true"
-                (closed)="panelOpenState = false" hideToggle>
-                    <mat-expansion-panel-header>
-                      <mat-panel-title>
-                        session details
-                      </mat-panel-title>
-                      <mat-panel-description>
-
-                          <i class="fas fa-tv" style="margin-left: 19rem"></i>
-                       </mat-panel-description>
-                    </mat-expansion-panel-header>
-                        <div class="container">
-                            <div class="row">
-                              <div class="col-md-12">
-                                <table class="ui upForReviewTable table">
-                                    <thead>
-                                        <tr class="table-primary">
-                                          <th class="one wide">Property</th>
-                                          <th class="four wide">Value</th>
-                                        </tr>
-                                      </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td in-view-item>Description</td>
-                                      <td>{{sessions?.sessionDetails?.sessionDescription}}</td>
-                                    </tr>
-                                    <tr>
-                                      <td in-view-item>Url</td>
-                                      <td> {{sessions?.sessionDetails?.sessionUrl}}</td>
-                                    </tr>
-                                    <tr>
-                                      <td in-view-item><i class="fa fa-calendar-check-o" aria-hidden="true"></i>&nbsp;date</td>
-                                      <td>{{sessions?.sessionDetails?.sessionStartDate | date}} - {{sessions?.sessionDetails?.sessionEndDate | date}} </td>
-                                    </tr>
-                                    <tr>
-                                      <td in-view-item><i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;time</td>
-                                      <td>{{sessions?.sessionDetails?.sessionTime}}</td>
-                                    </tr>
-                                    <tr>
-                                      <td in-view-item> participants</td>
-                                      <td>{{sessions?.sessionDetails?.participantCount}}
-                                      </td>
-                                    </tr>
-                                    </tbody>
-                                    </table>
-                              </div>
-                            </div>
-                          </div>
-                    </mat-expansion-panel>
-                    <mat-expansion-panel (opened)="panelOpenState = true"
-                    (closed)="panelOpenState = false" hideToggle>
-                        <mat-expansion-panel-header>
-                          <mat-panel-title>view participants</mat-panel-title>
-                          <mat-panel-description >
-                              <!-- Type your name and age -->
-                              <i class="fas fa-group float-right" style="margin-left: 19rem"></i>
-                            </mat-panel-description>
-                          </mat-expansion-panel-header>
-
-                            <div class="container">
-                                <div class="row">
-                                  <div class="col-md-12">
-                                    <table class="ui upForReviewTable table">
-                                      <thead>
-                                        <tr class="table-primary">
-                                          <th class="one wide">Participants</th>
-                                          <th class="four wide">Status</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        <tr in-view-item *ngFor="let item of participantsDetails">
-                                          <td>{{item.firstName}} {{item.lastName}}</td>
-                                          <td><i class="fas fa-check text-success"></i></td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  </div>
-                                </div>
-                              </div>
-                              </mat-expansion-panel>
-                              <mat-expansion-panel (opened)="panelOpenState = true"
-                              (closed)="panelOpenState = false" hideToggle>
-                                  <mat-expansion-panel-header>
-                                    <mat-panel-title>course details</mat-panel-title>
-                                    <mat-panel-description>
-                                        <!-- Type your name and age -->
-                                        <i class="fas fa-book float-right" style="margin-left: 19rem"></i>                                      </mat-panel-description>
-                                    </mat-expansion-panel-header>
-                                    <div class="container">
-                                        <div class="row">
-                                          <div class="col-md-12">
-                                            <table class="table table-sm justify-content-center">
-                                              <tbody>
-                                                <tr>
-                                                  <th class="one wide">course</th>
-                                                  <td class="four wide">{{sessions?.courseAdditionalInfo?.courseName}}</td>
-                                                </tr>
-                                                <tr>
-                                                  <th class="one wide">Description</th>
-                                                  <td class="four wide text-justify">{{sessions?.courseAdditionalInfo?.description}}</td>
-                                                </tr>
-                                              </tbody>
-                                            </table>
-                                          </div>
-                                        </div>
-                                      </div>
-
-                                        </mat-expansion-panel>
-                    </mat-accordion>
-
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="onNoClick()">
-      Close
-    </button>
-  </div>
-</div>
 
 </div>

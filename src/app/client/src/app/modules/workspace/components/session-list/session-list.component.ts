@@ -5,13 +5,14 @@ import { SessionService } from '../../services/session/session.service';
 
 import { SessionDetailsComponent } from '../session-details/session-details.component';
 import { AutofillMonitor } from '@angular/cdk/text-field';
+import { ToasterService } from '../../../shared/services/toaster/toaster.service';
 @Component({
   selector: 'app-session-list',
   templateUrl: './session-list.component.html',
   styleUrls: ['./session-list.component.css']
 })
 export class SessionListComponent implements OnInit {
-  constructor(public dialog: MatDialog, private sessionService: SessionService) { }
+  constructor(private toasterService: ToasterService, public dialog: MatDialog, private sessionService: SessionService) { }
   sessionsList;
 
   ngOnInit() {
@@ -19,14 +20,19 @@ export class SessionListComponent implements OnInit {
       this.sessionsList = sessions;
     });
   }
+
   openDialog(session): void {
-    const dialogRef = this.dialog.open(CreateSessionComponent, {
-      width: '50%',
-      height: '100%',
-      data: { sessionData: session, create: false }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-    });
+    if (session.sessionDetails.status === 'published') {
+      this.toasterService.error('You cannot update a published session');
+    } else {
+      const dialogRef = this.dialog.open(CreateSessionComponent, {
+        width: '50%',
+        height: '100%',
+        data: { sessionData: session, create: false }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+      });
+    }
   }
 
   openSession(session): void {
@@ -52,7 +58,7 @@ export class SessionListComponent implements OnInit {
   }
 
   showValues(value) {
-    console.log('form data' , value);
+    console.log('form data', value);
   }
 }
 

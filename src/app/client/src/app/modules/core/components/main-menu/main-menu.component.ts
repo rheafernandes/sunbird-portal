@@ -25,6 +25,7 @@ export class MainMenuComponent  implements OnInit {
    */
   private router: Router;
   categoryMasterList;
+  isOpen: Boolean;
   /*
   * constructor
 

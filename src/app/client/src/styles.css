@@ -3,6 +3,9 @@
 @import "../node_modules/fine-uploader/fine-uploader/fine-uploader-new.min.css";
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
+/* angular-cli file: src/styles.css */
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
+
 /*sunbird light font*/
 @font-face {
   font-family: 'sunbirdlightfont';
