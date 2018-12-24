@@ -13,9 +13,12 @@ import * as _ from 'lodash';
 import {
   ICollectionTreeNodes,
   ICollectionTreeOptions,
-  MimeTypeTofileType
+  MimeTypeTofileType,
+
 } from '../../interfaces';
-import { ResourceService, PlayContent } from '../../services/index';
+import { ResourceService, PlayContent, ConfigService } from '../../services/index';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import {ListSessionsComponent} from '../../../learn/components/list-sessions/list-sessions.component';
 // import {Subscription , Subject} from 'rxjs';
 @Component({
   selector: 'app-collection-tree',
@@ -43,9 +46,13 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
   };
   public subscription: any;
   public courseProgress: any;
+
+  learnerService: any;
   constructor(
+    public dialog: MatDialog,
     public player: PlayContent,
-    public resourceService?: ResourceService
+    public resourceService?: ResourceService,
+
   ) {
     this.resourceService = resourceService;
     this.player = player;
@@ -59,9 +66,6 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
     console.log('in collection tree sesion', this.session);
     console.log('this noderoot', this.nodeRoot);
     console.log('units', this.unitId);
-    // for (const root of this.session) {
-    //   this.unitId.push(root.sessionDetails.courseUnit);
-    //  }
   }
 
   ngOnChanges() {
@@ -97,8 +101,6 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
     console.log(' this.rootNode', this.rootNode);
     if (this.rootNode) {
       this.rootChildrens = this.rootNode.children;
-      // this.unitId = this.rootChildrens.model.code;
-      // console.log('this.unitid', this.unitId);
       console.log('this.rootChildrens', this.rootChildrens);
       this.nodeRoot = this.rootNode;
       this.addNodeMeta();
@@ -172,9 +174,8 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
   openSession(session) {
     // const dialogRef = this.dialog.open(ListSessionsComponent, {
     //   width: '50%',
-    //   data: [session]
+      // data: [session]
     // });
     // dialogRef.afterClosed().subscribe(result => {
-    // });
   }
 }
