@@ -45,7 +45,7 @@
         <mat-tab label="Upcoming Batches">
             <mat-grid-list [cols]="breakpoint" (window:resize)="onResize($event)">
                 <mat-card *ngIf="courseMentor === true ">
-                    <button class="btn" (click)="createNewBatch()">Add New Batch</button>
+                    <button class="btn btn-info" (click)="createNewBatch()">Add New Batch</button>
                 </mat-card>
                 <mat-grid-tile  data-aos="fade-right" *ngFor="let upcoming of upcomingBatches">
                     <div class="wrapper">

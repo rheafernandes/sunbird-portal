@@ -72,16 +72,14 @@ export class UpdateBatchDialogComponent implements OnInit {
     this.shouldSizeUpdate = data.shouldSizeUpdate;
     this.filteredMentors = this.mentorCtrl.valueChanges.pipe(
       startWith(null),
-      map((mentor: string | null) => mentor ? this._filterMentor(mentor) : this.allMentors.slice()));
+      map((mentor: string) => mentor ? this._filterMentor(mentor) : this.allMentors.slice()));
     this.filteredMembers = this.memberCtrl.valueChanges.pipe(
       startWith(null),
-      map((member: string | null) => member ? this._filterMember(member) : this.allMembers.slice()));
+      map((member: string) => member ? this._filterMember(member) : this.allMembers.slice()));
   }
 
   ngOnInit(): void {
     this.courseId = this.data.courseId;
-    // this.allMembersDetails = this.data.memberDetail;
-    // this.allMentorsDetails = this.data.mentorDetail;
     this.allMentors = this.data.mentorDetail;
     this.allMembers = this.data.memberDetail;
     this.allMembers = _.concat(this.allMentors, this.allMembers);
@@ -130,10 +128,12 @@ export class UpdateBatchDialogComponent implements OnInit {
     this.mentorCtrl.setValue(null);
   }
 
-  private _filterMentor(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.allMentors.filter(mentor => mentor.toLowerCase().indexOf(filterValue) === 0);
+  private _filterMentor(value: string) {
+    if  (value !== undefined) {
+      const filterValue = value.toString().toLowerCase();
+      return this.allMentors.filter(mentor => mentor.name.toLowerCase().indexOf(filterValue) === 0);
+    }
+    return this.allMentors;
   }
   addMember(event: MatChipInputEvent): void {
 
@@ -158,10 +158,12 @@ export class UpdateBatchDialogComponent implements OnInit {
     this.memberCtrl.setValue(null);
   }
 
-  private _filterMember(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.allMembers.filter(member => member.name.toLowerCase().indexOf(filterValue) === 0);
+  private _filterMember(value: string) {
+    if  (value !== undefined) {
+      const filterValue = value.toString().toLowerCase();
+      return this.allMembers.filter(member => member.name.toLowerCase().indexOf(filterValue) === 0);
+    }
+    return this.allMembers;
   }
 
 
@@ -186,8 +188,6 @@ export class UpdateBatchDialogComponent implements OnInit {
               obj['name'] = mentorDetail.firstName + ' ' + mentorDetail.lastName;
               obj['id'] = mentorDetail.identifier;
               this.mentors.push(obj);
-              // this.mentorsDetails[mentorDetail.identifier] = mentorDetail.firstName + ' ' + mentorDetail.lastName;
-              // this.mentors = _.values(this.mentorsDetails);
             }
           }
         }
@@ -245,7 +245,6 @@ export class UpdateBatchDialogComponent implements OnInit {
       this.courseBatchService.updateBatch(requestBody)
       .subscribe(
         (data) => {
-          console.log(data);
           this.toasterService.success('You successfully updated the batch');
         },
         (err) => {
