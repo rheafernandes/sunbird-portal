@@ -7,6 +7,7 @@ import { Inject } from '@angular/core';
 import { ConfigService, ToasterService } from '@sunbird/shared';
 import { UserService, LearnerService } from '@sunbird/core';
 import { Subject, of as observableOf, Observable } from 'rxjs';
+import * as moment from 'moment';
 import {
   FormControl,
   Validators
@@ -31,6 +32,7 @@ export class DetailModel {
 export class CreateBatchDialogComponent implements OnInit {
   public courseId;
   minDate = new Date();
+  mentorsCreatedBy;
   shouldSizeUpdate: boolean;
   breakpoint: number;
   visible = true;
@@ -94,7 +96,7 @@ export class CreateBatchDialogComponent implements OnInit {
     // this.allMembersDetails = this.data.memberDetail;
     this.allMentors = this.data.mentorDetail;
     this.allMembers = this.data.memberDetail;
-    this.allMembers = _.concat(this.allMentors, this.allMembers);
+    // this.allMembers = _.concat(this.allMentors, this.allMembers);
     this.breakpoint = window.innerWidth <= 550 ? 1 : 1;
     if (this.shouldSizeUpdate) {
       this.updateSize();
@@ -177,8 +179,8 @@ export class CreateBatchDialogComponent implements OnInit {
   }
   submit(startDate, endDate) {
 
-    startDate = new Date(Date.parse(startDate)).toISOString().slice(0, 10);
-    endDate = new Date(Date.parse(endDate)).toISOString().slice(0, 10);
+    const startDat = moment(startDate).format('YYYY-MM-DD');
+    const endDat = endDate && moment(endDate).format('YYYY-MM-DD');
     if (this.date.value > this.serializedDate.value && this.date.value ) {
       this.submitbtn = false;
       this.toasterService.error('End Date should be greater than start date');
@@ -195,33 +197,30 @@ export class CreateBatchDialogComponent implements OnInit {
       description: this.batchDescriptCtrl.value,
       // tslint:disable-next-line:quotemark
       enrollmentType: "open",
-      startDate: startDate,
-      endDate: endDate || null,
+      startDate: startDat,
+      endDate: endDat || null,
       createdBy: this.userService.userid,
-      createdFor: this.userService.userProfile.organisationIds,
+      createdFor: this.userService.userProfile.rootOrg,
       mentors: _.compact(mentorIds)
     };
     console.log('request body', requestBody);
-    console.log('submit check', this.submitbtn);
-    const option = {
-      url: this.configService.urlConFig.URLS.BATCH.CREATE,
-      data: {
-        request: requestBody
-      }
-    };
+    // const mentorlist = [];
+    // mentorlist['createdBy'] = this.userService.userid;
+    // mentorlist['createdFor'] = mentorIds;
+    // if (mentorIds !== null || mentorIds !== undefined) {
+    // this.mentorsCreatedBy.push(mentorlist);
+    // }
+console.log('mentors list', this.mentorsCreatedBy);
+    this.courseBatchService.createBatch(requestBody)
+    .subscribe(
+      (data) => {
 
-    console.log('request', this.learnerService.post(option));
-    // this.courseBatchService.createBatch(requestBody)
-    // .subscribe(
-    //   (data) => {
-
-    //     console.log('data ', data);
-    //     this.toasterService.success('You have successfully created the batch');
-    //   },
-    //   (err) => {
-    //     console.log(err);
-    //     this.toasterService.error('User Doesnt belong to rootOrg, Cannot create batch');
-    //   });
-
+        console.log('data ', data);
+        this.toasterService.success('You have successfully created the batch');
+      },
+      (err) => {
+        console.log(err);
+        this.toasterService.error('User Doesnt belong to rootOrg, Cannot create batch');
+      });
   }
 }

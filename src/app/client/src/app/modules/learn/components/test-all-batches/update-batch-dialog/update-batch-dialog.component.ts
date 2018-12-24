@@ -3,7 +3,7 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { Inject } from '@angular/core';
-import { ConfigService } from '@sunbird/shared';
+import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { UserService, LearnerService } from '@sunbird/core';
 import { Subject, of as observableOf, Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
@@ -11,6 +11,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatAutocompleteSelectedEvent, MatChipInputEvent, MatAutocomplete } from '@angular/material';
 import { map, startWith, pluck } from 'rxjs/operators';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-update-batch-dialog',
@@ -74,15 +75,39 @@ export class UpdateBatchDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.allMembersDetails = this.data.memberDetail;
-    this.allMentorsDetails = this.data.mentorDetail;
-    this.allMentors = _.values(this.data.mentorDetail);
-    this.allMembers = _.values(this.data.memberDetail);
-    this.allMembers = _.concat(this.allMentors, this.allMembers);
+    // this.allMembersDetails = this.data.memberDetail;
+    // this.allMentorsDetails = this.data.mentorDetail;
+    this.allMentors = this.data.batchDetail.mentors;
+    this.allMembers = this.data.batchDetail.participant;
+    // this.allMembers = _.concat(this.allMentors, this.allMembers);
     this.breakpoint = (window.innerWidth <= 550) ? 1 : 1;
     if (this.shouldSizeUpdate) { this.updateSize(); }
-    this.getMemberslist();
+    // this.getMemberslist();
+    for (const mentor of this.allMentors) {
+      console.log('mentor id', mentor);
+      const option = {
+        url: `${this.config.urlConFig.URLS.USER.GET_PROFILE}${mentor}`,
+        param: this.config.urlConFig.params.userReadParam
+      };
+      this.learnerService.get(option).subscribe(
+        (data: ServerResponse) => {
+          console.log('usr data', data);
+        const obj = [];
+        obj['id'] = data.result.response.identifier;
+        obj['name'] = data.result.response.firstName + ' ' + data.result.response.lastName;
+        this.mentors.push(obj);
+        console.log('mentors', this.mentors);
+        },
+        (err: ServerResponse) => {
+          console.log('error');
+          // this._userData$.next({ err: err, userProfile: this._userProfile });
+        }
+      );
+    }
+    console.log('this allmetors update', this.allMentors);
+    console.log('this all members', this.allMembers);
     this.getMentorslist();
+    this.getMemberslist();
   }
 
   updateSize() {
@@ -159,17 +184,22 @@ export class UpdateBatchDialogComponent implements OnInit {
   }
 
   onSubmit(title, description, startDate, endDate) {
-    // const requestBody = {
-    //   id: this.batchId,
-    //   name: this.batchUpdateForm.value.name,
-    //   description: this.batchUpdateForm.value.description,
-    //   enrollmentType: this.batchUpdateForm.value.enrollmentType,
-    //   startDate: startDate,
-    //   endDate: endDate || null,
-    //   createdFor: this.userService.userProfile.organisationIds,
-    //   mentors: _.compact(mentors)
-    // };
-    console.log('Submitted');
+    const startDat = moment(startDate).format('YYYY-MM-DD');
+    const endDat = endDate && moment(endDate).format('YYYY-MM-DD');
+
+  // mentorids = existing
+    const requestBody = {
+      id: this.data.batchDetail.identifier ,
+      name: title,
+      description: description,
+      // tslint:disable-next-line:quotemark
+      enrollmentType: "open",
+      startDate: startDat,
+      endDate: endDat || null,
+      createdFor: this.userService.userProfile.organisationIds,
+      // mentors: _.compact(mentors)
+    };
+    console.log('Submitted', requestBody);
     console.log(title);
     console.log(description);
     startDate = new Date(Date.parse(startDate)).toISOString().slice(0, 10);
