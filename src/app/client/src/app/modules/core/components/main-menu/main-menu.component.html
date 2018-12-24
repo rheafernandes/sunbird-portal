@@ -12,19 +12,18 @@
 	<a class="item" mat-button [matMenuTriggerFor]="main_menu">
 		Catalog
 	</a>
-
 	<extension-point name="header-menu-item"></extension-point>
 </div>
 
-<mat-menu #main_menu="matMenu">
+<mat-menu #main_menu="matMenu" yPosition="below" xPosition="after" [overlapTrigger]="true">
 	<button mat-menu-item routerLink="/search/catalog/1">View All Courses</button>
 	<button mat-menu-item [matMenuTriggerFor]="sub_main_menu">Browse With</button>
 </mat-menu>
 
-<mat-menu #sub_main_menu="matMenu">
+<mat-menu #sub_main_menu="matMenu" yPosition="below" xPosition="after" [overlapTrigger]="false">
 	<ng-container *ngFor="let category of categoryMasterList">
 		<button mat-menu-item [matMenuTriggerFor]="sub_menu">{{ category?.code}}</button>
-		<mat-menu #sub_menu="matMenu">
+		<mat-menu #sub_menu="matMenu" yPosition="below" xPosition="after" [overlapTrigger]="false">
 			<button *ngFor="let subItem of category?.terms" mat-menu-item (click)="filter(category?.code , subItem?.name)">{{
 				subItem?.name }}</button>
 		</mat-menu>

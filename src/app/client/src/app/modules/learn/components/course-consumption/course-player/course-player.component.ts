@@ -292,11 +292,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy, OnChanges {
 
     this.sessionService
       .getSessionsFilter(this.batchId, this.courseId)
-      .subscribe(data => {
-        console.group('session details');
-        console.warn('session for this particular batch', data);
-        console.groupEnd();
-        this.sessions.push(data);
+      .subscribe((data: any) => {
+        if (data !== null) {
+          this.sessions = data.sessions;
+        } else {
+          this.sessions = [];
+        }
       });
   }
 
@@ -518,7 +519,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy, OnChanges {
           updatedRes => {
             this.contentStatus = updatedRes.content;
           },
-          err => {}
+          err => { }
         );
     }
   }
@@ -547,7 +548,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy, OnChanges {
         index !== -1 &&
         this.courseProgressData.content[index].status === 1 &&
         playContentDetail.model.mimeType ===
-          'application/vnd.ekstep.h5p-archive'
+        'application/vnd.ekstep.h5p-archive'
       ) {
         const request: any = {
           userId: this.userService.userid,

@@ -1,264 +1,183 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark"*ngIf="!showExploreHeader">
-     <a class="navbar-brand" href="#">
-       <img src="../../../../../../../tenant/sunbird/sunbird_logo .png"  alt ="logo" class="logo" />
-     </a>
-    <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" *ngIf="!showExploreHeader">
+  <a class="navbar-brand" href="#">
+    <img src="../../../../../../../tenant/sunbird/sunbird_logo .png" alt="logo" class="logo" />
+  </a>
+  <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarColor01"
+    aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-    <div class="navbar-collapse collapse" id="navbarColor01" style="">
-      <span class="ml-3" *ngIf="!showExploreHeader && userService.userid">
+  <div class="navbar-collapse collapse" id="navbarColor01" style="">
+    <span class="ml-3" *ngIf="!showExploreHeader && userService.userid">
       <ul class="navbar-nav mr-auto">
-            <li class="nav-item ">
-              <a
-                class="nav-link"
-                [class.active]="
+        <li class="nav-item ">
+          <a class="nav-link" [class.active]="
                   router.isActive('/search/All') || router.isActive('/home')
                 "
-                routerLink="/home"
-                >{{ resourceService?.frmelmnts?.tab?.home }}</a
-              >
-            </li>
-            <li class="nav-item ">
-              <a
-                class="nav-link"
-                [class.active]="
+            routerLink="/home">{{ resourceService?.frmelmnts?.tab?.home }}</a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link" [class.active]="
                   router.isActive('/search/Courses') ||
                   router.isActive('/learn')
                 "
-                routerLink="/learn"
-                >{{ resourceService?.frmelmnts?.tab?.courses }}</a
-              >
-            </li>
-            <li class="nav-item ">
-              <a
-                class="nav-link"
-                [class.active]="
+            routerLink="/learn">{{ resourceService?.frmelmnts?.tab?.courses }}</a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link" [class.active]="
                   router.isActive('/search/Library') ||
                   router.isActive('/resources')
                 "
-                routerLink="/resources"
-                >{{ resourceService?.frmelmnts?.tab?.resources }}</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                 [matMenuTriggerFor]="main_menu"
-                >Catalog</a>
-            </li>
-            <li class="nav-item ">
-              <a class="nav-link" id="profile-color" style="color: white;"
-                ><extension-point
-                  id="profile-color"
-                  style="color: white; "
-                  name="header-menu-item"
-                ></extension-point
-              ></a>
-            </li>
-          </ul>
-          </span>
-          <span class="ml-5" *ngIf="!showExploreHeader && userService.userid">
-              <app-search></app-search>
-             </span>
+            routerLink="/resources">{{ resourceService?.frmelmnts?.tab?.resources }}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [matMenuTriggerFor]="main_menu">Catalog</a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link" id="profile-color" style="color: white;">
+            <extension-point id="profile-color" style="color: white; " name="header-menu-item"></extension-point>
+          </a>
+        </li>
+      </ul>
+    </span>
+    <span class="ml-5" *ngIf="!showExploreHeader && userService.userid">
+      <app-search></app-search>
+    </span>
 
-          <div
-          class="icon-alignment"
-          *ngIf="userService.userid; else: showLoginBtn"
-        >
-          <i
-            class="float-ContentLeft alarm icon large alaramIconColor"
-            style="color: white;margin-right: 1em"
-          ></i>
-        </div>
-        <div
-          suiDropdown
-          [(isOpen)]="isOpen"
-          class="ui floating dropdown right top pointing
+    <div class="icon-alignment" *ngIf="userService.userid; else: showLoginBtn">
+      <i class="float-ContentLeft alarm icon large alaramIconColor" style="color: white;margin-right: 1em"></i>
+    </div>
+    <div suiDropdown [(isOpen)]="isOpen" class="ui floating dropdown right top pointing
               header-user-container "
-          id="dropdown-menu-list-header"
-        >
-          <img
-            src="{{ userProfile?.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"
-            class="ui circular image logged-in-user"
-            *ngIf="userService.userid"
-          />
-          <div class="menu" suiDropdownMenu>
-            <div *ngIf="userProfile" class="item headerDropdownProfile">
-              {{ userProfile?.firstName }}&nbsp;{{ userProfile?.lastName }}
-            </div>
-            <div *ngIf="userProfile" class="ui divider"></div>
-
-            <a class="item" routerLink="profile">{{
-              resourceService.frmelmnts?.lnk?.profile
-            }}</a>
-            <a
-              class="item"
-              *ngIf="permissionService.permissionAvailable"
-              appPermission
-              [permission]="adminDashboard"
-              routerLink="orgDashboard"
-              >{{ resourceService.frmelmnts?.lnk?.dashboard }}</a
-            >
-            <a
-              class="item"
-              *ngIf="permissionService.permissionAvailable"
-              appPermission
-              [permission]="announcementRole"
-              routerLink="announcement/outbox/1"
-              >{{ resourceService.frmelmnts?.lnk?.announcement }}</a
-            >
-            <a
-              class="item"
-              *ngIf="permissionService.permissionAvailable"
-              appPermission
-              [permission]="workSpaceRole"
-              (click)="navigateToWorkspace()"
-              >{{ resourceService.frmelmnts?.lnk?.workSpace }}</a
-            >
-            <a
-              class="item"
-              *ngIf="permissionService.permissionAvailable"
-              appPermission
-              [permission]="myActivityRole"
-              routerLink="myActivity"
-              >{{ resourceService.frmelmnts?.lnk?.myactivity }}</a
-            >
-            <a
-              class="item"
-              *ngIf="permissionService.permissionAvailable"
-              appPermission
-              [permission]="orgSetupRole"
-              routerLink="orgType"
-              >{{ resourceService.frmelmnts?.lbl?.orgtypes }}</a
-            >
-            <a class="item" (click)="logout()">{{
-              resourceService.frmelmnts?.lnk?.logout
-            }}</a>
-          </div>
+      id="dropdown-menu-list-header">
+      <img src="{{ userProfile?.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" class="ui circular image logged-in-user"
+        *ngIf="userService.userid" />
+      <div class="menu" suiDropdownMenu>
+        <div *ngIf="userProfile" class="item headerDropdownProfile">
+          {{ userProfile?.firstName }}&nbsp;{{ userProfile?.lastName }}
         </div>
+        <div *ngIf="userProfile" class="ui divider"></div>
 
-        <ng-template #showLoginBtn>
-          <a
-            id="explore-align"
-            *ngIf="
+        <a class="item" routerLink="profile">{{
+          resourceService.frmelmnts?.lnk?.profile
+          }}</a>
+        <a class="item" *ngIf="permissionService.permissionAvailable" appPermission [permission]="adminDashboard"
+          routerLink="orgDashboard">{{ resourceService.frmelmnts?.lnk?.dashboard }}</a>
+        <a class="item" *ngIf="permissionService.permissionAvailable" appPermission [permission]="announcementRole"
+          routerLink="announcement/outbox/1">{{ resourceService.frmelmnts?.lnk?.announcement }}</a>
+        <a class="item" *ngIf="permissionService.permissionAvailable" appPermission [permission]="workSpaceRole"
+          (click)="navigateToWorkspace()">{{ resourceService.frmelmnts?.lnk?.workSpace }}</a>
+        <a class="item" *ngIf="permissionService.permissionAvailable" appPermission [permission]="myActivityRole"
+          routerLink="myActivity">{{ resourceService.frmelmnts?.lnk?.myactivity }}</a>
+        <a class="item" *ngIf="permissionService.permissionAvailable" appPermission [permission]="orgSetupRole"
+          routerLink="orgType">{{ resourceService.frmelmnts?.lbl?.orgtypes }}</a>
+        <a class="item" (click)="logout()">{{
+          resourceService.frmelmnts?.lnk?.logout
+          }}</a>
+      </div>
+    </div>
+
+    <ng-template #showLoginBtn>
+      <a id="explore-align" *ngIf="
               router.isActive('', true) && exploreButtonVisibility === 'true'
             "
-            class="nav-link"
-            href="/explore"
-            >{{ resourceService.frmelmnts?.lbl?.explore }}
-            {{ resourceService.instance }}</a
-          >
-          <a
-            id="signup"
-            appTelemetryInteract
-            [telemetryInteractObject]="telemetryInteractObject"
-            [telemetryInteractEdata]="signUpInteractEdata"
-            *ngIf="enableSignup && router.isActive('', true)"
-            class="nav-link"
-            href="/signup"
-            >{{ resourceService.frmelmnts?.btn?.signup }}</a
-          >
-          <a id="login" href="/home" class="nav-link">
-            {{ resourceService.frmelmnts?.btn?.login }}
-          </a>
-        </ng-template>
-    </div>
-  </nav>
+        class="nav-link" href="/explore">{{ resourceService.frmelmnts?.lbl?.explore }}
+        {{ resourceService.instance }}</a>
+      <a id="signup" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="signUpInteractEdata"
+        *ngIf="enableSignup && router.isActive('', true)" class="nav-link" href="/signup">{{
+        resourceService.frmelmnts?.btn?.signup }}</a>
+      <a id="login" href="/home" class="nav-link">
+        {{ resourceService.frmelmnts?.btn?.login }}
+      </a>
+    </ng-template>
+  </div>
+</nav>
 
-  <div class="container-fluid bg-dark">
-      <div class="container">
-        <nav
-          class="navbar navbar-expand-lg "
-          *ngIf="showExploreHeader"
-        >
-          <div class="ui grid margin-none">
-            <div class="center aligned twelve wide tablet computer only column">
-              <div class="ui grid">
-                <div class="one wide column"></div>
-                <div class="padding-left-none">
-                  <a class="navbar-brand" href="#">
-                    <img src="../../../../../../../tenant/sunbird/sunbird_logo .png"  alt ="logo" class="logo" />
-                  </a>
+<div class="container-fluid bg-dark">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg " *ngIf="showExploreHeader">
+      <div class="ui grid margin-none">
+        <div class="center aligned twelve wide tablet computer only column">
+          <div class="ui grid">
+            <div class="one wide column"></div>
+            <div class="padding-left-none">
+              <a class="navbar-brand" href="#">
+                <img src="../../../../../../../tenant/sunbird/sunbird_logo .png" alt="logo" class="logo" />
+              </a>
+            </div>
+            <div class="two wide column"></div>
+            <div class="five wide column padding-top-20">
+              <div class="ui search">
+                <div class="searchicon ui icon input width-100">
+                  <input type="text" id="keyword" name="filter_search" title="Search" placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}"
+                    class="searchinput" [(ngModel)]="key" (keyup.enter)="onEnter(key)" />
+                  <i class="circular search link icon" (click)="onEnter(key)"></i>
                 </div>
-                <div class="two wide column"></div>
-                <div class="five wide column padding-top-20">
-                  <div class="ui search">
-                    <div class="searchicon ui icon input width-100">
-                      <input
-                        type="text"
-                        id="keyword"
-                        name="filter_search"
-                        title="Search"
-                        placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}"
-                        class="searchinput"
-                        [(ngModel)]="key"
-                        (keyup.enter)="onEnter(key)"
-                      />
-                      <i class="circular search link icon" (click)="onEnter(key)"></i>
-                    </div>
-                  </div>
-                </div>
-                <div class="one wide column">
-
-                  <a href="/home" class="nav-link" style="margin-top:0.5rem;float: right;">
-                    {{ resourceService.frmelmnts?.btn?.login }}
-                  </a>
-                </div>
-                <div class="one wide column"></div>
               </div>
             </div>
+            <div class="one wide column">
 
-            <div class="center aligned twelve wide mobile only column padding-none">
-              <div class="ui grid margin-none">
-                <div class="three wide column padding-left-10 padding-top-5">
-                  <a (click)="navigateToHome()" class="navbar-brand1">
-                   NIIT
-                  </a>
-                </div>
-                <div class="three wide column"></div>
-                <div class="six wide column">
-                  <a href="/home" class="sunblogin">
-                    <p class="ui item right-float">
-                      {{ resourceService.frmelmnts?.btn?.login }}
-                    </p>
-                  </a>
-                </div>
-              </div>
+              <a href="/home" class="nav-link" style="margin-top:0.5rem;float: right;">
+                {{ resourceService.frmelmnts?.btn?.login }}
+              </a>
+            </div>
+            <div class="one wide column"></div>
+          </div>
+        </div>
 
-              <div class="ui grid margin-none">
-                <div class="twelve wide mobile only column padding-10">
-                  <div class="searchicon ui fluid icon input">
-                    <input
-                      type="text"
-                      id="keyword"
-                      name="filter_search"
-                      title="Search"
-                      placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}"
-                      class=""
-                      [(ngModel)]="key"
-                      (keyup.enter)="onEnter(key)"
-                    />
-                    <i class="circular search link icon" (click)="onEnter(key)"></i>
-                  </div>
-                </div>
+        <div class="center aligned twelve wide mobile only column padding-none">
+          <div class="ui grid margin-none">
+            <div class="three wide column padding-left-10 padding-top-5">
+              <a (click)="navigateToHome()" class="navbar-brand1">
+                NIIT
+              </a>
+            </div>
+            <div class="three wide column"></div>
+            <div class="six wide column">
+              <a href="/home" class="sunblogin">
+                <p class="ui item right-float">
+                  {{ resourceService.frmelmnts?.btn?.login }}
+                </p>
+              </a>
+            </div>
+          </div>
+
+          <div class="ui grid margin-none">
+            <div class="twelve wide mobile only column padding-10">
+              <div class="searchicon ui fluid icon input">
+                <input type="text" id="keyword" name="filter_search" title="Search" placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}"
+                  class="" [(ngModel)]="key" (keyup.enter)="onEnter(key)" />
+                <i class="circular search link icon" (click)="onEnter(key)"></i>
               </div>
             </div>
           </div>
-        </nav>
+        </div>
       </div>
-      </div>
-<mat-menu #main_menu="matMenu">
-  <button mat-menu-item routerLink="/search/catalog/1">View All Courses</button>
-  <button mat-menu-item [matMenuTriggerFor]="sub_main_menu">Browse With</button>
+    </nav>
+  </div>
+</div>
+<mat-menu #main_menu="matMenu" xPosition="after" yPosition="below" [overlapTrigger]="false">
+  <button mat-menu-item routerLink="/search/catalog/1">
+    <mat-icon>view_list</mat-icon>
+    <span>View All Courses</span>
+  </button>
+  <button mat-menu-item [matMenuTriggerFor]="sub_main_menu">
+    <mat-icon>keyboard_arrow_right</mat-icon>
+    <span>Browse With</span>
+  </button>
 </mat-menu>
 
-<mat-menu #sub_main_menu="matMenu">
+<mat-menu #sub_main_menu="matMenu" xPosition="after" yPosition="below" [overlapTrigger]="false">
   <ng-container *ngFor="let category of categoryMasterList">
-    <button mat-menu-item [matMenuTriggerFor]="sub_menu">{{ category?.code}}</button>
-    <mat-menu #sub_menu="matMenu">
-      <button *ngFor="let subItem of category?.terms" mat-menu-item (click)="filter(category?.code , subItem?.name)">{{
-        subItem?.name }}</button>
+    <button mat-menu-item [matMenuTriggerFor]="sub_menu">
+      <mat-icon>import_contacts</mat-icon>
+      <span>{{ category?.code}}</span>
+    </button>
+    <mat-menu #sub_menu="matMenu" xPosition="after" yPosition="below" [overlapTrigger]="false">
+      <button *ngFor="let subItem of category?.terms" mat-menu-item (click)="filter(category?.code , subItem?.name)">
+        <mat-icon>note</mat-icon>
+        <span>{{ subItem?.name }}</span>
+      </button>
     </mat-menu>
   </ng-container>
 </mat-menu>
