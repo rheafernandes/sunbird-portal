@@ -59,7 +59,7 @@
   margin-left: 2rem;
   font-size: 1.8rem;
    font-family: 'Carter One', cursive;
-    background: -webkit-linear-gradient(blue ) !important;
+    /* background: -webkit-linear-gradient(blue ) !important; */
    -webkit-background-clip: text !important;
    -webkit-text-fill-color: transparent !important;
 }
@@ -82,6 +82,7 @@
 #signup{
   margin-top: 0.4rem;
   font-size: 1em;
+  margin-left: auto;
 }
 #login{
   margin-top: 0.4rem;

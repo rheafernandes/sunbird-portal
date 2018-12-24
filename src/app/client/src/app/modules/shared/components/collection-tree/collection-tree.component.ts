@@ -16,6 +16,7 @@ import {
   MimeTypeTofileType
 } from '../../interfaces';
 import { ResourceService, PlayContent } from '../../services/index';
+import { Session } from 'protractor';
 // import {Subscription , Subject} from 'rxjs';
 @Component({
   selector: 'app-collection-tree',

@@ -1,4 +1,14 @@
-<div style="overflow:scroll-y">
+<div class="container">
+      <h4 class="modal-title text-danger">
+          <i class="fa fa-times-circle float-right primary" style="padding-bottom: 1rem" (click)="onNoClick()"></i>
+        </h4>
+<div class="modal-content">
+    <div class="modal-title">
+        <h4 class="modal-title align-center text-center" id="exampleModalLabel">Session List</h4>
+        <hr />
+      </div>
+
+<div class="modal-body" style="overflow:scroll-y">
   <mat-accordion class="example-headers-align">
     <mat-expansion-panel (opened)="panelOpenState = true" *ngFor="let session of sessionsList"
     (closed)="panelOpenState = false" hideToggle>
@@ -40,3 +50,6 @@
         </mat-expansion-panel>
         </mat-accordion>
   </div>
+</div>
+
+</div>

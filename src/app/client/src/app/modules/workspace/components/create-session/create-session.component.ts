@@ -21,6 +21,8 @@ export class CreateSessionComponent implements OnInit, OnDestroy {
   batchData;
   session;
   items = Array.from({ length: 100000 }).map((_, i) => `Item #${i}`);
+  currentDate =  new Date().toJSON().slice(0, 10);
+  minDate = new Date();
   constructor(private courseConsumptionService: CourseConsumptionService,
     public dialogRef: MatDialogRef<CreateSessionComponent>,
     @Inject(MAT_DIALOG_DATA) private data,
@@ -74,6 +76,7 @@ export class CreateSessionComponent implements OnInit, OnDestroy {
         (response: any) => {
           this.course = response;
           this.coursechapters = this.course.children;
+          console.log('coursechapter', this.coursechapters);
         }
       );
   }

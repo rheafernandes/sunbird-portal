@@ -715,11 +715,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy, OnChanges {
   openDialog(): void {
     const dialogRef = this.dialog.open(ListSessionsComponent, {
       width: '50%',
-      data: this.sessions
+      data: this.sessions,
     });
 
     dialogRef.afterClosed().subscribe(result => {
-
     });
   }
 
