@@ -36,7 +36,7 @@ export class FilterSessionPipe implements PipeTransform {
     //   // resultantSessions = this.filterByCourseData(resultantSessions, 'id', batch);
     //   return resultantSessions;
     // }
-    console.log("batch ", batch , title , status , completion , course);
+    console.log('batch ', batch , title , status , completion , course);
     return sessionList;
 
   }
