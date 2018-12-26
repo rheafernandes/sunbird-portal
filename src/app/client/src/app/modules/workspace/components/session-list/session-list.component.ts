@@ -47,6 +47,7 @@ export class SessionListComponent implements OnInit {
   }
   deleteSession(session) {
     this.sessionService.deleteSession(session);
+    this.toasterService.error('session successfully deleted');
   }
 
   publish(session) {

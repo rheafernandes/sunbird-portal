@@ -65,4 +65,8 @@ export class SessionService {
       this.toasterService.error('you are not eligible to join the session');
     }
   }
+
+  getSessionById(sessionId) {
+    return this.http.post('http://13.233.213.245:8080/single-session', {'sessionId': sessionId});
+  }
 }
