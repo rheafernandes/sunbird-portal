@@ -180,7 +180,7 @@ td, th {
 .img-avatar, .avatar>img, .img-circle {
   max-width: 100%;
   height: auto;
-  border-radius: 50em;
+  border-radius: 50%;
 }
 
 .avatar>img {
