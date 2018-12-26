@@ -130,7 +130,7 @@ export class CreateBatchDialogComponent implements OnInit {
     }
   }
 
-  removeMentor(mentor: string): void {
+  removeMentor(mentor): void {
     const index = this.mentors.indexOf(mentor);
     if (index >= 0) {
       this.mentors.splice(index, 1);
@@ -143,19 +143,19 @@ export class CreateBatchDialogComponent implements OnInit {
     this.mentorInput.nativeElement.value = '';
     this.mentorCtrl.setValue(null);
   }
-  private _filterMentor(value: string) {
-    if  (value !== undefined) {
-      const filterValue = value.toString().toLowerCase();
-      return this.allMentors.filter(mentor => mentor.name.toLowerCase().indexOf(filterValue) === 0);
-    }
-    return this.allMentors;
+
+  private _filterMentor(value) {
+    const filterValue = value.toLowerCase();
+    return this.allMentors.filter(
+      mentor => mentor.name.toLowerCase().indexOf(filterValue) === 0
+    );
   }
 
   addMember(event: MatChipInputEvent): void {
     if (!this.matMemberAutocomplete.isOpen) {
       const input = event.input;
       const value = event.value;
-
+      console.log('Added Member Value', value);
       if ((value || '').trim()) {
         this.members.push(value.trim());
       }
@@ -166,7 +166,7 @@ export class CreateBatchDialogComponent implements OnInit {
     }
   }
 
-  removeMember(member: string): void {
+  removeMember(member): void {
     const index = this.members.indexOf(member);
     if (index >= 0) {
       this.members.splice(index, 1);
@@ -179,12 +179,11 @@ export class CreateBatchDialogComponent implements OnInit {
     this.memberCtrl.setValue(null);
   }
 
-  private _filterMember(value: string) {
-    if  (value !== undefined) {
-      const filterValue = value.toString().toLowerCase();
-      return this.allMembers.filter(member => member.name.toLowerCase().indexOf(filterValue) === 0);
-    }
-    return this.allMembers;
+  private _filterMember(value) {
+    const filterValue = value.toLowerCase();
+    return this.allMembers.filter(
+      member => member.name.toLowerCase().indexOf(filterValue) === 0
+    );
   }
   submit(startDate, endDate) {
     this.disableSubmitBtn = true;

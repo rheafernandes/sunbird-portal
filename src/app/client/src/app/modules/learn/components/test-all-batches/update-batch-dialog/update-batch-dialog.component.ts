@@ -297,9 +297,9 @@ export class UpdateBatchDialogComponent implements OnInit {
         mentors: _.compact(mentorIds)
       };
       console.log('request body', requestBody);
-      this.courseBatchService.updateBatch(requestBody).subscribe(
-        data => {
-          // console.log(data);
+      this.courseBatchService.updateBatch(requestBody)
+      .subscribe(
+        (data) => {
           this.toasterService.success('You successfully updated the batch');
         },
         err => {
