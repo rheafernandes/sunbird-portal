@@ -3,3 +3,11 @@
     pointer-events: none;
     opacity: 0.45;
 }
+.searchInput {
+  width: 7rem;
+}
+@media screen and (min-width:320px) and (max-width:991px){
+.searchInput {
+  width: 5rem;
+}
+}

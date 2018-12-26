@@ -17,6 +17,7 @@
 .nav-link{
   color: white;
   margin-top:2rem;
+  font-family: fantasy;
 }
 #nav{
   color: white;
@@ -92,8 +93,33 @@
 {
   color: white;
 }
+.spacealign{
+  margin-left: 1rem;
+}
 /* @media only screen and (max-width: 400px) {
   .navbar-toggler  {
     float:right;
   }
 } */
+@media screen and (min-width:320px) and (max-width:991px){
+ .nav-link{
+   margin-top: 1rem;
+   font-family: fantasy;
+   font-size: 1rem;
+ }
+ .navbar-brand{
+padding: 0rem;
+ }
+ ul li{
+   height: 30px;
+   font-size: 2%;
+   margin-left: 2%;
+   margin-bottom: 0rem;
+ }
+ .spacealign{
+  margin-left: 0rem;
+}
+.icon-alignment{
+  margin-left: 2%;
+}
+}
