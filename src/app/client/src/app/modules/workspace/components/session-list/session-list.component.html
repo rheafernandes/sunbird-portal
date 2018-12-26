@@ -2,30 +2,30 @@
   <!--filerStart -->
   <div class="container1">
     <div class="row">
+    <div class="col-md-12">
       <div id="filter-panel" class="collapse filter-panel" *ngIf="sessionsList.length>0">
         <div class="panel panel-default">
           <div class="panel-body">
-            <form class="form-inline" role="form" #filter="ngForm">
               <div class="">
                 <label class="filter-col" style="margin-right:0;" for="pref-perpage">Session Title</label>
-                <input ngModel #title="ngModel" name="title" type="text" class="form-control input-sm" style="margin-right: 1rem;"
+                <input [(ngModel)]="title" type="text" class="form-control input-sm" style="margin-right: 1rem;"
                   placeholder="Title" />
               </div>
               <div class="">
                 <label class="filter-col" style="margin-right:0;" for="pref-search" placeholder="name">Course Name</label>
-                <input ngModel #course="ngModel" name="course" type="text" class="form-control input-sm" placeholder="course name"
-                  style="margin-right: 1rem;" id="pref-search">
+                <input [(ngModel)]="course" type="text" class="form-control input-sm" placeholder="course name" style="margin-right: 1rem;"
+                  id="pref-search">
               </div>
               <div class="">
                 <label class="filter-col" style="margin-right:0;" for="pref-orderby">Batch</label>
-                <select ngModel name="batch" #batch="ngModel" id="pref-orderby" class="form-control" style="margin-right: 1rem;"
+                <select [(ngModel)]="batch" id="pref-orderby" class="form-control" style="margin-right: 1rem;"
                   placeholder="select batch">
                   <option [value]="session.id" *ngFor="let session of sessionsList">{{session.name}}</option>
                 </select>
               </div>
               <div class="">
                 <label class="filter-col" style="margin-right:0;" for="pref-orderby">Status</label>
-                <select ngModel #status="ngModel" name="status" id="pref-orderby" class="form-control" style="margin-right: 1rem;"
+                <select [(ngModel)]="status" id="pref-orderby" class="form-control" style="margin-right: 1rem;"
                   placeholder="Session status">
                   <option value="draft">Draft</option>
                   <option value="published">Published</option>
@@ -33,14 +33,12 @@
               </div>
               <div class="">
                 <label class="filter-col" style="margin-right:0;" for="pref-orderby">Completion</label>
-                <select #completion="ngModel" ngModel name="completion" id="pref-orderby" class="form-control" style="margin-right: 1rem;"
+                <select [(ngModel)]="completion" name="completion" id="pref-orderby" class="form-control" style="margin-right: 1rem;"
                   placeholder=" status">
                   <option value="1">Completed</option>
                   <option value="0">Not Completed</option>
                 </select>
               </div>
-              <!-- <button class="btn btn-primary" (click)="showValues(filter.value)">Test</button> -->
-            </form>
           </div>
         </div>
       </div>
@@ -50,6 +48,7 @@
 
       <button class="btn btn-primary mt-2" (click)="storeSession()"><span class="glyphicon glyphicon-cog">Session
           Store</span></button>
+          </div>
     </div>
   </div>
   <!--filter end-->
@@ -77,11 +76,11 @@
             <th class="two wide UpReviewTableHeader">Update
             </th>
             <th class="two wide UpReviewTableHeader">Attendance
-              </th>
+            </th>
           </tr>
         </thead>
         <tbody>
-          <tr in-view-item class="UpForReviewListHover cursor-pointer" *ngFor="let session of sessionsList">
+          <tr in-view-item class="UpForReviewListHover cursor-pointer" *ngFor="let session of sessionsList | filterSession:title:course:batch:status:completion">
             <td (click)="openSession(session)">
               <h5 class="ui image header">
                 <img src="https://images-na.ssl-images-amazon.com/images/I/31E%2BwRLUqNL._US500_.jpg" class="ui tiny image UpReviewTinyImage">
@@ -132,10 +131,10 @@
               <i class="fa fa-refresh" mat-raised-button (click)="openDialog(session)" aria-hidden="true"></i>
             </td>
             <td>
-                <div class="content">
-                    <a class="item" [routerLink]="['/workspace/content/sessions/1']">View Attendance</a>
-                  </div>
-              </td>
+              <div class="content">
+                <a class="item" [routerLink]="['/workspace/content/sessions/1']">View Attendance</a>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>
