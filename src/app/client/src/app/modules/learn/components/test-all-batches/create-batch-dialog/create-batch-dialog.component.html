@@ -8,7 +8,7 @@
 </h3>
 <div class="example-container">
   <mat-card  class = "field-width">
-    <form #createbatchform="ngForm" novalidate>
+
     <mat-card-content>
       <mat-form-field  class = "field-width">
         <input
@@ -37,7 +37,7 @@
         <input
           matInput
           [matDatepicker]="picker3"
-          placeholder="startdate"
+          placeholder="start Date"
           [ngModel]="startDate"
           #startDate="ngModel"
           [min]="minDate"
@@ -53,7 +53,7 @@
         <input
           matInput
           [matDatepicker]="picker2"
-          placeholder="Value binding"
+          placeholder="End Date"
           [ngModel]="endDate"
           #endDate="ngModel"
           [min]="minDate"
@@ -140,14 +140,13 @@
       <div class="container text-center">
             <button
               mat-button
-              [disabled]="createbatchform.invalid"
               (click)="submit(startDate.value,endDate.value)"
               style="height: 6vh;font-size: 15px;width:-webkit-full-available;background: black;color: white;">
               Create Batch
             </button>
       </div>
     </mat-card-footer>
-  </form>
+
   </mat-card>
 </div>
 </div>

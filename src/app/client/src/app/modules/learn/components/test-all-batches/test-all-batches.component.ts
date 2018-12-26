@@ -84,13 +84,14 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
   mentorContactDetail;
   userId;
   showUnenroll;
+  mentorCheck;
   public unsubscribe = new Subject<void>();
   currentDate = new Date().toJSON().slice(0, 10);
   allMentors = [];
   allMembers = [];
   breakpoint: number;
   public courseMentor;
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void { }
 
   constructor(
     public dialog: MatDialog,
@@ -112,8 +113,8 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       window.innerWidth <= 550
         ? 1
         : window.innerWidth > 550 && window.innerWidth < 880
-        ? 2
-        : 3;
+          ? 2
+          : 3;
     this.ongoingSearch = {
       filters: {
         status: '1',
@@ -253,20 +254,22 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {});
+    dialogRef.afterClosed().subscribe(result => { });
   }
   updateBatch(batch): void {
+   const notCreator = this.checkMentorIsPresent(batch);
     const dialogRef = this.dialog.open(UpdateBatchDialogComponent, {
-      data: {
+        data: {
         title: 'update',
         mentorDetail: this.allMentors,
         memberDetail: this.allMembers,
         batchDetail: batch,
         courseId: this.courseId,
+        creator: notCreator,
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {});
+    dialogRef.afterClosed().subscribe(result => { });
   }
 
   onResize(event) {
@@ -274,10 +277,11 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       event.target.innerWidth <= 550
         ? 1
         : event.target.innerWidth > 550 && window.innerWidth < 880
-        ? 2
-        : 3;
+          ? 2
+          : 3;
   }
   checkRoles() {
+
     if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
       this.courseMentor = true;
     } else {
@@ -285,6 +289,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
     }
   }
   getMentorslist() {
+    const userRootOrgId = this.userService.rootOrgId;
     const option = {
       url: this.config.urlConFig.URLS.ADMIN.USER_SEARCH,
       data: {
@@ -296,19 +301,27 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
     };
     this.learnerService.post(option).subscribe(data => {
       const mentorsDetails = data.result.response.content;
+      console.log('mentr', mentorsDetails);
       for (const mentorDetail of mentorsDetails) {
-        if (mentorDetail.firstName !== undefined && mentorDetail.lastName !== undefined) {
+            if (userRootOrgId === mentorDetail.rootOrgId && (mentorDetail.firstName !== null ||
+              mentorDetail.firstName !== undefined) && (mentorDetail.lastName !== null || mentorDetail.lastName !== undefined)) {
           const obj = [];
           obj['name'] = mentorDetail.firstName + ' ' + mentorDetail.lastName;
-             obj['id'] = mentorDetail.identifier;
-             this.allMentors.push(obj);
-      }
-    }
-      console.log('this mentors', this.allMentors);
-     });
-      }
+          obj['id'] = mentorDetail.identifier;
+          this.allMentors.push(obj);
+
+            }
+        }
+        console.log('this all mentors', this.allMembers);
+      },
+          (err) => {
+            this.toasterService.error(err.error.params.errmsg);
+
+          });
+  }
 
   getMemberslist() {
+    const userRootOrgId = this.userService.rootOrgId;
     const option = {
       url: this.config.urlConFig.URLS.ADMIN.USER_SEARCH,
       data: {
@@ -318,16 +331,32 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
         }
       }
     };
-    this.learnerService.post(option).subscribe(data => {
+    this.learnerService.post(option).subscribe((data) => {
       const membersDetails = data.result.response.content;
       for (const memberDetail of membersDetails) {
-        if (memberDetail.firstName !== undefined && memberDetail.lastName !== undefined) {
+        // if (userRootOrgId === memberDetail.rootOrgId) {
+            if ((memberDetail.firstName !== null ||
+              memberDetail.firstName !== undefined) && (memberDetail.lastName !== null || memberDetail.lastName !== undefined)) {
           const obj = [];
           obj['name'] = memberDetail.firstName + ' ' + memberDetail.lastName;
-             obj['id'] = memberDetail.identifier;
-             this.allMembers.push(obj);
-      }
-    }
-    });
+          obj['id'] = memberDetail.identifier;
+          this.allMembers.push(obj);
+
+            }
+          }
+          console.log('this all mentors', this.allMembers);
+        // }
+  },
+      (err) => {
+            this.toasterService.error(err.error.params.errmsg);
+            });
   }
+
+  checkMentorIsPresent(batch): boolean {
+  const userId = this.userService.userid;
+  if (batch.createdBy === userId) {
+    return this.mentorCheck = true;
+}
+}
+
 }
