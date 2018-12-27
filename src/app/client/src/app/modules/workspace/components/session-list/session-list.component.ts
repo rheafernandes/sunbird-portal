@@ -30,6 +30,7 @@ export class SessionListComponent implements OnInit {
 
     if (localStorage.getItem('VIEW_CONTROL') !== null) {
       this.currentView = JSON.parse(localStorage.getItem('VIEW_CONTROL'));
+      this.views.setValue(this.currentView);
     }
   }
 

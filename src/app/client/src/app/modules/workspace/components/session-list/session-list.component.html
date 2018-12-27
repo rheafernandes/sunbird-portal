@@ -145,6 +145,11 @@
                 <a class="item" [routerLink]="['/workspace/content/sessions/1']">View</a>
               </div>
             </td>
+            <td>
+              <div class="content">
+                <a class="item" [routerLink]="['/workspace/content/sessions/addMaterial' , session.sessionDetails?.sessionId]">Add</a>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>
