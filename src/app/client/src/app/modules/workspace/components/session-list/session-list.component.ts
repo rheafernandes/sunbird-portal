@@ -7,6 +7,7 @@ import { SessionDetailsComponent } from '../session-details/session-details.comp
 import { AutofillMonitor } from '@angular/cdk/text-field';
 import { UserService } from '@sunbird/core';
 import { ToasterService } from '../../../shared/services/toaster/toaster.service';
+import { FormControl } from '@angular/forms';
 @Component({
   selector: 'app-session-list',
   templateUrl: './session-list.component.html',
@@ -16,10 +17,23 @@ export class SessionListComponent implements OnInit {
   constructor(private userService: UserService, private toasterService: ToasterService, public dialog: MatDialog,
     private sessionService: SessionService) { }
   sessionsList = [];
+  views = new FormControl();
+  currentView = [];
+  viewsList: string[] = ['startDate', 'endDate', 'time', 'status', 'attendance'];
+
   ngOnInit() {
+    this.views.valueChanges.subscribe((data) => {
+      localStorage['VIEW_CONTROL'] = JSON.stringify(data);
+      this.currentView = data;
+    });
     this.sessionService.getSessions(this.userService.userid).subscribe((data: any) => {
       this.sessionsList = data.sessions;
     });
+
+    if (localStorage.getItem('VIEW_CONTROL') !== null) {
+      this.currentView = JSON.parse(localStorage.getItem('VIEW_CONTROL'));
+      this.views.setValue(this.currentView);
+    }
   }
 
   openDialog(session): void {
@@ -58,5 +72,13 @@ export class SessionListComponent implements OnInit {
   showValues(value) {
     console.log('form data', value);
   }
+
+  view(attr) {
+    if (this.currentView.length === 0) {
+      return true;
+    }
+    return this.currentView.includes(attr);
+  }
+
 }
 

@@ -8,11 +8,13 @@ import { ToasterService } from '../../../shared/services/toaster/toaster.service
 })
 export class SessionService {
   sessions = [];
+  // address="http://13.233.213.245:8080"
+  address = 'http://localhost:8080';
   constructor(private http: HttpClient, private toasterService: ToasterService) {
   }
 
   addSession(sessionDelta: {}): any {
-    const result = this.http.post('http://13.233.213.245:8080/create-session', sessionDelta);
+    const result = this.http.post(`${this.address}/create-session`, sessionDelta);
     result.subscribe((data) => {
       console.log(data);
     }, (err) => {
@@ -21,24 +23,24 @@ export class SessionService {
   }
 
   getSessions(userId) {
-    return this.http.post('http://13.233.213.245:8080/user-sessions', { 'userId': userId })
+    return this.http.post(`${this.address}/user-sessions`, { 'userId': userId })
       .pipe(tap((data) => {
         console.log('Response from API', data);
       }));
   }
 
   getSessionsFilter(batchId, courseId) {
-    return this.http.post('http://13.233.213.245:8080/getsessions', { 'batchId': batchId });
+    return this.http.post(`${this.address}/getsessions`, { 'batchId': batchId });
   }
 
   updateSession(session) {
-    this.http.post('http://13.233.213.245:8080/update-session', session).subscribe((data) => {
+    this.http.post(`${this.address}/update-session`, session).subscribe((data) => {
       console.log('updated method called', data);
     });
   }
 
   deleteSession(session) {
-    this.http.post('http://13.233.213.245:8080/delete-session', session).subscribe((data) => {
+    this.http.post(`${this.address}/delete-session`, session).subscribe((data) => {
       console.log('deletion methods caled', data);
     });
   }
@@ -67,6 +69,6 @@ export class SessionService {
   }
 
   getSessionById(sessionId) {
-    return this.http.post('http://13.233.213.245:8080/single-session', {'sessionId': sessionId});
+    return this.http.post(`${this.address}/single-session`, { 'sessionId': sessionId });
   }
 }
