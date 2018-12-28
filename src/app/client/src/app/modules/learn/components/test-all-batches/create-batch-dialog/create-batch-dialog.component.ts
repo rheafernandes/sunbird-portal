@@ -4,15 +4,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CourseBatchService } from '../../../services';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { Inject } from '@angular/core';
-import { ConfigService, ToasterService, ServerResponse,  ResourceService  } from '@sunbird/shared';
-import { UserService, LearnerService  } from '@sunbird/core';
+import {
+  ConfigService,
+  ToasterService,
+  ServerResponse,
+  ResourceService
+} from '@sunbird/shared';
+import { UserService, LearnerService } from '@sunbird/core';
 import { Subject, of as observableOf, Observable } from 'rxjs';
 import * as moment from 'moment';
 import { takeUntil, mergeMap } from 'rxjs/operators';
-import {
-  FormControl,
-  Validators
-} from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import {
   MatAutocompleteSelectedEvent,
@@ -107,7 +109,17 @@ export class CreateBatchDialogComponent implements OnInit {
     if (this.shouldSizeUpdate) {
       this.updateSize();
     }
-    // this.redirect();
+    const data = this.userService.userProfile;
+    this.allMembers = this.removeUserFromList(
+      this.allMembers,
+      'id',
+      data.identifier
+    );
+    this.allMentors = this.removeUserFromList(
+      this.allMentors,
+      'id',
+      data.identifier
+    );
   }
   updateSize() {
     this.dialogRef.updateSize('600px', '300px');
@@ -129,8 +141,21 @@ export class CreateBatchDialogComponent implements OnInit {
       this.mentorCtrl.setValue(null);
     }
   }
-
+  removeUserFromList(arr, attr, value): any[] {
+  let i = arr.length;
+    while (i--) {
+      if (
+        arr[i] &&
+        arr[i].hasOwnProperty(attr) &&
+        (arguments.length > 2 && arr[i][attr] === value)
+      ) {
+        arr.splice(i, 1);
+      }
+    }
+    return arr;
+  }
   removeMentor(mentor): void {
+    console.log('remove mentor', mentor);
     const index = this.mentors.indexOf(mentor);
     if (index >= 0) {
       this.mentors.splice(index, 1);
@@ -139,23 +164,31 @@ export class CreateBatchDialogComponent implements OnInit {
 
   selectedMentor(event: MatAutocompleteSelectedEvent): void {
     this.mentors.push(event.option.value);
-    console.log('selected mentor', event.option.value);
+    console.log('selected ', event.option.value);
+    this.removeMentorFromMentorsList(event.option.value);
     this.mentorInput.nativeElement.value = '';
     this.mentorCtrl.setValue(null);
   }
 
-  private _filterMentor(value) {
-    const filterValue = value.toLowerCase();
-    return this.allMentors.filter(
-      mentor => mentor.name.toLowerCase().indexOf(filterValue) === 0
-    );
+  private _filterMentor(value: string) {
+    if (value !== undefined) {
+      const filterValue = value.toString().toLowerCase();
+      return this.allMentors.filter(
+        mentor => mentor.name.toLowerCase().indexOf(filterValue) === 0
+      );
+    }
+    return this.allMentors;
   }
-
+  removeMentorFromMentorsList(mentor) {
+    const index = this.allMentors.indexOf(mentor);
+    if (index >= 0) {
+      this.allMentors.splice(index, 1);
+    }
+  }
   addMember(event: MatChipInputEvent): void {
     if (!this.matMemberAutocomplete.isOpen) {
       const input = event.input;
       const value = event.value;
-      console.log('Added Member Value', value);
       if ((value || '').trim()) {
         this.members.push(value.trim());
       }
@@ -167,6 +200,7 @@ export class CreateBatchDialogComponent implements OnInit {
   }
 
   removeMember(member): void {
+    console.log('remove mentor', member);
     const index = this.members.indexOf(member);
     if (index >= 0) {
       this.members.splice(index, 1);
@@ -175,111 +209,121 @@ export class CreateBatchDialogComponent implements OnInit {
 
   selectedMember(event: MatAutocompleteSelectedEvent): void {
     this.members.push(event.option.value);
+    console.log('selected ', event.option.value);
+    this.removeMemberFromMembersList(event.option.value);
     this.memberInput.nativeElement.value = '';
     this.memberCtrl.setValue(null);
   }
 
-  private _filterMember(value) {
-    const filterValue = value.toLowerCase();
-    return this.allMembers.filter(
-      member => member.name.toLowerCase().indexOf(filterValue) === 0
-    );
+  private _filterMember(value: string) {
+    if (value !== undefined) {
+      const filterValue = value.toString().toLowerCase();
+      return this.allMembers.filter(
+        member => member.name.toLowerCase().indexOf(filterValue) === 0
+      );
+    }
+    return this.allMembers;
+  }
+  removeMemberFromMembersList(member) {
+    const index = this.allMembers.indexOf(member);
+    if (index >= 0) {
+      this.allMembers.splice(index, 1);
+    }
   }
   submit(startDate, endDate) {
-    this.disableSubmitBtn = true;
-    console.log('diable ', this.disableSubmitBtn);
-    const userRootOrgId = this.userService.rootOrgId;
-  const  participants = [];
+    const participants = [];
     startDate = new Date(Date.parse(startDate)).toISOString().slice(0, 10);
     endDate = new Date(Date.parse(endDate)).toISOString().slice(0, 10);
 
     const mentorIds = [];
     for (const mentor of this.mentors) {
       mentorIds.push(mentor.id);
-
-        }
+    }
     const requestBody = {
       courseId: this.courseId,
       name: this.batchnameCtrl.value,
       description: this.batchDescriptCtrl.value,
       // tslint:disable-next-line:quotemark
-      enrollmentType: "invite-only",
+      enrollmentType: 'invite-only',
       startDate: startDate,
       endDate: endDate || null,
       createdBy: this.userService.userid,
       createdFor: this.userService.userProfile.organisationIds,
       mentors: _.compact(mentorIds)
     };
-    const memberIds = [];
     for (const memberId of this.members) {
       console.log('meemId', memberId.id);
-     participants.push(memberId.id);
+      participants.push(memberId.id);
     }
-    // console.log('participants', participants);
-    console.log('memebers while submit', this.members);
-    console.log('request body', requestBody);
-    this.courseBatchService.createBatch(requestBody).pipe(takeUntil(this.unsubscribe))
-    .subscribe((response) => {
-      console.log(response);
-      console.log('members length', participants.length);
-      if (participants && participants.length > 0) {
-        console.log('batchid', response.result.batchId);
-        this.addParticipantToBatch(response.result.batchId, participants );
-      } else {
-        this.disableSubmitBtn = false;
-        this.toasterService.success(this.resourceService.messages.smsg.m0033);
-        // this.reload();
-      }
-      this.toasterService.success('Successfully Created Batch');
-    },
-    (err) => {
-      this.disableSubmitBtn = false;
-      if (err.error && err.error.params.errmsg) {
-        this.toasterService.error(err.error.params.errmsg);
-      } else {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0052);
-      }
-    });
-    // this.courseBatchService.createBatch(requestBody)
-    // .subscribe(
-    //   (data) => {
-    //     console.log(data);
-    //     this.toasterService.success('Successfully Created Batch');
-    //   },
-    //   (err) => {
-    //     this.toasterService.error('Cant create. ' + err.error.params.errmsg);
-    //   }
-    // );
+    this.courseBatchService
+      .createBatch(requestBody)
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(
+        response => {
+          if (participants && participants.length > 0) {
+            this.addParticipantToBatch(response.result.batchId, participants);
+          } else {
+            this.toasterService.success(
+              this.resourceService.messages.smsg.m0033
+            );
+          }
+        },
+        err => {
+          if (err.error && err.error.params.errmsg) {
+            this.toasterService.error(err.error.params.errmsg);
+          } else {
+            this.toasterService.error(this.resourceService.messages.fmsg.m0052);
+          }
+        }
+      );
+      this.dialogRef.close();
+
   }
   private addParticipantToBatch(batchId, participants) {
     const userRequest = {
       userIds: _.compact(participants)
     };
-    console.log('diable ', this.disableSubmitBtn);
-    this.courseBatchService.addUsersToBatch(userRequest, batchId).pipe(takeUntil(this.unsubscribe))
-      .subscribe((res) => {
+    this.courseBatchService
+      .addUsersToBatch(userRequest, batchId)
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(res => {
         this.disableSubmitBtn = false;
-        console.log('diable ', this.disableSubmitBtn);
         this.toasterService.success(this.resourceService.messages.smsg.m0033);
-        // this.reload();
-      },
-        (err) => {
-          this.disableSubmitBtn = false;
-          console.log('diable ', this.disableSubmitBtn);
-          if (err.error && err.error.params.errmsg) {
-            this.toasterService.error(err.error.params.errmsg);
-          } else {
-            this.toasterService.error(this.resourceService.messages.fmsg.m0053);
-          }
-        });
+      });
   }
-  // private reload() {
-  //   setTimeout(() => {
-  //     this.courseBatchService.updateEvent.emit({ event: 'create' });
-  //     this.rout.navigate(['./'], { relativeTo: this.activatedRoute.parent });
-  //   }, 1000);
-  // }
-  // public redirect() {
-  //   this.rout.navigate(['./'], { relativeTo: this.activatedRoute.parent });
-  // }
 }
+
+// submit(startDate, endDate) {
+//   startDate = new Date(Date.parse(startDate)).toISOString().slice(0, 10);
+//   endDate = new Date(Date.parse(endDate)).toISOString().slice(0, 10);
+//   if (this.date.value > this.serializedDate.value) {
+//     this.toasterService.error('End Date should be greater than start date');
+//   }
+//   const mentorIds = [];
+//   for (const mentor of this.mentors) {
+//     mentorIds.push(mentor.id);
+//   }
+//   const requestBody = {
+//     courseId: this.courseId,
+//     name: this.batchnameCtrl.value,
+//     description: this.batchDescriptCtrl.value,
+//     // tslint:disable-next-line:quotemark
+//     enrollmentType: 'open',
+//     startDate: startDate,
+//     endDate: endDate || null,
+//     createdBy: this.userService.userid,
+//     createdFor: this.userService.userProfile.organisationIds,
+//     mentors: _.compact(mentorIds)
+//   };
+//   console.log('request body', requestBody);
+//   this.courseBatchService.createBatch(requestBody)
+//   .subscribe(
+//     (data) => {
+//       console.log(data);
+//       this.toasterService.success('Successfully Created Batch');
+//     },
+//     (err) => {
+//       this.toasterService.error('You do not belong to rootOrg');
+//     }
+//   );
+// }
