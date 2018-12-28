@@ -5,7 +5,7 @@ import { UserService, LearnerService } from '@sunbird/core';
 import { ConfigService } from '@sunbird/shared';
 import { pluck } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
-
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-preview-course',
@@ -50,7 +50,6 @@ export class PreviewCourseComponent implements OnInit {
       .subscribe(
         (response: any) => {
           this.courseDetails = response;
-          this.getUserDetails(this.courseDetails.createdBy);
           this.coursechapters = this.courseDetails.children;
           this.getpreviewlinks();
         }
@@ -62,27 +61,51 @@ export class PreviewCourseComponent implements OnInit {
       .subscribe((data: any) => {
         this.batches = data.result.response.content;
         for (const batch of this.batches) {
-          this.totalParticipants = this.totalParticipants + Object.keys(batch.participant).length;
+          if (batch.participant !== null || batch.participant !== undefined) {
+            this.totalParticipants = this.totalParticipants + _.keys(batch.participant).length;
+          }
         }
         if (this.batches.length > 0) {
-          for (const mentor of this.batches[0].mentors) {
-            this.getUserDetails(mentor);
-          }
+          const mentorIds = _.union(this.batches[0].mentors);
+          console.log(mentorIds);
+          this.getMentorslist(mentorIds);
+          // for (const mentor of this.batches[0].mentors) {
+          //   this.getUserDetails(mentor);
+          // }
         }
       });
   }
-
-  getUserDetails(userId) {
+  getMentorslist(mentorIds) {
     const option = {
-      url: `${this.config.urlConFig.URLS.USER.GET_PROFILE}${userId}`,
-      param: this.config.urlConFig.params.userReadParam
+      url: this.config.urlConFig.URLS.ADMIN.USER_SEARCH,
+      data: {
+        request: {
+          filters: {
+            identifier : mentorIds,
+          },
+        }
+      }
     };
-    const response = this.learnerService.get(option).pipe(pluck('result', 'response'));
-    response.subscribe(data => {
-      this.mentorsDetails.push(data);
-    }
-    );
+    this.learnerService.post(option)
+      .subscribe(
+        data => {
+          this.mentorsDetails = data.result.response.content;
+          console.log(this.mentorsDetails);
+        }
+      );
   }
+
+  // getUserDetails(userId) {
+  //   const option = {
+  //     url: `${this.config.urlConFig.URLS.USER.GET_PROFILE}${userId}`,
+  //     param: this.config.urlConFig.params.userReadParam
+  //   };
+  //   const response = this.learnerService.get(option).pipe(pluck('result', 'response'));
+  //   response.subscribe(data => {
+  //     this.mentorsDetails.push(data);
+  //   }
+  //   );
+  // }
   getpreviewlinks() {
     for (const child of this.coursechapters) {
 

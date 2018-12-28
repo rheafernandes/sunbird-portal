@@ -26,9 +26,11 @@ ul{
         padding:0;
     }
     .showcase-header{
-        background-image: url('http://www.romangadgets.com/wp-content/uploads/revslider/home2/blue-background-hd-wallpapers11.jpg');
+        background-image: url('./images/3256657136926fa.jpg');
         background-size: cover;
         background-attachment: fixed;
+        overflow:hidden;
+        object-fit: contain;
     }
     .jumbotron{
         background-color: rgba(70, 142, 250, 0.3);

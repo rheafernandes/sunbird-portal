@@ -87,9 +87,6 @@ export class CreateBatchDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.courseId = this.data.courseId;
-    console.log('courseId', this.courseId);
-    // this.allMentorsDetails = this.data.mentorDetail;
-    // this.allMembersDetails = this.data.memberDetail;
     this.allMentors = this.data.mentorDetail;
     this.allMembers = this.data.memberDetail;
     this.allMembers = _.concat(this.allMentors, this.allMembers);
@@ -133,10 +130,11 @@ export class CreateBatchDialogComponent implements OnInit {
   }
 
   private _filterMentor(value) {
-    const filterValue = value.toLowerCase();
-    return this.allMentors.filter(
-      mentor => mentor.name.toLowerCase().indexOf(filterValue) === 0
-    );
+    if  (value !== undefined) {
+      const filterValue = value.toString().toLowerCase();
+      return this.allMentors.filter(mentor => mentor.name.toLowerCase().indexOf(filterValue) === 0);
+    }
+    return this.allMentors;
   }
 
   addMember(event: MatChipInputEvent): void {
@@ -168,10 +166,11 @@ export class CreateBatchDialogComponent implements OnInit {
   }
 
   private _filterMember(value) {
-    const filterValue = value.toLowerCase();
-    return this.allMembers.filter(
-      member => member.name.toLowerCase().indexOf(filterValue) === 0
-    );
+    if  (value !== undefined) {
+      const filterValue = value.toString().toLowerCase();
+      return this.allMembers.filter(member => member.name.toLowerCase().indexOf(filterValue) === 0);
+    }
+    return this.allMembers;
   }
   submit(startDate, endDate) {
     startDate = new Date(Date.parse(startDate)).toISOString().slice(0, 10);
