@@ -4,13 +4,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CourseBatchService } from '../../../services';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { Inject } from '@angular/core';
-import { ConfigService, ToasterService } from '@sunbird/shared';
-import { UserService } from '@sunbird/core';
-import { Subject, of as observableOf, Observable } from 'rxjs';
 import {
-  FormControl,
-  Validators
-} from '@angular/forms';
+  ConfigService,
+  ToasterService,
+  ServerResponse,
+  ResourceService
+} from '@sunbird/shared';
+import { UserService, LearnerService } from '@sunbird/core';
+import { Subject, of as observableOf, Observable } from 'rxjs';
+import * as moment from 'moment';
+import { takeUntil, mergeMap } from 'rxjs/operators';
+import { FormControl, Validators } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import {
   MatAutocompleteSelectedEvent,
@@ -19,6 +23,7 @@ import {
 } from '@angular/material';
 import { map, startWith } from 'rxjs/operators';
 import * as _ from 'lodash';
+
 export class DetailModel {
   name: string;
   id: string;
@@ -31,6 +36,7 @@ export class DetailModel {
 export class CreateBatchDialogComponent implements OnInit {
   public courseId;
   minDate = new Date();
+  mentorsCreatedBy;
   shouldSizeUpdate: boolean;
   breakpoint: number;
   visible = true;
@@ -48,6 +54,7 @@ export class CreateBatchDialogComponent implements OnInit {
   memberCtrl = new FormControl();
   filteredMembers: Observable<any>;
   members = [];
+  rout: Router;
   allMembers = [];
   allMembersDetails;
   events: string[] = [];
@@ -57,18 +64,25 @@ export class CreateBatchDialogComponent implements OnInit {
   date = new FormControl(new Date(), [Validators.required]);
   startDate = '';
   endDate = '';
+  disableSubmitBtn = true;
   batchDescriptCtrl = new FormControl('', [Validators.required]);
   batchnameCtrl = new FormControl('', [Validators.required]);
   dateBooleanvalue: Boolean;
+  private activatedRoute: ActivatedRoute;
+  public unsubscribe = new Subject<void>();
   constructor(
     private route: ActivatedRoute,
     public courseBatchService: CourseBatchService,
     public userService: UserService,
+    rout: Router,
+    public resourceService: ResourceService,
     public toasterService: ToasterService,
+    public learnerService: LearnerService,
     public configService: ConfigService,
     public dialogRef: MatDialogRef<CreateBatchDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+    this.rout = rout;
     this.shouldSizeUpdate = data.shouldSizeUpdate;
     this.filteredMentors = this.mentorCtrl.valueChanges.pipe(
       startWith(null),
@@ -87,13 +101,25 @@ export class CreateBatchDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.courseId = this.data.courseId;
+    console.log('courseId', this.courseId);
     this.allMentors = this.data.mentorDetail;
     this.allMembers = this.data.memberDetail;
-    this.allMembers = _.concat(this.allMentors, this.allMembers);
+    // this.allMembers = _.concat(this.allMentors, this.allMembers);
     this.breakpoint = window.innerWidth <= 550 ? 1 : 1;
     if (this.shouldSizeUpdate) {
       this.updateSize();
     }
+    const data = this.userService.userProfile;
+    this.allMembers = this.removeUserFromList(
+      this.allMembers,
+      'id',
+      data.identifier
+    );
+    this.allMentors = this.removeUserFromList(
+      this.allMentors,
+      'id',
+      data.identifier
+    );
   }
   updateSize() {
     this.dialogRef.updateSize('600px', '300px');
@@ -115,7 +141,19 @@ export class CreateBatchDialogComponent implements OnInit {
       this.mentorCtrl.setValue(null);
     }
   }
-
+  removeUserFromList(arr, attr, value): any[] {
+  let i = arr.length;
+    while (i--) {
+      if (
+        arr[i] &&
+        arr[i].hasOwnProperty(attr) &&
+        (arguments.length > 2 && arr[i][attr] === value)
+      ) {
+        arr.splice(i, 1);
+      }
+    }
+    return arr;
+  }
   removeMentor(mentor): void {
     const index = this.mentors.indexOf(mentor);
     if (index >= 0) {
@@ -125,23 +163,30 @@ export class CreateBatchDialogComponent implements OnInit {
 
   selectedMentor(event: MatAutocompleteSelectedEvent): void {
     this.mentors.push(event.option.value);
+    this.removeMentorFromMentorsList(event.option.value);
     this.mentorInput.nativeElement.value = '';
     this.mentorCtrl.setValue(null);
   }
 
-  private _filterMentor(value) {
-    if  (value !== undefined) {
+  private _filterMentor(value: string) {
+    if (value !== undefined) {
       const filterValue = value.toString().toLowerCase();
-      return this.allMentors.filter(mentor => mentor.name.toLowerCase().indexOf(filterValue) === 0);
+      return this.allMentors.filter(
+        mentor => mentor.name.toLowerCase().indexOf(filterValue) === 0
+      );
     }
     return this.allMentors;
   }
-
+  removeMentorFromMentorsList(mentor) {
+    const index = this.allMentors.indexOf(mentor);
+    if (index >= 0) {
+      this.allMentors.splice(index, 1);
+    }
+  }
   addMember(event: MatChipInputEvent): void {
     if (!this.matMemberAutocomplete.isOpen) {
       const input = event.input;
       const value = event.value;
-      console.log('Added Member Value', value);
       if ((value || '').trim()) {
         this.members.push(value.trim());
       }
@@ -161,23 +206,31 @@ export class CreateBatchDialogComponent implements OnInit {
 
   selectedMember(event: MatAutocompleteSelectedEvent): void {
     this.members.push(event.option.value);
+    this.removeMemberFromMembersList(event.option.value);
     this.memberInput.nativeElement.value = '';
     this.memberCtrl.setValue(null);
   }
 
-  private _filterMember(value) {
-    if  (value !== undefined) {
+  private _filterMember(value: string) {
+    if (value !== undefined) {
       const filterValue = value.toString().toLowerCase();
-      return this.allMembers.filter(member => member.name.toLowerCase().indexOf(filterValue) === 0);
+      return this.allMembers.filter(
+        member => member.name.toLowerCase().indexOf(filterValue) === 0
+      );
     }
     return this.allMembers;
   }
+  removeMemberFromMembersList(member) {
+    const index = this.allMembers.indexOf(member);
+    if (index >= 0) {
+      this.allMembers.splice(index, 1);
+    }
+  }
   submit(startDate, endDate) {
+    const participants = [];
     startDate = new Date(Date.parse(startDate)).toISOString().slice(0, 10);
     endDate = new Date(Date.parse(endDate)).toISOString().slice(0, 10);
-    if (this.date.value > this.serializedDate.value) {
-      this.toasterService.error('End Date should be greater than start date');
-    }
+
     const mentorIds = [];
     for (const mentor of this.mentors) {
       mentorIds.push(mentor.id);
@@ -187,23 +240,51 @@ export class CreateBatchDialogComponent implements OnInit {
       name: this.batchnameCtrl.value,
       description: this.batchDescriptCtrl.value,
       // tslint:disable-next-line:quotemark
-      enrollmentType: "open",
+      enrollmentType: 'invite-only',
       startDate: startDate,
       endDate: endDate || null,
       createdBy: this.userService.userid,
       createdFor: this.userService.userProfile.organisationIds,
       mentors: _.compact(mentorIds)
     };
-    console.log('request body', requestBody);
-    this.courseBatchService.createBatch(requestBody)
-    .subscribe(
-      (data) => {
-        console.log(data);
-        this.toasterService.success('Successfully Created Batch');
-      },
-      (err) => {
-        this.toasterService.error('You do not belong to rootOrg');
-      }
-    );
+    for (const memberId of this.members) {
+      participants.push(memberId.id);
+    }
+    this.courseBatchService
+      .createBatch(requestBody)
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(
+        response => {
+          if (participants && participants.length > 0) {
+            this.addParticipantToBatch(response.result.batchId, participants);
+          } else {
+            this.toasterService.success(
+              this.resourceService.messages.smsg.m0033
+            );
+          }
+        },
+        err => {
+          if (err.error && err.error.params.errmsg) {
+            this.toasterService.error(err.error.params.errmsg);
+          } else {
+            this.toasterService.error(this.resourceService.messages.fmsg.m0052);
+          }
+        }
+      );
+      this.dialogRef.close();
+
+  }
+  private addParticipantToBatch(batchId, participants) {
+    const userRequest = {
+      userIds: _.compact(participants)
+    };
+    this.courseBatchService
+      .addUsersToBatch(userRequest, batchId)
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(res => {
+        this.disableSubmitBtn = false;
+        this.toasterService.success(this.resourceService.messages.smsg.m0033);
+      });
   }
 }
+

@@ -1,14 +1,23 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material';
-import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialogRef } from '@angular/material';
+import { ActivatedRoute } from '@angular/router';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { Inject } from '@angular/core';
-import { ConfigService , ToasterService  } from '@sunbird/shared';
+import {
+  ConfigService,
+  ToasterService,
+  IUserProfile,
+  ServerResponse
+} from '@sunbird/shared';
 import { UserService, LearnerService } from '@sunbird/core';
-import { Subject, of as observableOf, Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { MatAutocompleteSelectedEvent, MatChipInputEvent, MatAutocomplete } from '@angular/material';
+import {
+  MatAutocompleteSelectedEvent,
+  MatChipInputEvent,
+  MatAutocomplete
+} from '@angular/material';
 import { map, startWith, pluck } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { CourseBatchService } from '../../../services';
@@ -24,11 +33,12 @@ export class UpdateBatchDialogComponent implements OnInit {
   shouldSizeUpdate: boolean;
   breakpoint: number;
   date = new FormControl(new Date());
-  serializedDate = new FormControl((new Date()).toISOString());
+  serializedDate = new FormControl(new Date().toISOString());
   visible = true;
   selectable = true;
   removable = true;
   addOnBlur = true;
+  userProfile: IUserProfile;
   separatorKeysCodes: number[] = [ENTER, COMMA];
   mentorCtrl = new FormControl();
   filteredMentors: Observable<any>;
@@ -40,16 +50,14 @@ export class UpdateBatchDialogComponent implements OnInit {
   allMembers = [];
   mentorIds;
   batchId;
-  // mentorsDetails = [];
   membersDetails = [];
-  // allMentorsDetails = {};
-  // allMembersDetails = {};
   participantIds;
+  creator: boolean;
 
   @ViewChild('memberInput') memberInput: ElementRef<HTMLInputElement>;
   @ViewChild('autoMember') matMemberAutocomplete: MatAutocomplete;
   @ViewChild('mentorInput') mentorInput: ElementRef<HTMLInputElement>;
-  @ViewChild('auto') matAutocomplete: MatAutocomplete;
+  @ViewChild('autoMentor') matMentorAutocomplete: MatAutocomplete;
 
   constructor(
     private route: ActivatedRoute,
@@ -61,30 +69,40 @@ export class UpdateBatchDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<UpdateBatchDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    console.log('Batch Detail', this.data.batchDetail);
+
     this.existingBatchDetail = this.data.batchDetail;
+
     if (this.data.batchDetail.mentors.length > 0) {
       this.mentorIds = _.union(this.data.batchDetail.mentors);
     }
-    if (this.data.batchDetail.participant !== undefined || this.data.batchDetail.participant !== null) {
-      this.participantIds = _.union(_.keys(this.data.batchDetail.participant ));
+
+    if (
+      this.data.batchDetail.participant !== undefined ||
+      this.data.batchDetail.participant !== null
+    ) {
+      this.participantIds = _.union(_.keys(this.data.batchDetail.participant));
     }
+
     this.shouldSizeUpdate = data.shouldSizeUpdate;
+
     this.filteredMentors = this.mentorCtrl.valueChanges.pipe(
       startWith(null),
-      map((mentor: string) => mentor ? this._filterMentor(mentor) : this.allMentors.slice()));
-    this.filteredMembers = this.memberCtrl.valueChanges.pipe(
-      startWith(null),
-      map((member: string) => member ? this._filterMember(member) : this.allMembers.slice()));
-  }
+      map((mentor: string) =>
+        mentor ? this._filterMentor(mentor) : this.allMentors.slice()
+      )
+    );
+   }
 
   ngOnInit(): void {
     this.courseId = this.data.courseId;
+    this.creator = this.data.creator;
+      this.allMembers = this.data.memberDetail;
     this.allMentors = this.data.mentorDetail;
-    this.allMembers = this.data.memberDetail;
-    this.allMembers = _.concat(this.allMentors, this.allMembers);
-    this.breakpoint = (window.innerWidth <= 550) ? 1 : 1;
-    if (this.shouldSizeUpdate) { this.updateSize(); }
+
+    this.breakpoint = window.innerWidth <= 550 ? 1 : 1;
+    if (this.shouldSizeUpdate) {
+      this.updateSize();
+    }
     this.getMemberslist();
     this.getMentorslist();
   }
@@ -92,80 +110,51 @@ export class UpdateBatchDialogComponent implements OnInit {
   updateSize() {
     this.dialogRef.updateSize('600px', '300px');
   }
-  onResize(event) {
-    this.breakpoint = (event.target.innerWidth <= 550) ? 1 : 1;
-  }
-  addMentor(event: MatChipInputEvent): void {
 
-    if (!this.matAutocomplete.isOpen) {
+  onResize(event) {
+    this.breakpoint = event.target.innerWidth <= 550 ? 1 : 1;
+  }
+
+  addMentor(event: MatChipInputEvent): void {
+    if (!this.matMentorAutocomplete.isOpen) {
       const input = event.input;
       const value = event.value;
-
       if ((value || '').trim()) {
         this.mentors.push(value.trim());
       }
-
-
       if (input) {
         input.value = '';
       }
-
       this.mentorCtrl.setValue(null);
     }
   }
-
-  removeMentor(mentor: string): void {
+  removeMentor(mentor): void {
     const index = this.mentors.indexOf(mentor);
-
     if (index >= 0) {
       this.mentors.splice(index, 1);
     }
   }
-
   selectedMentor(event: MatAutocompleteSelectedEvent): void {
     this.mentors.push(event.option.value);
+    this.removeMentorFromMentorsList(event.option.value);
+
     this.mentorInput.nativeElement.value = '';
     this.mentorCtrl.setValue(null);
   }
 
   private _filterMentor(value: string) {
-    if  (value !== undefined) {
+    if (value !== undefined) {
       const filterValue = value.toString().toLowerCase();
       return this.allMentors.filter(mentor => mentor.name.toLowerCase().indexOf(filterValue) === 0);
     }
     return this.allMentors;
   }
-  addMember(event: MatChipInputEvent): void {
-
-    if (!this.matMemberAutocomplete.isOpen) {
-      const input = event.input;
-      const value = event.value;
-
-      if ((value || '').trim()) {
-        this.members.push(value.trim());
-      }
-      if (input) {
-        input.value = '';
-      }
-
-      this.memberCtrl.setValue(null);
+  removeMentorFromMentorsList(mentor) {
+    const index = this.allMentors.indexOf(mentor);
+    if (index >= 0) {
+      this.allMentors.splice(index, 1);
     }
   }
-
-  selectedMember(event: MatAutocompleteSelectedEvent): void {
-    this.members.push(event.option.value);
-    this.memberInput.nativeElement.value = '';
-    this.memberCtrl.setValue(null);
-  }
-
-  private _filterMember(value: string) {
-    if  (value !== undefined) {
-      const filterValue = value.toString().toLowerCase();
-      return this.allMembers.filter(member => member.name.toLowerCase().indexOf(filterValue) === 0);
-    }
-    return this.allMembers;
-  }
-
 
   getMentorslist() {
     const option = {
@@ -219,7 +208,6 @@ export class UpdateBatchDialogComponent implements OnInit {
         }
       );
   }
-
   onSubmit(title, description, startDate, endDate) {
     startDate = new Date(Date.parse(startDate)).toISOString().slice(0, 10);
     endDate = new Date(Date.parse(endDate)).toISOString().slice(0, 10);
@@ -235,25 +223,23 @@ export class UpdateBatchDialogComponent implements OnInit {
         name: title,
         description: description,
         // tslint:disable-next-line:quotemark
-        enrollmentType: "open",
+        enrollmentType: 'open',
         startDate: startDate,
         endDate: endDate || null,
         createdFor: this.userService.userProfile.organisationIds,
         mentors: _.compact(mentorIds)
       };
-      console.log('request body', requestBody);
       this.courseBatchService.updateBatch(requestBody)
       .subscribe(
         (data) => {
           this.toasterService.success('You successfully updated the batch');
         },
-        (err) => {
-          console.log(err);
+        err => {
           this.toasterService.error('Cant update. ' + err.error.params.errmsg);
         }
       );
       this.dialogRef.close();
     }
   }
-}
 
+}

@@ -2,12 +2,6 @@ import {
   Component,
   OnInit,
   OnDestroy,
-  VERSION,
-  ViewChild,
-  ChangeDetectorRef,
-  Injectable,
-  OnChanges,
-  SimpleChanges
 } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,17 +12,15 @@ import {
   ConfigService,
   ToasterService,
   ResourceService,
-  ServerResponse
+
 } from '@sunbird/shared';
 import {
   LearnerService,
   UserService,
-  SearchParam,
   PermissionService
 } from '@sunbird/core';
 import { pluck, takeUntil, tap } from 'rxjs/operators';
-import { Subject, of as observableOf, Observable } from 'rxjs';
-import { FormControl } from '@angular/forms';
+import { Subject, of as observableOf } from 'rxjs';
 import * as _ from 'lodash';
 import { CreateBatchDialogComponent } from './create-batch-dialog/create-batch-dialog.component';
 import { UpdateBatchDialogComponent } from './update-batch-dialog/update-batch-dialog.component';
@@ -84,13 +76,20 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
   mentorContactDetail;
   userId;
   showUnenroll;
+  mentorCheck;
   public unsubscribe = new Subject<void>();
   currentDate = new Date().toJSON().slice(0, 10);
+  // startDate = new Date(Date.parse(startDate)).toISOString().slice(0, 10);
   allMentors = [];
   allMembers = [];
   breakpoint: number;
   public courseMentor;
-  ngOnDestroy(): void { }
+  pageLimit: number;
+  userCreatedbatchList = [];
+  courseBatchList = [];
+  userCourseBatches = [];
+  IsUserCreatedBatch: boolean;
+  ngOnDestroy(): void {}
 
   constructor(
     public dialog: MatDialog,
@@ -112,8 +111,8 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       window.innerWidth <= 550
         ? 1
         : window.innerWidth > 550 && window.innerWidth < 880
-          ? 2
-          : 3;
+        ? 2
+        : 3;
     this.ongoingSearch = {
       filters: {
         status: '1',
@@ -144,11 +143,14 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       .getAllBatchDetails(this.upcomingSearch)
       .subscribe((resp: any) => {
         const batchdetails = resp.result.response.content;
+
         for (const batch of batchdetails) {
+
           if (this.currentDate < batch.startDate) {
             this.upcomingBatches.push(batch);
           }
         }
+
       });
     this.checkRoles();
     this.getMentorslist();
@@ -188,6 +190,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
     this.enrollToCourse(batch);
   }
   enrollToCourse(batch) {
+    console.log('batch ', batch);
     const request = {
       request: {
         courseId: batch.courseId,
@@ -244,29 +247,33 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
   }
 
   createNewBatch(): void {
+    const usersOfCourse = this.allMembers.concat(this.allMentors);
     const dialogRef = this.dialog.open(CreateBatchDialogComponent, {
       data: {
         title: 'create',
         mentorDetail: this.allMentors,
-        memberDetail: this.allMembers,
-        courseId: this.courseId,
+        memberDetail: usersOfCourse,
+        courseId: this.courseId
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => { });
+    dialogRef.afterClosed().subscribe(result => {});
   }
   updateBatch(batch): void {
+    const notCreator = this.checkMentorIsPresent(batch);
+    const usersOfCourse = this.allMembers.concat(this.allMentors);
     const dialogRef = this.dialog.open(UpdateBatchDialogComponent, {
       data: {
         title: 'update',
         mentorDetail: this.allMentors,
-        memberDetail: this.allMembers,
+        memberDetail: usersOfCourse,
         batchDetail: batch,
         courseId: this.courseId,
+        creator: notCreator
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => { });
+    dialogRef.afterClosed().subscribe(result => {});
   }
 
   onResize(event) {
@@ -274,8 +281,8 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       event.target.innerWidth <= 550
         ? 1
         : event.target.innerWidth > 550 && window.innerWidth < 880
-          ? 2
-          : 3;
+        ? 2
+        : 3;
   }
   checkRoles() {
     if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
@@ -290,21 +297,41 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       data: {
         request: {
           query: 'COURSE_MENTOR',
-          filters: {}
+          filters: {
+            rootOrgId: this.userService.rootOrgId
+          }
         }
       }
     };
-    this.learnerService.post(option).subscribe(data => {
-      const mentorsDetails = data.result.response.content;
-      for (const mentorDetail of mentorsDetails) {
-        if (mentorDetail.firstName !== undefined && mentorDetail.lastName !== undefined) {
-          const obj = [];
-          obj['name'] = mentorDetail.firstName + ' ' + mentorDetail.lastName;
-          obj['id'] = mentorDetail.identifier;
-          this.allMentors.push(obj);
-        }
+    this.learnerService.post(option).subscribe(
+      data => {
+        const mentorsDetails = data.result.response.content;
+        for (const mentorDetail of mentorsDetails) {
+            const obj = {};
+            if ((mentorDetail.firstName !== null && mentorDetail.firstName !== undefined)
+            && (mentorDetail.lastName === undefined || mentorDetail.lastName === null)) {
+            obj['name'] = mentorDetail.firstName;
+            obj['id'] = mentorDetail.identifier;
+            this.allMentors.push(obj);
+            this.allMentors = _.compact(this.allMentors);
+            } else if ((mentorDetail.firstName === null && mentorDetail.firstName === undefined)
+            && (mentorDetail.lastName !== undefined || mentorDetail.lastName !== null)) {
+              obj['name'] = mentorDetail.lastName;
+              obj['id'] = mentorDetail.identifier;
+              this.allMentors.push(obj);
+              this.allMentors = _.compact(this.allMentors);
+            } else {
+              obj['name'] = mentorDetail.firstName + ' ' + mentorDetail.lastName;
+              obj['id'] = mentorDetail.identifier;
+              this.allMentors.push(obj);
+              this.allMentors = _.compact(this.allMentors);
+            }
+          }
+      },
+      err => {
+        this.toasterService.error(err.error.params.errmsg);
       }
-    });
+    );
   }
 
   getMemberslist() {
@@ -313,20 +340,49 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       data: {
         request: {
           query: '',
-          filters: {}
+          filters: {
+            rootOrgId: this.userService.rootOrgId
+          }
         }
       }
     };
-    this.learnerService.post(option).subscribe(data => {
-      const membersDetails = data.result.response.content;
-      for (const memberDetail of membersDetails) {
-        if (memberDetail.firstName !== undefined && memberDetail.lastName !== undefined) {
-          const obj = [];
-          obj['name'] = memberDetail.firstName + ' ' + memberDetail.lastName;
+    this.learnerService.post(option).subscribe(
+      data => {
+        const membersDetails = data.result.response.content;
+        for (const memberDetail of membersDetails) {
+          const obj = {};
+          if ((memberDetail.firstName !== null && memberDetail.firstName !== undefined)
+          && (memberDetail.lastName === undefined || memberDetail.lastName === null)) {
+          obj['name'] = memberDetail.firstName;
           obj['id'] = memberDetail.identifier;
-          this.allMembers.push(obj);
-        }
+          this.allMentors.push(obj);
+          this.allMentors = _.compact(this.allMentors);
+          } else if ((memberDetail.firstName === null && memberDetail.firstName === undefined)
+          && (memberDetail.lastName !== undefined || memberDetail.lastName !== null)) {
+            obj['name'] = memberDetail.lastName;
+            obj['id'] = memberDetail.identifier;
+            this.allMentors.push(obj);
+            this.allMentors = _.compact(this.allMentors);
+          } else {
+            obj['name'] = memberDetail.firstName + ' ' + memberDetail.lastName;
+            obj['id'] = memberDetail.identifier;
+            this.allMentors.push(obj);
+            this.allMentors = _.compact(this.allMentors);
+          }
+            }
+
+      },
+      err => {
+        this.toasterService.error(err.error.params.errmsg);
       }
-    });
+    );
   }
+
+  checkMentorIsPresent(batch): boolean {
+    const userId = this.userService.userid;
+    if (batch.createdBy === userId) {
+      return (this.mentorCheck = true);
+    }
+  }
+
 }
