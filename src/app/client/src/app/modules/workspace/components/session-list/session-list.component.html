@@ -13,14 +13,13 @@
 
   <div class="row">
     <div class="col-md-12">
-
       <div class="alert alert-dismissible alert-primary">
         <strong> List of Sessions </strong>
       </div>
       <table class="ui upForReviewTable table">
         <thead>
           <tr>
-            <th class="four wide UpReviewTableHeader">Session
+            <th class="two wide UpReviewTableHeader">Session
             </th>
             <th class="two wide UpReviewTableHeader">Course
             </th>
@@ -32,19 +31,12 @@
             </th>
             <th class="two wide UpReviewTableHeader" *ngIf="view('status')">Status
             </th>
-            <!-- <th class="two wide UpReviewTableHeader">Delete
-            </th>
-            <th class="two wide UpReviewTableHeader">Update
-            </th>
-            <th class="two wide UpReviewTableHeader" *ngIf="view('attendance')">Attendance
-            </th>
-            <th class="two wide UpReviewTableHeader">Learning Material
-            </th> -->
             <th class="two wide UpReviewTableHeader">Action</th>
           </tr>
         </thead>
         <tbody>
-          <tr in-view-item class="UpForReviewListHover cursor-pointer" *ngFor="let session of sessionsList">
+          <tr in-view-item class="UpForReviewListHover cursor-pointer" *ngFor="let session of sessionsList" data-toggle="tooltip" data-placement="bottom"
+          title={{session?.courseAdditionalInfo?.description}}>
             <td (click)="openSession(session)">
               <!-- | filterSession:title:course:batch:status:completion -->
               <h5 class="ui image header">
@@ -89,9 +81,9 @@
 
             <td>
               <mat-icon *ngIf="session?.sessionDetails?.status === 'published'" data-toggle="tooltip" data-placement="bottom"
-                title="Published" (click)="Alert()">check</mat-icon>
-              <mat-icon *ngIf="session?.sessionDetails?.status === 'draft'" data-toggle="tooltip" data-placement="bottom"
-                title="Draft" (click)="publish(session)">error_outline</mat-icon>
+                title="Published">check</mat-icon>
+              <a *ngIf="session?.sessionDetails?.status === 'draft'" data-toggle="tooltip" data-placement="bottom"
+                title="Publish session" (click)="publish(session)">Publish</a>
             </td>
             <td>
               <mat-icon mat-icon-button [matMenuTriggerFor]="menu" data-toggle="tooltip" data-placement="bottom" title="More">more_vert</mat-icon>
@@ -111,26 +103,6 @@
                 </div>
               </mat-menu>
             </td>
-            <!-- <td *ngIf="view('status')" class="UpForReviewStatusOrange"> <button class="btn btn-primary" (click)="publish(session)"
-                [disabled]="session?.sessionDetails?.status==='published'">{{session?.sessionDetails?.status}}</button></td>
-
-            <td>
-              <i class="trash large icon" (click)="deleteSession(session)">
-              </i>
-            </td>
-            <td>
-              <i class="fa fa-refresh" mat-raised-button (click)="openDialog(session)" aria-hidden="true"></i>
-            </td>
-            <td *ngIf="view('attendance')">
-              <div class="content">
-                <a class="item" [routerLink]="['/workspace/content/sessions' ,session.sessionDetails?.sessionId ]">View</a>
-              </div>
-            </td>
-            <td>
-              <div class="content">
-                <a class="item" [routerLink]="['/workspace/content/sessions/addMaterial' , session.sessionDetails?.sessionId]">Add</a>
-              </div>
-            </td> -->
           </tr>
         </tbody>
       </table>
