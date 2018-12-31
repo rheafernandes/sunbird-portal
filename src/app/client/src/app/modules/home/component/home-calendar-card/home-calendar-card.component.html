@@ -1,64 +1,109 @@
+<!-- <div class="border"> -->
+<div class="calendar">
+  <div class="calendar-navs">
+    <div class="month-nav">
+      <button class="btn btn-primary" (click)="prevMonth()">&lt;</button>
+      <button class="btn ">&lt;</button>
+      <span class="p4">{{ currentDate.format("MMMM") }}</span>
+      <button class="btn ">&gt;</button>
+      <button class="btn btn-primary" (click)="nextMonth()">&gt;</button>
+    </div>
 
-<div class="row text-center">
-  <div class="col-sm-4">
-    <div class="btn-group">
-      <div
-        class="btn btn-primary"
-        mwlCalendarPreviousView
-        [view]="view"
-        [(viewDate)]="viewDate"
-        (viewDateChange)="activeDayIsOpen = false">
-        Previous
-      </div>
-      <div
-        class="btn btn-outline-secondary"
-        mwlCalendarToday
-        [(viewDate)]="viewDate">
-        Today
-      </div>
-      <div
-        class="btn btn-primary"
-        mwlCalendarNextView
-        [view]="view"
-        [(viewDate)]="viewDate"
-        (viewDateChange)="activeDayIsOpen = false">
-        Next
+    <div class="year-nav">
+      <button class="btn btn-primary" (click)="prevYear()">&lt;</button>
+      <span>{{ currentDate.format("YYYY") }}</span>
+      <button class="btn btn-primary" (click)="nextYear()">&gt;</button>
+    </div>
+  </div>
+  <div class="month-grid">
+    <div class="day-names">
+      <div *ngFor="let name of dayNames" class="day-name p9">{{ name }}</div>
+    </div>
+    <div class="weeks">
+      <div *ngFor="let week of weeks" class="week">
+        <ng-container *ngFor="let day of week">
+          <div class="week-date disabled" *ngIf="!isSelectedMonth(day.mDate)">
+            <span class="date-text">{{ day.mDate.date() }}</span>
+            <div *ngFor="let session of sessionDates">
+              <!-- <button
+                *ngIf="
+                  (session.sessionStartDate | date) === (day.mDate | date)
+                "
+                type="button"
+                class="btn-sm btn-secondary"
+                data-toggle="modal"
+                data-target="#exampleModal"
+              >
+                s
+              </button> -->
+              <i class="fas fa-circle" id="icon" *ngIf="
+              (session.sessionStartDate | date) === (day.mDate | date);"
+                      data-toggle="modal"
+            data-target="#exampleModal"></i>
+
+
+            </div>
+          </div>
+          <div
+            class="week-date enabled"
+            *ngIf="isSelectedMonth(day.mDate)"
+            (click)="selectDate(day)"
+            [ngClass]="{ today: day.today, selected: day.selected }"
+          >
+          <span class="date-text">{{ day.mDate.date() }}</span>
+
+          <div *ngFor="let session of sessionDates">
+            <!-- <button
+              *ngIf="
+                (session.sessionStartDate | date) === (day.mDate | date);
+
+              "
+              type="button"
+              class="btn-sm btn-secondary"
+              data-toggle="modal"
+              data-target="#exampleModal"
+            > -->
+              <i class="fas fa-circle" id="icon" *ngIf="
+              (session.sessionStartDate | date) === (day.mDate | date);"
+                      data-toggle="modal"
+            data-target="#exampleModal"></i>
+            <!-- </button> -->
+                     </div>
+          </div>
+        </ng-container>
       </div>
     </div>
   </div>
-  <div class="col-md-4">
-    <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+</div>
+
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Session title</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">...</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+      </div>
+    </div>
   </div>
 </div>
-<br>
-<div [ngSwitch]="view" style="width: 700px; height: 200px;">
-  <mwl-calendar-month-view
-    *ngSwitchCase="CalendarView.Month"
-    [viewDate]="viewDate"
-    [events]="events"
-    [refresh]="refresh"
-    [activeDayIsOpen]="activeDayIsOpen"
-    (dayClicked)="dayClicked($event.day)"
-    (eventClicked)="handleEvent('Clicked', $event.event)"
-    (eventTimesChanged)="eventTimesChanged($event)">
-  </mwl-calendar-month-view>
-  <mwl-calendar-week-view
-    *ngSwitchCase="CalendarView.Week"
-    [viewDate]="viewDate"
-    [events]="events"
-    [refresh]="refresh"
-    (eventClicked)="handleEvent('Clicked', $event.event)"
-    (eventTimesChanged)="eventTimesChanged($event)">
-  </mwl-calendar-week-view>
-  <mwl-calendar-day-view
-    *ngSwitchCase="CalendarView.Day"
-    [viewDate]="viewDate"
-    [events]="events"
-    [refresh]="refresh"
-    (eventClicked)="handleEvent('Clicked', $event.event)"
-    (eventTimesChanged)="eventTimesChanged($event)">
-  </mwl-calendar-day-view>
-</div>
-
-<br><br><br>
-

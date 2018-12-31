@@ -76,6 +76,8 @@
             </th>
             <th class="two wide UpReviewTableHeader">Update
             </th>
+            <th class="two wide UpReviewTableHeader">Attendance
+              </th>
           </tr>
         </thead>
         <tbody>
@@ -93,7 +95,7 @@
             <td>
               <h5 class="ui image header">
                 <div class="content ">
-                  <div class="UpReviewHeader">{{session?.courseAdditionalInfo?.courseName}}</div>
+                  <div class="UpReviewSubHeader">{{session?.courseAdditionalInfo?.courseName}}</div>
                 </div>
               </h5>
             </td>
@@ -129,12 +131,16 @@
             <td>
               <i class="fa fa-refresh" mat-raised-button (click)="openDialog(session)" aria-hidden="true"></i>
             </td>
+            <td>
+                <div class="content">
+                    <a class="item" [routerLink]="['/workspace/content/sessions/1']">View Attendance</a>
+                  </div>
+              </td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
 </div>
-
 
 <router-outlet> </router-outlet>

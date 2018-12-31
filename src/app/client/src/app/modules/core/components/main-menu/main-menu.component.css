@@ -1,1 +1,24 @@
 @import '~bootstrap/dist/css/bootstrap.min.css';
+
+#menu {
+  /* background-color: black; */
+  color: white;
+  padding-top: 6vh;
+  padding-left: 2px;
+  overflow-x: hidden;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  width: -webkit-fill-available;
+  margin-top: 2rem;
+}
+.ui.secondary.menu {
+
+  margin-right: -.7rem;
+}
+a{
+  color: white;
+}
+.item{
+  color: white;
+}

@@ -64,6 +64,6 @@ import { AttendanceComponent } from './components/attendance/attendance.componen
   exports: [SessionDetailsComponent],
   providers: [WorkSpaceService, EditorService, BatchService, CourseConsumptionService,
     CourseProgressService, CourseBatchService , SessionService],
-  entryComponents: [CreateSessionComponent, SessionDetailsComponent],
+  entryComponents: [CreateSessionComponent, SessionDetailsComponent, AttendanceComponent],
 })
 export class WorkspaceModule { }

@@ -3,7 +3,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ConfigService } from '@sunbird/shared';
 import { UserService, LearnerService } from '@sunbird/core';
 import { pluck } from 'rxjs/operators';
-
+import {AttendanceComponent} from '../attendance/attendance.component';
 @Component({
   selector: 'app-session-details',
   templateUrl: './session-details.component.html',
@@ -41,4 +41,15 @@ export class SessionDetailsComponent implements OnInit {
     }
     );
   }
+  // openAttendance() {
+  //   const attendanceDialog = this.dialog.open(AttendanceComponent, {
+  //     width: '50%',
+  //     height: '70%',
+  //     data: {
+  //             sessions : this.data.sessionData ,
+  //             }
+  //   });
+  //   attendanceDialog.afterClosed().subscribe(result => {
+  //   });
+  // }
 }

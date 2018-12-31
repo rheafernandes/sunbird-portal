@@ -16,9 +16,8 @@ import {
   MimeTypeTofileType,
 
 } from '../../interfaces';
-import { ResourceService, PlayContent, ConfigService } from '../../services/index';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import {ListSessionsComponent} from '../../../learn/components/list-sessions/list-sessions.component';
+import { ResourceService, PlayContent } from '../../services/index';
+import { Session } from 'protractor';
 // import {Subscription , Subject} from 'rxjs';
 @Component({
   selector: 'app-collection-tree',
@@ -49,7 +48,6 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
 
   learnerService: any;
   constructor(
-    public dialog: MatDialog,
     public player: PlayContent,
     public resourceService?: ResourceService,
 
