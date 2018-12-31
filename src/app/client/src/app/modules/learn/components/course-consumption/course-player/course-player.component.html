@@ -41,7 +41,7 @@
       </mat-accordion>
     </div>
     <app-collection-tree [session]="sessions"
-      *ngIf="collectionTreeNodes; else: dataCommingSoon"
+      *ngIf="collectionTreeNodes"
       (contentSelect)="navigateToContent($event)"
       [nodes]="collectionTreeNodes"
       [options]="collectionTreeOptions"

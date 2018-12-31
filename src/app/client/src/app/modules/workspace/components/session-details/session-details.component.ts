@@ -15,6 +15,8 @@ export class SessionDetailsComponent implements OnInit {
   participants = [];
   userIds = [];
   participantsDetails = [];
+  closeState: boolean;
+  openState: boolean;
   constructor(private router: Router, public dialogRef: MatDialogRef<SessionDetailsComponent>, @Inject(MAT_DIALOG_DATA) private data,
     private userService: UserService, public learnerService: LearnerService,
     public config: ConfigService) {}
@@ -45,6 +47,12 @@ export class SessionDetailsComponent implements OnInit {
       this.participantsDetails.push(data);
     }
     );
+  }
+  panelOpenState() {
+this.openState = true;
+  }
+  panelCloseState() {
+this.closeState = false;
   }
 
 }
