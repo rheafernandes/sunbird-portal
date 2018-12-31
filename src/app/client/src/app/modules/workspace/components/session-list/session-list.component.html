@@ -11,56 +11,6 @@
     </div>
   </div>
 
-  <!--filerStart -->
-  <!-- <div class="container1">
-    <div class="row">
-      <div class="col-md-12">
-        <div id="filter-panel" class="collapse filter-panel" *ngIf="sessionsList.length>0">
-          <div class="panel panel-default">
-            <div class="panel-body">
-              <div class="">
-                <label class="filter-col" style="margin-right:0;" for="pref-perpage">Session Title</label>
-                <input [(ngModel)]="title" type="text" class="form-control input-sm" style="margin-right: 1rem;"
-                  placeholder="Title" />
-              </div>
-              <div class="">
-                <label class="filter-col" style="margin-right:0;" for="pref-search" placeholder="name">Course Name</label>
-                <input [(ngModel)]="course" type="text" class="form-control input-sm" placeholder="course name" style="margin-right: 1rem;"
-                  id="pref-search">
-              </div>
-              <div class="">
-                <label class="filter-col" style="margin-right:0;" for="pref-orderby">Batch</label>
-                <select [(ngModel)]="batch" id="pref-orderby" class="form-control" style="margin-right: 1rem;"
-                  placeholder="select batch">
-                  <option [value]="session.id" *ngFor="let session of sessionsList">{{session.name}}</option>
-                </select>
-              </div>
-              <div class="">
-                <label class="filter-col" style="margin-right:0;" for="pref-orderby">Status</label>
-                <select [(ngModel)]="status" id="pref-orderby" class="form-control" style="margin-right: 1rem;"
-                  placeholder="Session status">
-                  <option value="draft">Draft</option>
-                  <option value="published">Published</option>
-                </select>
-              </div>
-              <div class="">
-                <label class="filter-col" style="margin-right:0;" for="pref-orderby">Completion</label>
-                <select [(ngModel)]="completion" name="completion" id="pref-orderby" class="form-control" style="margin-right: 1rem;"
-                  placeholder=" status">
-                  <option value="1">Completed</option>
-                  <option value="0">Not Completed</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <button type="button" class="btn btn-primary mt-2" data-toggle="collapse" data-target="#filter-panel">
-        <span class="glyphicon glyphicon-cog"></span> Session Filters
-      </button>
-    </div>
-  </div> -->
-
   <div class="row">
     <div class="col-md-12">
 
@@ -82,14 +32,15 @@
             </th>
             <th class="two wide UpReviewTableHeader" *ngIf="view('status')">Status
             </th>
-            <th class="two wide UpReviewTableHeader">Delete
+            <!-- <th class="two wide UpReviewTableHeader">Delete
             </th>
             <th class="two wide UpReviewTableHeader">Update
             </th>
             <th class="two wide UpReviewTableHeader" *ngIf="view('attendance')">Attendance
             </th>
             <th class="two wide UpReviewTableHeader">Learning Material
-            </th>
+            </th> -->
+            <th class="two wide UpReviewTableHeader">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -135,8 +86,34 @@
                 </div>
               </h5>
             </td>
-            <td *ngIf="view('status')" class="UpForReviewStatusOrange"> <button class="btn btn-primary" (click)="publish(session)"
+
+            <td>
+              <mat-icon *ngIf="session?.sessionDetails?.status === 'published'" data-toggle="tooltip" data-placement="bottom"
+                title="Published" (click)="Alert()">check</mat-icon>
+              <mat-icon *ngIf="session?.sessionDetails?.status === 'draft'" data-toggle="tooltip" data-placement="bottom"
+                title="Draft" (click)="publish(session)">error_outline</mat-icon>
+            </td>
+            <td>
+              <mat-icon mat-icon-button [matMenuTriggerFor]="menu" data-toggle="tooltip" data-placement="bottom" title="More">more_vert</mat-icon>
+
+              <mat-menu #menu="matMenu" yPosition="below" [overlapTrigger]="false">
+                <div mat-menu-item (click)="deleteSession(session)">
+                  <mat-icon>delete</mat-icon>Delete
+                </div>
+                <div mat-menu-item (click)="openDialog(session)">
+                  <mat-icon>create</mat-icon>Update
+                </div>
+                <div mat-menu-item [routerLink]="['/workspace/content/sessions' ,session.sessionDetails?.sessionId ]">
+                  <mat-icon>info</mat-icon>Attendance
+                </div>
+                <div mat-menu-item [routerLink]="['/workspace/content/sessions/addMaterial' , session.sessionDetails?.sessionId]">
+                  <mat-icon>add_circle_outline</mat-icon>Add Materials
+                </div>
+              </mat-menu>
+            </td>
+            <!-- <td *ngIf="view('status')" class="UpForReviewStatusOrange"> <button class="btn btn-primary" (click)="publish(session)"
                 [disabled]="session?.sessionDetails?.status==='published'">{{session?.sessionDetails?.status}}</button></td>
+
             <td>
               <i class="trash large icon" (click)="deleteSession(session)">
               </i>
@@ -153,7 +130,7 @@
               <div class="content">
                 <a class="item" [routerLink]="['/workspace/content/sessions/addMaterial' , session.sessionDetails?.sessionId]">Add</a>
               </div>
-            </td>
+            </td> -->
           </tr>
         </tbody>
       </table>

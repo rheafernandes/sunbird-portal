@@ -19,7 +19,7 @@ export class SessionListComponent implements OnInit {
   sessionsList = [];
   views = new FormControl();
   currentView = [];
-  viewsList: string[] = ['startDate', 'endDate', 'time', 'status', 'attendance'];
+  viewsList: string[] = ['startDate', 'endDate', 'time', 'status'];
 
   ngOnInit() {
     this.views.valueChanges.subscribe((data) => {
