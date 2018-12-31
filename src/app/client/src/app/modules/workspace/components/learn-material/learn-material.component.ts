@@ -42,7 +42,7 @@ export class LearnMaterialComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   selection = new SelectionModel(true, []);
   constructor(private activatedRoute: ActivatedRoute, private sessionService: SessionService,
-     private paginationService: PaginationService, private config: ConfigService, 
+     private paginationService: PaginationService, private config: ConfigService,
      private searchService: SearchService, private toasterService: ToasterService) {
   }
 

@@ -1,6 +1,8 @@
 <div class="learn-card">
   <div class="alert alert-dismissible alert-primary">
-    <strong> Add Learning Material </strong>
+    <strong> Add Learning Material For <b>{{session?.sessionDetails?.sessionTitle}}</b> 
+    <span class="float-right"> Id :- ({{session?.sessionDetails?.sessionId}})</span>
+    </strong>
   </div>
 </div>
 
@@ -11,16 +13,14 @@
     </mat-label>
     <input matInput placeholder="Course" [formControl]="inputValue">
     <mat-icon matSuffix>search</mat-icon>
-    <mat-hint>Enter a Course Name</mat-hint>
   </mat-form-field>
-
+  <br>
   <div class="btn btn-primary" (click)="addMaterial()">Save Material</div>
-
 </mat-card>
 
 <mat-card *ngIf="selectedCourses.size>0 && !showLoader" class="learn-card">
   <mat-card-subtitle>
-  Selected Courses
+    Selected Courses
   </mat-card-subtitle>
   <mat-chip-list #chipList>
     <mat-chip *ngFor="let course of selection.selected">

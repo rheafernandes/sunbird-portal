@@ -30,8 +30,9 @@ export class SessionDetailsComponent implements OnInit {
     }
   }
 
-  navigate(courseId , batchId) {
-    this.router.navigate([`/learn/course/${courseId}/batch/'${batchId}`]);
+  navigate(courseId) {
+    this.router.navigate([`learn/preview/${courseId}`]);
+    this.dialogRef.close();
   }
 
   getParticipantsDetails(userId) {
@@ -41,7 +42,6 @@ export class SessionDetailsComponent implements OnInit {
     };
     const response = this.learnerService.get(option).pipe(pluck('result', 'response'));
     response.subscribe(data => {
-      console.log('data', data);
       this.participantsDetails.push(data);
     }
     );

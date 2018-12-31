@@ -93,8 +93,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr in-view-item class="UpForReviewListHover cursor-pointer" *ngFor="let session of sessionsList | filterSession:title:course:batch:status:completion">
+          <tr in-view-item class="UpForReviewListHover cursor-pointer" *ngFor="let session of sessionsList">
             <td (click)="openSession(session)">
+              <!-- | filterSession:title:course:batch:status:completion -->
               <h5 class="ui image header">
                 <div class="content ">
                   <div class="UpReviewHeader"> {{ session?.sessionDetails?.sessionTitle}}</div>

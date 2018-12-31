@@ -170,7 +170,7 @@
                     <tr class="table-active" *ngFor="let item of sessions?.sessionDetails?.study_material">
                       <td>{{item.name}}</td>
                       <td>
-                        <div class="btn btn-primary" (click)="navigate(item?.identifier , sessions?.id)">Read</div>
+                        <div class="btn btn-primary" (click)="navigate(item?.identifier)">Read</div>
                       </td>
                     </tr>
                   </tbody>
