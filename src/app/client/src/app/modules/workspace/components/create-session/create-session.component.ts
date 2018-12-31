@@ -17,6 +17,7 @@ export class CreateSessionComponent implements OnInit, OnDestroy {
   sessiondata;
   course: any;
   courseid: any;
+  showFiller = false;
   coursechapters;
   batchData;
   session;
