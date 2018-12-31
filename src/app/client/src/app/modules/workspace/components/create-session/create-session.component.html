@@ -81,9 +81,7 @@
             Date is required.
           </div>
         </div>
-        <div class="alert alert-danger" *ngIf="((currentDate | date:'shortDate') > (startDate.value | date:'shortDate'))">
-            Please enter valid Start Date.
-          </div>
+
       &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
       <label for="sessionEndDate">Session End Date</label> &nbsp;
       <mat-form-field style="width:25% !important">
@@ -96,9 +94,7 @@
             Date is required.
           </div>
         </div>
-        <div class="alert alert-danger"  *ngIf="((startDate.value | date:'shortDate') > (endDate.value | date:'shortDate'))">
-            Please enter valid Start Date.
-          </div>
+
   </div>
   <div class="form-group">
     <div class="12hr-example">
