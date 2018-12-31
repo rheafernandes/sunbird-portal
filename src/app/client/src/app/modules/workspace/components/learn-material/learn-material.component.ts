@@ -37,13 +37,15 @@ export class LearnMaterialComponent implements OnInit {
   session;
   selectedCourses = new Set();
   checked;
+  config;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   selection = new SelectionModel(true, []);
   constructor(private activatedRoute: ActivatedRoute, private sessionService: SessionService,
-     private paginationService: PaginationService, private config: ConfigService,
+     private paginationService: PaginationService, config: ConfigService,
      private searchService: SearchService, private toasterService: ToasterService) {
+       this.config = config;
   }
 
   ngOnInit() {
