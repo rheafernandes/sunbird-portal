@@ -1,99 +1,71 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 @import url('https://fonts.googleapis.com/css?family=Carter+One%7CCabin+Sketch');
 .ui.secondary.pointing.menu .ui.item.text-upper-case {
-    text-transform: uppercase;
+  text-transform: uppercase;
 }
 
 .anon-consumption-sec-menu {
-    border-bottom: 2px solid rgba(34,36,38,.15);
+  border-bottom: 2px solid rgba(34,36,38,.15);
 }
 
 .ui.grid>.header-height-before-login {
-    height: 80px;
-    justify-content: center;
-    align-items: center;
+  height: 80px;
+  justify-content: center;
+  align-items: center;
+}
+.ui.grid {
+  /* margin-top: -1rem;
+  margin-bottom: -1rem;
+  margin-left: -1rem; */
+  /* margin-right: 0rem; */
+}
+#beforelogin {
+  background-color: black;
 }
 
-.nav-link{
+#beforelogin button{
   color: white;
-  margin-top:2rem;
 }
-#nav{
-  color: white;
-  margin-top:2rem;
-  margin-left: 60rem;
+#header {
+  background-color: black;
+  width: auto;
+  /* margin-right: -7vh; */
 }
-.icon-alignment{
-  margin-left: 8rem;
-  margin-top: 0.5em;
-  display: inline-flex;
-}
-.nav-align{
-  /* margin-left: 1.5rem; */
-  font-size: 1rem
-}
+#menu{
+  background-color: black;
 
-.navbar-brand{
-  display: inline-block;
-  /* padding-top: 2.2rem; */
-  padding-bottom: 0.3125rem;
-  margin-right: 1rem;
-  line-height: inherit;
-  white-space: nowrap;
-  margin-left: 2rem;
-  font-size: 1.8rem;
-  padding: 2.2rem 0rem;
-   font-family: 'Carter One', cursive;
-    background: -webkit-linear-gradient(blue ) !important;
-   -webkit-background-clip: text !important;
-   -webkit-text-fill-color: transparent !important;
 }
-
-.navbar-brand1{
-  display: inline-block;
-  padding-top: 1.3rem;
-  padding-bottom: 0.3125rem;
-  margin-right: 1rem;
-  line-height: inherit;
-  white-space: nowrap;
-  margin-left: 2rem;
-  font-size: 1.8rem;
-   font-family: 'Carter One', cursive;
-    /* background: -webkit-linear-gradient(blue ) !important; */
-   -webkit-background-clip: text !important;
-   -webkit-text-fill-color: transparent !important;
+#alarmIcon i{
+  display: none;
 }
-.navbar {
-  margin-bottom :0;
-  border-radius: 0;
-       position:unset ;
-      padding: 0rem;
-}
-#search-bar{
-  margin-left: 1rem;
-}
-#explore-align{
-  padding-left: rem;
-  margin-top: 0.4rem;
-  padding-right: 58rem;
-  font-size: 1em;
-  font-size: 1rem;
-}
-#signup{
-  margin-top: 0.4rem;
-  font-size: 1em;
-  margin-left: auto;
-}
-#login{
-  margin-top: 0.4rem;
-  font-size: 1em;
-}
-#profile-color
-{
+#menu a{
   color: white;
 }
-/* @media only screen and (max-width: 400px) {
-  .navbar-toggler  {
-    float:right;
-  }
+#search {
+  padding-left: 0px;
+}
+@media only screen and (min-width:320px )and (max-width: 760px) {
+  /* #search {
+    top: 6vh;
+    left: -4vh;
 } */
+  #dropdown-menu-list-header {
+    right: -14vh;
+    width: 6vh;
+}
+  #alarmIcon i{
+    display: none;
+  }
+  #logo {
+    left: 4vh;
+  }
+  #menu{
+    /* padding-top: 6vh; */
+    /* margin-right: -1  rem;
+    margin-left: 0px; */
+}
+#header {
+  background-color: black;
+}
+}
+
