@@ -27,6 +27,7 @@ import { SessionService } from './services/session/session.service';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { FilterSessionPipe } from './pipes/filter-session.pipe';
 import { AttendanceComponent } from './components/attendance/attendance.component';
+import { LearnMaterialComponent } from './components/learn-material/learn-material.component';
 
 @NgModule({
   imports: [
@@ -59,7 +60,8 @@ import { AttendanceComponent } from './components/attendance/attendance.componen
     CreateSessionComponent,
     SessionDetailsComponent,
     FilterSessionPipe,
-    AttendanceComponent
+    AttendanceComponent,
+    LearnMaterialComponent
   ],
   exports: [SessionDetailsComponent],
   providers: [WorkSpaceService, EditorService, BatchService, CourseConsumptionService,

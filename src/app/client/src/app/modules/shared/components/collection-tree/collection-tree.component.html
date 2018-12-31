@@ -22,8 +22,8 @@
       <mat-expansion-panel-header>
         <mat-panel-title>
           <span [ngClass]="child.icon"></span> {{ child.title }} &nbsp;&nbsp;
-          <div *ngFor="let item of session">
-            <i *ngIf="item.sessionDetails.courseUnit == child.id" class="material-icons float-right" (click)="openSession(item)">
+          <div *ngFor="let sessionDetail of session">
+            <i *ngIf="sessionDetail.sessionDetails.courseUnit == child.id" class="material-icons float-right" (click)="openSession(sessionDetail)">
                 live_tv</i>
           </div>
         </mat-panel-title>

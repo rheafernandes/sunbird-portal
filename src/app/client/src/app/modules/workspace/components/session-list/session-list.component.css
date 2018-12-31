@@ -1,4 +1,4 @@
-@import "~bootstrap/dist/css/bootstrap.css";
+@import "~bootstrap/dist/css/bootstrap.min.css";
 @import url('https://fonts.googleapis.com/css?family=Carter+One%7CCabin+Sketch');
 .container1{
   margin-top:30px;

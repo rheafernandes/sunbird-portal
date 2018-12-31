@@ -4,6 +4,7 @@ import { ConfigService } from '@sunbird/shared';
 import { UserService, LearnerService } from '@sunbird/core';
 import { pluck } from 'rxjs/operators';
 import {AttendanceComponent} from '../attendance/attendance.component';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-session-details',
   templateUrl: './session-details.component.html',
@@ -14,9 +15,9 @@ export class SessionDetailsComponent implements OnInit {
   participants = [];
   userIds = [];
   participantsDetails = [];
-  constructor(public dialogRef: MatDialogRef<SessionDetailsComponent>, @Inject(MAT_DIALOG_DATA) private data,
+  constructor(private router: Router, public dialogRef: MatDialogRef<SessionDetailsComponent>, @Inject(MAT_DIALOG_DATA) private data,
     private userService: UserService, public learnerService: LearnerService,
-    public config: ConfigService) { }
+    public config: ConfigService) {}
   onNoClick(): void {
     this.dialogRef.close();
   }
@@ -29,6 +30,11 @@ export class SessionDetailsComponent implements OnInit {
     }
   }
 
+  navigate(courseId) {
+    this.router.navigate([`learn/preview/${courseId}`]);
+    this.dialogRef.close();
+  }
+
   getParticipantsDetails(userId) {
     const option = {
       url: `${this.config.urlConFig.URLS.USER.GET_PROFILE}${userId}`,
@@ -36,20 +42,9 @@ export class SessionDetailsComponent implements OnInit {
     };
     const response = this.learnerService.get(option).pipe(pluck('result', 'response'));
     response.subscribe(data => {
-      console.log('data', data);
       this.participantsDetails.push(data);
     }
     );
   }
-  // openAttendance() {
-  //   const attendanceDialog = this.dialog.open(AttendanceComponent, {
-  //     width: '50%',
-  //     height: '70%',
-  //     data: {
-  //             sessions : this.data.sessionData ,
-  //             }
-  //   });
-  //   attendanceDialog.afterClosed().subscribe(result => {
-  //   });
-  // }
+
 }

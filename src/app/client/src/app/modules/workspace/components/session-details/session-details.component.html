@@ -127,15 +127,63 @@
               </div>
             </div>
           </div>
-
         </mat-expansion-panel>
-      </mat-accordion>
 
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="onNoClick()">
-        Close
-      </button>
+
+        <mat-expansion-panel *ngIf="sessions?.sessionDetails?.study_material" (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+          hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>View Learning Material</mat-panel-title>
+            <mat-panel-description>
+              <i class="fas fa-group float-right" style="margin-left: 19rem"></i>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <!-- <table class="ui upForReviewTable table">
+                  <thead>
+                    <tr class="table-primary">
+                      <th class="one wide">Name</th>
+                      <th class="four wide">View</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr in-view-item *ngFor="let item of sessions?.sessionDetails?.study_material">
+                      <td>{{item.name}}</td>
+                      <td>
+                        <div class="btn btn-primary">Read</div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table> -->
+
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">Name</th>
+                      <th scope="col">Read</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="table-active" *ngFor="let item of sessions?.sessionDetails?.study_material">
+                      <td>{{item.name}}</td>
+                      <td>
+                        <div class="btn btn-primary" (click)="navigate(item?.identifier)">Read</div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+          </div>
+        </mat-expansion-panel>
+
+
+
+      </mat-accordion>
     </div>
   </div>
 

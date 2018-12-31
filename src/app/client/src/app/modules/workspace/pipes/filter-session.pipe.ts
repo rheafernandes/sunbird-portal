@@ -26,17 +26,19 @@ export class FilterSessionPipe implements PipeTransform {
     });
   }
 
-  transform(sessionList: any, batch?: any): any {
-    // course?: any, title?: any, status?: any, completion?: any,
-    let resultantSessions = sessionList;
-    // if (!course || !title || !status || !completion || !batch) {
-    if (!batch) {
-      return resultantSessions;
-    }
-    if (batch) {
-      resultantSessions = this.filterByCourseData(resultantSessions, 'id', batch);
-      return resultantSessions;
-    }
+  transform(sessionList: any, title?: any, course?: any, batch?: any, status?: any, completion?: any): any {
+    // let resultantSessions = sessionList;
+    // if (!batch) {
+    //   return resultantSessions;
+    // }
+    // if (batch) {
+    //   console.log("batch info" , batch)
+    //   // resultantSessions = this.filterByCourseData(resultantSessions, 'id', batch);
+    //   return resultantSessions;
+    // }
+    console.log('batch ', batch , title , status , completion , course);
+    return sessionList;
+
   }
 }
 
