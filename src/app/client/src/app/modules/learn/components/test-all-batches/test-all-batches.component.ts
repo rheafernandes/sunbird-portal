@@ -227,4 +227,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       this.courseMentor = false;
     }
   }
+
+
+
 }

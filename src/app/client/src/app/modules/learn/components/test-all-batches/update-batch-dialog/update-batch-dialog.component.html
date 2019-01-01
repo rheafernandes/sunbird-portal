@@ -1,68 +1,152 @@
-<h3 class="text-secondary" style="text-align: center" *ngIf="data.title === 'create'">Create New Batch</h3>
-<h3 class="text-secondary" style="text-align: center" *ngIf="data.title === 'update'">Update Batch</h3>
-<div class="example-container">
-  <mat-card style="width: 100% !important;">
-<mat-card-content>
-    <mat-form-field style="width: 100% !important">
-      <!-- <label>Name of Batch</label> -->
-      <input matInput placeholder="Name of Batch">
-    </mat-form-field>
-<br>
-    <mat-form-field  style="width:100% !important">
-        <!-- <label>Description of Batch</label> -->
-      <textarea matInput placeholder="Description of Batch"></textarea>
-    </mat-form-field>
-<br>
-      <mat-form-field style="width: 45% !important">
-        <input matInput [matDatepicker]="picker1" placeholder="Choose Start Date" [formControl]="date">
-        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-        <mat-datepicker #picker1></mat-datepicker>
-      </mat-form-field>
-      &nbsp;&nbsp;
-      <mat-form-field style="width:45% !important">
-        <input matInput [matDatepicker]="picker2" placeholder="Choose End Date" [formControl]="serializedDate">
-        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-        <mat-datepicker #picker2></mat-datepicker>
-      </mat-form-field>
+<div class="dialog-container" *ngIf= "(creator || mentorIsPresent) else displaymsg">
+  <h3 class="text-secondary" style="text-align: center" *ngIf="data.title === 'update'">Update Batch</h3>
+  <div class="example-container">
+    <mat-card style="width: 100% !important;">
+      <form (ngSubmit)="onSubmit(title.value,description.value,startDate.value,endDate.value)" *ngIf="creator">
+        <mat-card-content>
+          <mat-form-field style="width: 100% !important">
+            <input matInput placeholder="Name" [ngModel]="existingBatchDetail? existingBatchDetail.name :''" name="title" disabled
+              #title="ngModel" >
+          </mat-form-field>
+          <br>
+          <mat-form-field style="width:100% !important">
+            <textarea matInput placeholder="Description" [ngModel]="existingBatchDetail? existingBatchDetail.description :''"
+              name="description" #description="ngModel"></textarea>
+          </mat-form-field>
+          <br>
+          <mat-form-field style="width: 45% !important">
+            <input matInput [matDatepicker]="picker1" placeholder="Start Date" [ngModel]="existingBatchDetail? existingBatchDetail.startDate :''"
+              #startDate="ngModel" name="startDate">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+          &nbsp;&nbsp;
+          <mat-form-field style="width:45% !important">
+            <input matInput [matDatepicker]="picker2" placeholder="End Date" [ngModel]="existingBatchDetail? existingBatchDetail.endDate?.slice(0,10) :''"
+              #endDate="ngModel" name="endDate">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
 
-<br>
-    <mat-form-field  style="width: 100% !important">
-        <!-- <label>Add Mentors</label> -->
-        <mat-select placeholder="Add Mentor">
-          <mat-option value="option">Option</mat-option>
-        </mat-select>
-      </mat-form-field>
- <br>
-      <mat-form-field  style="width: 100% !important">
-          <!-- <label>Add Members</label> -->
-      <mat-select placeholder="Add Member">
-        <mat-option value="option">Option</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </mat-card-content>
-  <mat-card-footer>
-    <div class="container">
-      <div class="row">
-        <!-- <div class="col">
-      <button mat-button (click)="onNoClick()"style="
-      width: inherit;
-      font-size: 15px;
-      height: 6vh;
-      background: black;
-      color: white;
-  ">Create Session</button>
-  </div> -->
-  <div class="col">
-      <button mat-button (click)="onNoClick()" style="
-      height: 6vh;
-      font-size: 15px;
-      width:inherit;
-      background: black;
-      color: white;
-  ">Create Batch</button>
-    </div>
-  </div>
-  </div>
-  </mat-card-footer>
+          <br>
+          <mat-form-field style="width: 100% !important">
+            <mat-chip-list #chipList>
+              <mat-chip
+              *ngFor="let mentor of mentors"
+              [selectable]="selectable"
+              [removable]="removable"
+              (removed)="removeMentor(mentor)"
+            >
+              {{ mentor.name }}
+              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+              <input placeholder="Add Mentors" #mentorInput [formControl]="mentorCtrl" [matAutocomplete]="autoMentor"
+                [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                (matChipInputTokenEnd)="addMentor($event)" name="mentors">
+            </mat-chip-list>
+            <mat-autocomplete
+            #autoMentor="matAutocomplete"
+            (optionSelected)="selectedMentor($event)"
+          >
+            <mat-option
+              *ngFor="let mentor of filteredMentors | async"
+              [value]="mentor"
+            >
+              {{ mentor.name }}
+            </mat-option>
+          </mat-autocomplete>
+          </mat-form-field>
+          <br>
+          <mat-form-field style="width: 100% !important">
+            <mat-chip-list #memberList>
+              <mat-chip *ngFor="let member of members" [selectable]="selectable" removable="false">
+                {{member.name}}
+              </mat-chip>
+            </mat-chip-list>
+          </mat-form-field>
+        </mat-card-content>
+        <div class="container">
+          <div class="row">
+          <div class="col" style="text-align: end ">
+            <button mat-raised-button color="accent" type="submit">Update</button>
+          </div>
+        </div>
+          </div>
+      </form>
+      <form (ngSubmit)="updateMentors()" *ngIf="mentorIsPresent">
+        <mat-card-content>
+          <mat-form-field style="width: 100% !important">
+            <input matInput placeholder="Name" [ngModel]="existingBatchDetail? existingBatchDetail.name :''" name="title" disabled
+              #title="ngModel" >
+          </mat-form-field>
+          <br>
+          <mat-form-field style="width:100% !important">
+            <textarea matInput placeholder="Description" [ngModel]="existingBatchDetail? existingBatchDetail.description :''"
+              name="description" #description="ngModel"></textarea>
+          </mat-form-field>
+          <br>
+          <mat-form-field style="width: 45% !important">
+            <input matInput [matDatepicker]="picker1" placeholder="Start Date" [ngModel]="existingBatchDetail? existingBatchDetail.startDate :''"
+              #startDate="ngModel" name="startDate">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+          &nbsp;&nbsp;
+          <mat-form-field style="width:45% !important">
+            <input matInput [matDatepicker]="picker2" placeholder="End Date" [ngModel]="existingBatchDetail? existingBatchDetail.endDate?.slice(0,10) :''"
+              #endDate="ngModel" name="endDate">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+
+          <br>
+          <mat-form-field style="width: 100% !important">
+            <mat-chip-list #chipList>
+              <mat-chip
+              *ngFor="let mentor of mentors"
+              [selectable]="selectable"
+              [removable]="removable"
+              (removed)="removeMentor(mentor)"
+            >
+              {{ mentor.name }}
+              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+              <input placeholder="Add Mentors" #mentorInput [formControl]="mentorCtrl" [matAutocomplete]="autoMentor"
+                [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                (matChipInputTokenEnd)="addMentor($event)" name="mentors">
+            </mat-chip-list>
+            <mat-autocomplete
+            #autoMentor="matAutocomplete"
+            (optionSelected)="selectedMentor($event)"
+          >
+            <mat-option
+              *ngFor="let mentor of filteredMentors | async"
+              [value]="mentor"
+            >
+              {{ mentor.name }}
+            </mat-option>
+          </mat-autocomplete>
+          </mat-form-field>
+          <br>
+          <mat-form-field style="width: 100% !important">
+            <mat-chip-list #memberList>
+              <mat-chip *ngFor="let member of members" [selectable]="selectable" removable="false">
+                {{member.name}}
+              </mat-chip>
+            </mat-chip-list>
+          </mat-form-field>
+        </mat-card-content>
+        <div class="container">
+          <div class="row">
+          <div class="col" style="text-align: end ">
+            <button mat-raised-button color="accent" type="submit">Update</button>
+          </div>
+        </div>
+          </div>
+      </form>
     </mat-card>
   </div>
+  </div>
+  <ng-template #displaymsg>
+  <mat-card>  Sorry Only creator and Mentor of this batch can edit</mat-card>
+  </ng-template>
