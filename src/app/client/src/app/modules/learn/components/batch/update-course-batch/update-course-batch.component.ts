@@ -16,7 +16,6 @@ import * as moment from 'moment';
   styleUrls: ['./update-course-batch.component.css']
 })
 export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
-
   @ViewChild('updateBatchModal') private updateBatchModal;
   /**
   * batchId
