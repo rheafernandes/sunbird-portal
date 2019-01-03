@@ -1,0 +1,113 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="float-right">
+        <mat-form-field>
+          <mat-select placeholder="Select your view" [formControl]="views" multiple>
+            <mat-option *ngFor="let view of viewsList" [value]="view">{{view}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="alert alert-dismissible alert-primary">
+        <strong> List of Sessions </strong>
+      </div>
+      <table class="ui upForReviewTable table">
+        <thead>
+          <tr>
+            <th class="two wide UpReviewTableHeader">Session
+            </th>
+            <th class="two wide UpReviewTableHeader">Course
+            </th>
+            <th class="two wide UpReviewTableHeader" *ngIf="view('startDate')">StartDate
+            </th>
+            <th class="two wide UpReviewTableHeader" *ngIf="view('endDate')">EndDate
+            </th>
+            <th class="two wide UpReviewTableHeader" *ngIf="view('time')">Time
+            </th>
+            <th class="two wide UpReviewTableHeader" *ngIf="view('status')">Status
+            </th>
+            <th class="two wide UpReviewTableHeader">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr in-view-item class="UpForReviewListHover cursor-pointer" *ngFor="let session of sessionsList" data-toggle="tooltip" data-placement="bottom"
+          title={{session?.courseAdditionalInfo?.description}}>
+            <td (click)="openSession(session)">
+              <!-- | filterSession:title:course:batch:status:completion -->
+              <h5 class="ui image header">
+                <div class="content ">
+                  <div class="UpReviewHeader"> {{ session?.sessionDetails?.sessionTitle}}</div>
+                  <div class="UpReviewSubHeader"> {{session?.name}}
+                  </div>
+                </div>
+              </h5>
+            </td>
+            <td>
+              <h5 class="ui image header">
+                <div class="content ">
+                  <div class="UpReviewSubHeader">{{session?.courseAdditionalInfo?.courseName}}</div>
+                </div>
+              </h5>
+            </td>
+            <td *ngIf="view('startDate')">
+              <h5 class="ui image header">
+                <div class="content">
+                  <div class="UpReviewSubHeader"> {{session?.sessionDetails?.sessionStartDate | date}}
+                  </div>
+                </div>
+              </h5>
+            </td>
+            <td *ngIf="view('endDate')">
+              <h5 class="ui image header">
+                <div class="content">
+                  <div class="UpReviewSubHeader"> {{session?.sessionDetails?.sessionEndDate | date}}
+                  </div>
+                </div>
+              </h5>
+            </td>
+            <td *ngIf="view('time')">
+              <h5 class="ui image header">
+                <div class="content">
+                  <div class="UpReviewSubHeader"> {{session?.sessionDetails?.sessionTime}}
+                  </div>
+                </div>
+              </h5>
+            </td>
+
+            <td>
+              <mat-icon *ngIf="session?.sessionDetails?.status === 'published'" data-toggle="tooltip" data-placement="bottom"
+                title="Published">check</mat-icon>
+              <a *ngIf="session?.sessionDetails?.status === 'draft'" data-toggle="tooltip" data-placement="bottom"
+                title="Publish session" (click)="publish(session)">Publish</a>
+            </td>
+            <td>
+              <mat-icon mat-icon-button [matMenuTriggerFor]="menu" data-toggle="tooltip" data-placement="bottom" title="More">more_vert</mat-icon>
+
+              <mat-menu #menu="matMenu" yPosition="below" [overlapTrigger]="false">
+                <div mat-menu-item (click)="deleteSession(session)">
+                  <mat-icon>delete</mat-icon>Delete
+                </div>
+                <div mat-menu-item (click)="openDialog(session)">
+                  <mat-icon>create</mat-icon>Update
+                </div>
+                <div mat-menu-item [routerLink]="['/workspace/content/sessions' ,session.sessionDetails?.sessionId ]">
+                  <mat-icon>info</mat-icon>Attendance
+                </div>
+                <div mat-menu-item [routerLink]="['/workspace/content/sessions/addMaterial' , session.sessionDetails?.sessionId]">
+                  <mat-icon>add_circle_outline</mat-icon>Add Materials
+                </div>
+              </mat-menu>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<router-outlet> </router-outlet>

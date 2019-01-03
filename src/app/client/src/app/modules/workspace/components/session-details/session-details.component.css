@@ -1,0 +1,30 @@
+@import "~bootstrap/dist/css/bootstrap.css";
+@import url('https://fonts.googleapis.com/css?family=Carter+One%7CCabin+Sketch');
+
+.modal-body a {
+  text-decoration: none;
+}
+
+.modal-body a :hover{
+  text-decoration-color: blue;
+}
+
+.table-borderless{
+
+  font-size: 15px;
+}
+
+#ModalLabel{
+  cursor: pointer;
+}
+
+.example-headers-align .mat-expansion-panel-header-title,
+.example-headers-align .mat-expansion-panel-header-description {
+  flex-basis: 0;
+  /* margin-left: 19rem; */
+}
+
+/* .example-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+} */

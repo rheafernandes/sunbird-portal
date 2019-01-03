@@ -85,7 +85,7 @@
         </div> -->
       <div class="one field " *ngIf="batchUpdateForm.value.enrollmentType !== 'open'">
         <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
-        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors" 
+        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors"
         [ngClass]="{ 'disabled' : showFormInViewMode }">
           <input id="mentorSelList">
           <i class="dropdown icon"></i>
@@ -117,7 +117,7 @@
         </div> -->
       <div class="one field " *ngIf="batchUpdateForm.value.enrollmentType !== 'open'">
         <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
-        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="participant" 
+        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="participant"
         [ngClass]="{'disabled' : showFormInViewMode }">
           <input id="userSelList">
           <i class="dropdown icon"></i>
@@ -142,5 +142,7 @@
   <div class="actions">
     <button class="ui secondary button" (click)="batchUpdateForm.reset()" [disabled]="showFormInViewMode">Clear</button>
     <button class="ui primary button" [disabled]="disableSubmitBtn || showFormInViewMode" (click)="updateBatch()">Update</button>
+
+
   </div>
 </sui-modal>

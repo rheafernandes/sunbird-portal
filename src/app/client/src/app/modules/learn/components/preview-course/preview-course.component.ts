@@ -22,6 +22,7 @@ export class PreviewCourseComponent implements OnInit {
   previewurl = [];
   coursechapters = [];
   youtubelink = [];
+  check = [];
   safeUrl;
 
   constructor(
@@ -46,11 +47,9 @@ export class PreviewCourseComponent implements OnInit {
   }
   getCourseDetails() {
     this.courseConsumptionService.getCourseHierarchy(this.courseId)
-      // .pipe(pluck('children'))
       .subscribe(
         (response: any) => {
           this.courseDetails = response;
-          // console.log('courseH', this.courseDetails);
           this.getUserDetails(this.courseDetails.createdBy);
           this.coursechapters = this.courseDetails.children;
           this.getpreviewlinks();
@@ -62,13 +61,11 @@ export class PreviewCourseComponent implements OnInit {
     this.courseBatchService.getAllBatchDetails(this.ongoingSearch)
       .subscribe((data: any) => {
         this.batches = data.result.response.content;
-        console.log(this.batches);
         for (const batch of this.batches) {
           this.totalParticipants = this.totalParticipants + Object.keys(batch.participant).length;
         }
         if (this.batches.length > 0) {
           for (const mentor of this.batches[0].mentors) {
-            // console.log(mentor);
             this.getUserDetails(mentor);
           }
         }
@@ -82,32 +79,36 @@ export class PreviewCourseComponent implements OnInit {
     };
     const response = this.learnerService.get(option).pipe(pluck('result', 'response'));
     response.subscribe(data => {
-      // console.log(data);
       this.mentorsDetails.push(data);
     }
     );
-    // console.log(this.mentorsDetails);
-
   }
   getpreviewlinks() {
     for (const child of this.coursechapters) {
-      console.log('child', child);
-      this.youtubelink.push(child.children);
-      // if (child.children.length > 0) {
-      // // this.checkChildrens(child.children);
-      // } else {
-      //     console.log('previewurl', child.previewUrl);
-      // }
-    }
-    for (const link of this.youtubelink) {
 
-      for (const ulink of link) {
-        if (ulink.mimeType === 'video/x-youtube') {
-          ulink.previewUrl = ulink.previewUrl.replace('watch?v=', 'embed/');
-          this.previewurl.push(ulink.previewUrl);
-        }
+      this.youtubelink.push(child.children);
+      if (child.children.length !== 0 && child.hasOwnProperty('children')) {
+      this.checkChildrens(child);
+      }
+
+    }
+
+    for (const link of this.check) {
+      if (link.mimeType === 'video/x-youtube') {
+        link.previewUrl = link.previewUrl.replace('watch?v=', 'embed/');
+        this.previewurl.push(link.previewUrl);
       }
     }
+
+
+    // for (const link of this.youtubelink) {
+    //   for (const ulink of link) {
+    //     if (ulink.mimeType === 'video/x-youtube') {
+    //       ulink.previewUrl = ulink.previewUrl.replace('watch?v=', 'embed/');
+    //       this.previewurl.push(ulink.previewUrl);
+    //     }
+    //   }
+    // }
     this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.previewurl[0]);
   }
 
@@ -115,10 +116,16 @@ export class PreviewCourseComponent implements OnInit {
     this.router.navigate(['/learn/course', this.courseId]);
   }
 
-// checkChildrens(child) {
-//   if (child.children.length > 0) {
-//     console.log('child values', child.children);
-//   }
+  checkChildrens(child) {
+    const property = 'children';
+    for (const chheck of child.children) {
+      if (chheck.hasOwnProperty('children')) {
+        if (chheck.children.length !== 0) {
+          this.checkChildrens(chheck);
+        } else {
+          this.check.push(chheck);
+        }
+      }
+    }
+  }
 }
-
-// }

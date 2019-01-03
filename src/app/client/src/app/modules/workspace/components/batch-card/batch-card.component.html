@@ -1,6 +1,6 @@
 <div class="ui link cards margin-top-15">
   <div class="ui fluid card mouse-pointer">
-    <div class="image" (click)="onAction(batch)" 
+    <div class="image" (click)="onAction(batch)"
     appTelemetryInteract [telemetryInteractObject]="{id:batch.identifier,type:'batch',ver:'1.0'}" [telemetryInteractEdata]="{id:'batchId',type:'click',pageid:'course-batch'}">
       <div class="ui fluid image">
           <div class="ui black right ribbon label">Batch of {{batch.label}} </div>
@@ -14,8 +14,12 @@
     </div>
     <div *ngIf="batch.userName" class="content batch-content-meta">
       By {{batch.userName}}<br/> {{batch.startDate | date: "dd MMM"}} - {{batch.endDate | date: "dd MMM"}}
-      <i class="right floated large unlock alternate icon" *ngIf="batch.enrollmentType === 'open'">
-      </i>
+      <!-- <i class="right floated large unlock alternate icon" *ngIf="batch.enrollmentType === 'open'">
+      </i> -->
+      <button mat-raised-button (click)="openDialog()" type="button" class="btn btn-secondary" style="float: right;" >Create Session</button>
     </div>
   </div>
 </div>
+
+<router-outlet></router-outlet>
+

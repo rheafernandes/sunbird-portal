@@ -17,13 +17,16 @@
       *ngIf="child.children.length > 0"
       (opened)="panelOpenState = true"
       (closed)="panelOpenState = false"
-      class="mat-expanded mat-expansion-panel-spacing"
+      class="mat-expansion-panel-spacing"
     >
       <mat-expansion-panel-header>
         <mat-panel-title>
           <span [ngClass]="child.icon"></span> {{ child.title }} &nbsp;&nbsp;
+          <div *ngFor="let sessionDetail of session">
+            <i *ngIf="sessionDetail.sessionDetails.courseUnit == child.id" class="material-icons float-right" (click)="openSession(sessionDetail)">
+                live_tv</i>
+          </div>
         </mat-panel-title>
-
           <mat-panel-description>
           </mat-panel-description>
 
@@ -37,15 +40,14 @@
     <mat-card
       *ngIf="child.children.length == 0"
       (click)="onItemSelect(child)"
-      tabindex="0"
     >
       <mat-card-header>
         <mat-checkbox
           (click)="onContentCheckBoxClick(child)"
-          [checked]="child.completed"
+          [checked]="child.completed" [disabled]="child.completed"
           color="primary"
         ></mat-checkbox>
-        &nbsp;  &nbsp; &nbsp; <span [ngClass]="child.icon"></span> &nbsp; {{ child.title }}
+        &nbsp; &nbsp; <span [ngClass]="child.icon"></span> &nbsp; {{ child.title }}
       </mat-card-header>
     </mat-card>
   </mat-accordion>

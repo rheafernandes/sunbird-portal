@@ -16,7 +16,6 @@ import * as moment from 'moment';
   styleUrls: ['./update-course-batch.component.css']
 })
 export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
-
   @ViewChild('updateBatchModal') private updateBatchModal;
   /**
   * batchId
@@ -383,7 +382,6 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy {
       this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent });
     }, 1000);
   }
-
   private getUserOtherDetail(userData) {
     if (userData.email && userData.phone) {
       return ' (' + userData.email + ', ' + userData.phone + ')';

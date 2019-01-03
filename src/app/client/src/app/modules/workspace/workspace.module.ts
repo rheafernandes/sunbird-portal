@@ -19,6 +19,16 @@ import {
 } from './components';
 import { NgInviewModule } from 'angular-inport';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { SessionListComponent } from './components/session-list/session-list.component';
+import { CreateSessionComponent } from './components/create-session/create-session.component';
+import {CourseConsumptionService, CourseProgressService, CourseBatchService} from '../learn/services';
+import { SessionDetailsComponent } from './components/session-details/session-details.component';
+import { SessionService } from './services/session/session.service';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { FilterSessionPipe } from './pipes/filter-session.pipe';
+import { AttendanceComponent } from './components/attendance/attendance.component';
+import { LearnMaterialComponent } from './components/learn-material/learn-material.component';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -29,7 +39,8 @@ import { TelemetryModule } from '@sunbird/telemetry';
     CoreModule,
     ReactiveFormsModule,
     NgInviewModule,
-    TelemetryModule
+    TelemetryModule,
+    NgxMaterialTimepickerModule.forRoot()
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
@@ -44,8 +55,17 @@ import { TelemetryModule } from '@sunbird/telemetry';
     LimitedPublishedComponent,
     AllContentComponent,
     FlagReviewerComponent,
-    AllMyContentFilterComponent
+    AllMyContentFilterComponent,
+    SessionListComponent,
+    CreateSessionComponent,
+    SessionDetailsComponent,
+    FilterSessionPipe,
+    AttendanceComponent,
+    LearnMaterialComponent
   ],
-  providers: [WorkSpaceService, EditorService, BatchService]
+  exports: [SessionDetailsComponent],
+  providers: [WorkSpaceService, EditorService, BatchService, CourseConsumptionService,
+    CourseProgressService, CourseBatchService , SessionService],
+  entryComponents: [CreateSessionComponent, SessionDetailsComponent, AttendanceComponent],
 })
 export class WorkspaceModule { }
