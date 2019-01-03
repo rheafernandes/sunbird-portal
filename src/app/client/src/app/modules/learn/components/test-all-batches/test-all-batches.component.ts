@@ -223,14 +223,10 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(
         data => {
-          // if (data.result.response === 'SUCCESS') {
-            // this.showUnenroll = true;
-          // }
           this.toasterService.success(this.resourceService.messages.smsg.m0036);
           this.fetchEnrolledCourseData(batch);
         },
         err => {
-          // this.showUnenroll = false;
           this.toasterService.error('Unsuccesful, try again later');
         }
       );
@@ -295,10 +291,8 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
   }
   updateBatch(batch): void {
     const notCreator = this.checkMentorIsPresent(batch);
-    console.log('menor', notCreator);
     const usersOfCourse = this.allMembers.concat(this.allMentors);
     this.mentorIsPresent = batch.mentors.includes(this.userService.userid);
-    console.log('menor', this.mentorIsPresent);
     const requestBody = {
       request: {
       batchId: batch.identifier,
@@ -321,11 +315,11 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
         userMentors: userMentors,
       }
       });
+
     },
     (err: any) => {
     if (err.status === 404) {
-      console.log('meno', batch);
-      const request = {
+        const request = {
         request: {
         courseId: batch.courseId,
         batchId: batch.identifier,
@@ -400,6 +394,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
               this.allMentors = _.compact(this.allMentors);
             }
           }
+          this.allMentors = this.allMentors.filter((set => f => !set.has(f.id) && set.add(f.id))(new Set));
       },
       err => {
         this.toasterService.error(err.error.params.errmsg);
@@ -428,21 +423,22 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
           && (memberDetail.lastName === undefined || memberDetail.lastName === null)) {
           obj['name'] = memberDetail.firstName;
           obj['id'] = memberDetail.identifier;
-          this.allMentors.push(obj);
-          this.allMentors = _.compact(this.allMentors);
+          this.allMembers.push(obj);
+          this.allMembers = _.compact(this.allMembers);
           } else if ((memberDetail.firstName === null && memberDetail.firstName === undefined)
           && (memberDetail.lastName !== undefined || memberDetail.lastName !== null)) {
             obj['name'] = memberDetail.lastName;
             obj['id'] = memberDetail.identifier;
-            this.allMentors.push(obj);
-            this.allMentors = _.compact(this.allMentors);
+            this.allMembers.push(obj);
+            this.allMembers = _.compact(this.allMembers);
           } else {
             obj['name'] = memberDetail.firstName + ' ' + memberDetail.lastName;
             obj['id'] = memberDetail.identifier;
-            this.allMentors.push(obj);
-            this.allMentors = _.compact(this.allMentors);
+            this.allMembers.push(obj);
+            this.allMembers = _.compact(this.allMembers);
           }
             }
+            this.allMembers = this.allMembers.filter((set => f => !set.has(f.id) && set.add(f.id))(new Set));
 
       },
       err => {

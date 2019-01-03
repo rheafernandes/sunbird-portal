@@ -135,14 +135,29 @@ export class UpdateBatchDialogComponent implements OnInit {
       'id',
       userdata.identifier
     );
-    for (const mentor of this.userMentors) {
-      console.log('batch', mentor);
-      const index = this.allMentors.indexOf(mentor);
-      if (index > -1) {
-         this.allMentors.splice(index, 1);
-      }
-      console.log('batch', mentor);
+
+  for (const mentor of this.userMentors) {
+  this.allMentors.filter(data => {
+    if (data.id === mentor) {
+      const index = this.allMentors.indexOf(data);
+      if (index > 0) {
+        console.log(index);
+        this.allMentors.splice(index, 1);
+          }
+        }
+      });
     }
+    for (const mentor of this.existingMentors) {
+      this.allMentors.filter(data => {
+        if (data.id === mentor) {
+          const index = this.allMentors.indexOf(data);
+          if (index > 0) {
+            console.log(index);
+            this.allMentors.splice(index, 1);
+              }
+            }
+          });
+        }
     this.getMembers();
     this.getMentorslist();
     this.getUserMentorslist();
@@ -230,6 +245,7 @@ export class UpdateBatchDialogComponent implements OnInit {
     }
     return arr;
   }
+
   removeMentor(mentor): void {
     const index = this.mentors.indexOf(mentor);
     if (index >= 0) {
@@ -255,11 +271,9 @@ export class UpdateBatchDialogComponent implements OnInit {
   }
   removeMentorFromMentorsList(mentor) {
     const index = this.allMentors.indexOf(mentor);
-    console.log('removed mentor', mentor);
     if (index >= 0) {
       this.allMentors.splice(index, 1);
     }
-    console.log('removed mentor', this.allMentors);
   }
 
   getMentorslist() {
