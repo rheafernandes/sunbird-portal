@@ -127,7 +127,7 @@
           >
             <mat-option
             [value]="mentor"
-              *ngFor="let mentor of (filteredMentors | async)"
+              *ngFor="let mentor of (filteredUserMentors | async)"
             >
               {{ mentor.name }}
             </mat-option>

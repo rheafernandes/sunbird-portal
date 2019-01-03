@@ -105,7 +105,7 @@ export class UpdateBatchDialogComponent implements OnInit {
         mentor ? this._filterMentor(mentor) : this.allMentors.slice()
       )
     );
-    this.filteredMentors = this.mentorCtrl.valueChanges.pipe(
+    this.filteredUserMentors = this.userMentorCtrl.valueChanges.pipe(
       startWith(null),
       map((mentor: string) =>
         mentor ? this._filterUserMentor(mentor) : this.allMentors.slice()
@@ -121,10 +121,10 @@ export class UpdateBatchDialogComponent implements OnInit {
     this.allMembers = this.data.memberDetail;
     this.allMentors = this.data.mentorDetail;
     this.userMentors = this.data.userMentors.hasOwnProperty(this.userService.userid) ? this.data.userMentors[this.userService.userid] : [];
-    console.log('uesr', this.userMentors);
-// tslint:disable-next-line: max-line-length
+
+    // tslint:disable-next-line: max-line-length
     this.existingMentors = this.data.userMentors.hasOwnProperty(this.data.batchDetail.createdBy) ? this.data.userMentors[this.data.batchDetail.createdBy] : [];
-    console.log('existing uesr', this.existingMentors);
+
     this.breakpoint = window.innerWidth <= 550 ? 1 : 1;
     if (this.shouldSizeUpdate) {
       this.updateSize();
@@ -135,6 +135,14 @@ export class UpdateBatchDialogComponent implements OnInit {
       'id',
       userdata.identifier
     );
+    for (const mentor of this.userMentors) {
+      console.log('batch', mentor);
+      const index = this.allMentors.indexOf(mentor);
+      if (index > -1) {
+         this.allMentors.splice(index, 1);
+      }
+      console.log('batch', mentor);
+    }
     this.getMembers();
     this.getMentorslist();
     this.getUserMentorslist();
@@ -172,11 +180,11 @@ export class UpdateBatchDialogComponent implements OnInit {
     if (mentorindex >= 0) {
       this.mentors.splice(index, 1);
     }
-    this.allMentors.push(mentor);
   }
 
   selectedUserMentor(event: MatAutocompleteSelectedEvent): void {
     this.addedMentors.push(event.option.value);
+    this.removeMentorFromMentorsList(event.option.value);
     this.userMentors.push(event.option.value.id);
     this.usermentorInput.nativeElement.value = '';
     this.userMentorCtrl.setValue(null);
@@ -195,6 +203,7 @@ export class UpdateBatchDialogComponent implements OnInit {
     }
   }
 
+
   addMentor(event: MatChipInputEvent): void {
     if (!this.matMentorAutocomplete.isOpen) {
       const input = event.input;
@@ -208,46 +217,51 @@ export class UpdateBatchDialogComponent implements OnInit {
       this.mentorCtrl.setValue(null);
     }
   }
+  removeUserFromList(arr, attr, value): any[] {
+  let i = arr.length;
+    while (i--) {
+      if (
+        arr[i] &&
+        arr[i].hasOwnProperty(attr) &&
+        (arguments.length > 2 && arr[i][attr] === value)
+      ) {
+        arr.splice(i, 1);
+      }
+    }
+    return arr;
+  }
   removeMentor(mentor): void {
-    this.removedMentors.push(mentor);
     const index = this.mentors.indexOf(mentor);
     if (index >= 0) {
       this.mentors.splice(index, 1);
     }
-    this.allMentors.push(mentor);
   }
 
   selectedMentor(event: MatAutocompleteSelectedEvent): void {
     this.mentors.push(event.option.value);
+    this.removeMentorFromMentorsList(event.option.value);
     this.mentorInput.nativeElement.value = '';
     this.mentorCtrl.setValue(null);
   }
-  removeUserFromList(arr, attr, value): any[] {
-    let i = arr.length;
-      while (i--) {
-        if (
-          arr[i] &&
-          arr[i].hasOwnProperty(attr) &&
-          (arguments.length > 2 && arr[i][attr] === value)
-        ) {
-          arr.splice(i, 1);
-        }
-      }
-      return arr;
-    }
+
   private _filterMentor(value: string) {
     if (value !== undefined) {
       const filterValue = value.toString().toLowerCase();
-      return this.allMentors.filter(mentor => mentor.name.toLowerCase().indexOf(filterValue) === 0);
+      return this.allMentors.filter(
+        mentor => mentor.name.toLowerCase().indexOf(filterValue) === 0
+      );
     }
     return this.allMentors;
   }
   removeMentorFromMentorsList(mentor) {
     const index = this.allMentors.indexOf(mentor);
+    console.log('removed mentor', mentor);
     if (index >= 0) {
       this.allMentors.splice(index, 1);
     }
+    console.log('removed mentor', this.allMentors);
   }
+
   getMentorslist() {
    const option = {
      url: this.config.urlConFig.URLS.ADMIN.USER_SEARCH,
@@ -433,8 +447,5 @@ updateMentors() {
 
 
 }
-
-
-
 
 

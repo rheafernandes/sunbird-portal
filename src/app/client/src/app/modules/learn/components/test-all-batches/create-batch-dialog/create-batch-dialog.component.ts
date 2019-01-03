@@ -160,12 +160,11 @@ export class CreateBatchDialogComponent implements OnInit {
     if (index >= 0) {
       this.mentors.splice(index, 1);
     }
-    this.allMentors.push(mentor);
+    // this.allMentors.push(mentor);
   }
 
   selectedMentor(event: MatAutocompleteSelectedEvent): void {
     this.mentors.push(event.option.value);
-    console.log('selected ', event.option.value);
     this.removeMentorFromMentorsList(event.option.value);
     this.mentorInput.nativeElement.value = '';
     this.mentorCtrl.setValue(null);
@@ -182,9 +181,11 @@ export class CreateBatchDialogComponent implements OnInit {
   }
   removeMentorFromMentorsList(mentor) {
     const index = this.allMentors.indexOf(mentor);
+    console.log('removed mentor', mentor);
     if (index >= 0) {
       this.allMentors.splice(index, 1);
     }
+    console.log('removed mentor', this.allMentors);
   }
   addMember(event: MatChipInputEvent): void {
     if (!this.matMemberAutocomplete.isOpen) {
@@ -212,7 +213,7 @@ export class CreateBatchDialogComponent implements OnInit {
   selectedMember(event: MatAutocompleteSelectedEvent): void {
     this.members.push(event.option.value);
     console.log('selected ', event.option.value);
-    this.removeMemberFromMembersList(event.option.value);
+    this.removeMemberFromMembersList(event.option.value.id);
     this.memberInput.nativeElement.value = '';
     this.memberCtrl.setValue(null);
   }
@@ -287,15 +288,12 @@ export class CreateBatchDialogComponent implements OnInit {
             mentorsDeleted : [],
             }
           };
-            this.updateBatchService.updateMentors(request).subscribe((res: any) => {console.log(res)});
+            this.updateBatchService.updateMentors(request).subscribe((res: any) => { });
         },
         err => {
           if (err.error && err.error.params.errmsg) {
             this.toasterService.error(err.error.params.errmsg);
           }
-          // else {
-          //   this.toasterService.error(this.resourceService.messages.fmsg.m0052);
-          // }
         }
       );
       this.dialogRef.close();
@@ -320,37 +318,3 @@ export class CreateBatchDialogComponent implements OnInit {
 
 }
 
-// submit(startDate, endDate) {
-//   startDate = new Date(Date.parse(startDate)).toISOString().slice(0, 10);
-//   endDate = new Date(Date.parse(endDate)).toISOString().slice(0, 10);
-//   if (this.date.value > this.serializedDate.value) {
-//     this.toasterService.error('End Date should be greater than start date');
-//   }
-//   const mentorIds = [];
-//   for (const mentor of this.mentors) {
-//     mentorIds.push(mentor.id);
-//   }
-//   const requestBody = {
-//     courseId: this.courseId,
-//     name: this.batchnameCtrl.value,
-//     description: this.batchDescriptCtrl.value,
-//     // tslint:disable-next-line:quotemark
-//     enrollmentType: 'open',
-//     startDate: startDate,
-//     endDate: endDate || null,
-//     createdBy: this.userService.userid,
-//     createdFor: this.userService.userProfile.organisationIds,
-//     mentors: _.compact(mentorIds)
-//   };
-//   console.log('request body', requestBody);
-//   this.courseBatchService.createBatch(requestBody)
-//   .subscribe(
-//     (data) => {
-//       console.log(data);
-//       this.toasterService.success('Successfully Created Batch');
-//     },
-//     (err) => {
-//       this.toasterService.error('You do not belong to rootOrg');
-//     }
-//   );
-// }

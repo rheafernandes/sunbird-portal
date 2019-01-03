@@ -224,15 +224,29 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       .subscribe(
         data => {
           // if (data.result.response === 'SUCCESS') {
-            this.showUnenroll = true;
+            // this.showUnenroll = true;
           // }
           this.toasterService.success(this.resourceService.messages.smsg.m0036);
+          this.fetchEnrolledCourseData(batch);
         },
         err => {
-          this.showUnenroll = false;
+          // this.showUnenroll = false;
           this.toasterService.error('Unsuccesful, try again later');
         }
       );
+  }
+  fetchEnrolledCourseData(batch) {
+    setTimeout(() => {
+      this.coursesService.getEnrolledCourses().pipe(
+        takeUntil(this.unsubscribe))
+        .subscribe(() => {
+          this.toasterService.success(this.resourceService.messages.smsg.m0036);
+          this.router.navigate(['/learn/course', batch.courseId, 'batch', batch.identifier]);
+          window.location.reload();
+        }, (err) => {
+          this.router.navigate(['/learn']);
+        });
+    }, 2000);
   }
   unEnroll(batch) {
     this.courseBatchService.setEnrollToBatchDetails(batch);
@@ -281,8 +295,10 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
   }
   updateBatch(batch): void {
     const notCreator = this.checkMentorIsPresent(batch);
+    console.log('menor', notCreator);
     const usersOfCourse = this.allMembers.concat(this.allMentors);
     this.mentorIsPresent = batch.mentors.includes(this.userService.userid);
+    console.log('menor', this.mentorIsPresent);
     const requestBody = {
       request: {
       batchId: batch.identifier,
@@ -291,6 +307,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
     this.updateBatchService.getMentors(requestBody)
     .subscribe((res: any) => {
     this.mentorIsPresent = res.result.data.hasOwnProperty(this.userService.userid);
+    console.log('menor', this.mentorIsPresent);
     const userMentors = res.result.data;
     const dialogRef = this.dialog.open(UpdateBatchDialogComponent, {
       data: {
@@ -304,7 +321,32 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
         userMentors: userMentors,
       }
       });
-    });
+    },
+    (err: any) => {
+    if (err.status === 404) {
+      console.log('meno', batch);
+      const request = {
+        request: {
+        courseId: batch.courseId,
+        batchId: batch.identifier,
+        createdById: batch.createdBy,
+        mentorsPresent: batch.mentors,
+        mentorWhoUpdated : this.userService.userid,
+        mentorsAdded: [],
+        mentorsDeleted : [],
+        }
+      };
+        this.updateBatchService.updateMentors(request).subscribe((res: any) => {
+        console.log(res);
+        this.toasterService.success('batch updated successfully');
+        },
+        error => {
+          console.log(error);
+          this.toasterService.error('please try again');
+        });
+    }
+    }
+    );
   }
 
   onResize(event) {
