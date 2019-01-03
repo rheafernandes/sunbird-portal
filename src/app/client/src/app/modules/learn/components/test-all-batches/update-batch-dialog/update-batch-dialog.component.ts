@@ -86,9 +86,7 @@ export class UpdateBatchDialogComponent implements OnInit {
     if (this.data.batchDetail.mentors.length > 0) {
       this.mentorIds = _.union(this.data.batchDetail.mentors);
     }
-    if (this.userMentors.length > 0) {
-      this.userMentorIds = _.union(this.userMentors);
-    }
+ 
     if (
       this.data.batchDetail.participant !== undefined ||
       this.data.batchDetail.participant !== null
@@ -124,7 +122,9 @@ export class UpdateBatchDialogComponent implements OnInit {
 
     // tslint:disable-next-line: max-line-length
     this.existingMentors = this.data.userMentors.hasOwnProperty(this.data.batchDetail.createdBy) ? this.data.userMentors[this.data.batchDetail.createdBy] : [];
-
+   if (this.userMentors.length > 0) {
+      this.userMentorIds = _.union(this.userMentors);
+    }
     this.breakpoint = window.innerWidth <= 550 ? 1 : 1;
     if (this.shouldSizeUpdate) {
       this.updateSize();
