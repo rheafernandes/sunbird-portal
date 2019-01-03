@@ -6,8 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UpdateBatchService {
-  // url = 'http://13.233.213.245:8080';
-  url = 'http://localhost:8080';
+   url = 'http://13.233.213.245:8080';
   constructor(private http: HttpClient) { }
 
   updateMentors(request): Observable<{}> {

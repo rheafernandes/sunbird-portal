@@ -297,7 +297,7 @@ export class CreateBatchDialogComponent implements OnInit {
         }
       );
       this.dialogRef.close();
-
+//       window.location.reload();
 
   }
   private addParticipantToBatch(batchId, participants) {
