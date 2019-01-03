@@ -9,5 +9,6 @@ mochawesome-report
 /npm-debug.log
 .coverrun
 /src/app/log
-
+/src/session_microservice/node_modules
+/src/session_microservice/data
 
