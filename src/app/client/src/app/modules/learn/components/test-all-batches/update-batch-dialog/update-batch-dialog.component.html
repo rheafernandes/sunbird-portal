@@ -15,14 +15,14 @@
           </mat-form-field>
           <br>
           <mat-form-field style="width: 45% !important">
-            <input matInput [matDatepicker]="picker1" placeholder="Start Date" [ngModel]="existingBatchDetail? existingBatchDetail.startDate :''"
+            <input matInput [matDatepicker]="picker1" [min]="minDate" placeholder="Start Date" [ngModel]="existingBatchDetail? existingBatchDetail.startDate :''"
               #startDate="ngModel" name="startDate">
             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
             <mat-datepicker #picker1></mat-datepicker>
           </mat-form-field>
           &nbsp;&nbsp;
           <mat-form-field style="width:45% !important">
-            <input matInput [matDatepicker]="picker2" placeholder="End Date" [ngModel]="existingBatchDetail? existingBatchDetail.endDate?.slice(0,10) :''"
+            <input matInput [matDatepicker]="picker2"[min]="minDate"  placeholder="End Date" [ngModel]="existingBatchDetail? existingBatchDetail.endDate?.slice(0,10) :''"
               #endDate="ngModel" name="endDate">
             <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
             <mat-datepicker #picker2></mat-datepicker>
@@ -91,14 +91,14 @@
           <br>
 
           <mat-form-field style="width: 45% !important">
-            <input matInput [matDatepicker]="picker1" placeholder="Start Date" [ngModel]="existingBatchDetail? existingBatchDetail.startDate :''"
+            <input matInput [matDatepicker]="picker1" [min]="minDate" placeholder="Start Date" [ngModel]="existingBatchDetail? existingBatchDetail.startDate :''"
               #startDate="ngModel" name="startDate">
             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
             <mat-datepicker #picker1></mat-datepicker>
           </mat-form-field>
           &nbsp;&nbsp;
           <mat-form-field style="width:45% !important">
-            <input matInput [matDatepicker]="picker2" placeholder="End Date" [ngModel]="existingBatchDetail? existingBatchDetail.endDate?.slice(0,10) :''"
+            <input matInput [matDatepicker]="picker2" [min]="minDate" placeholder="End Date" [ngModel]="existingBatchDetail? existingBatchDetail.endDate?.slice(0,10) :''"
               #endDate="ngModel" name="endDate">
             <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
             <mat-datepicker #picker2></mat-datepicker>

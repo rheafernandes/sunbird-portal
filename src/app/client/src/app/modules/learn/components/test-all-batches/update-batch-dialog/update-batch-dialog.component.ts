@@ -45,6 +45,7 @@ export class UpdateBatchDialogComponent implements OnInit {
   userMentorCtrl = new FormControl();
   filteredMentors: Observable<any>;
   mentors = [];
+  minDate = new Date();
   allMentors = [];
   memberCtrl = new FormControl();
   filteredMembers: Observable<any>;
@@ -86,9 +87,6 @@ export class UpdateBatchDialogComponent implements OnInit {
     if (this.data.batchDetail.mentors.length > 0) {
       this.mentorIds = _.union(this.data.batchDetail.mentors);
     }
-    if (this.userMentors.length > 0) {
-      this.userMentorIds = _.union(this.userMentors);
-    }
     if (
       this.data.batchDetail.participant !== undefined ||
       this.data.batchDetail.participant !== null
@@ -120,11 +118,13 @@ export class UpdateBatchDialogComponent implements OnInit {
     this.mentorIsPresent = this.data.mentorIsPresent;
     this.allMembers = this.data.memberDetail;
     this.allMentors = this.data.mentorDetail;
-    this.userMentors = this.data.userMentors.hasOwnProperty(this.userService.userid) ? this.data.userMentors[this.userService.userid] : [];
 
+    this.userMentors = this.data.userMentors.hasOwnProperty(this.userService.userid) ? this.data.userMentors[this.userService.userid] : [];
     // tslint:disable-next-line: max-line-length
     this.existingMentors = this.data.userMentors.hasOwnProperty(this.data.batchDetail.createdBy) ? this.data.userMentors[this.data.batchDetail.createdBy] : [];
-
+    if (this.userMentors.length > 0) {
+      this.userMentorIds = _.union(this.userMentors);
+    }
     this.breakpoint = window.innerWidth <= 550 ? 1 : 1;
     if (this.shouldSizeUpdate) {
       this.updateSize();
@@ -141,7 +141,6 @@ export class UpdateBatchDialogComponent implements OnInit {
     if (data.id === mentor) {
       const index = this.allMentors.indexOf(data);
       if (index > 0) {
-        console.log(index);
         this.allMentors.splice(index, 1);
           }
         }
@@ -152,7 +151,6 @@ export class UpdateBatchDialogComponent implements OnInit {
         if (data.id === mentor) {
           const index = this.allMentors.indexOf(data);
           if (index > 0) {
-            console.log(index);
             this.allMentors.splice(index, 1);
               }
             }
