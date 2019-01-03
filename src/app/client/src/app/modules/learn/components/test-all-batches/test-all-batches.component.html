@@ -7,7 +7,7 @@
               </mat-card>
               <mat-grid-tile  data-aos="fade-right" *ngFor="let ongoing of ongoingBatches; let i = index">
                   <div class="wrapper">
-                      <mat-card class="styleClass" id="{{i}}">
+                      <mat-card class="styleClass" >
                           <div class="container text-right">
                               <button mat-icon-button color ="primary" (click)="updateBatch(ongoing)" *ngIf="ongoing?.createdBy === userId">
                                   <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
@@ -37,11 +37,11 @@
                             </p>
                           </mat-card-content>
                           <mat-card-actions class="align-content">
-                              <button class=" btn btn-info" *ngIf="ongoing?.enrollmentType==='open' && !(ongoing?.participant?.hasOwnProperty(userId)) && !showUnenroll"
-                                  (click)="openEnrollDetailsDialog(ongoing)">Enroll</button>
+                              <button class=" btn btn-info" *ngIf="ongoing?.enrollmentType==='open' && !(ongoing?.participant?.hasOwnProperty(userId))"
+                                  (click)="openEnrollDetailsDialog(ongoing,i)" id=`Enroll{{i}}`>Enroll</button>
                               <button class="btn btn-primary" *ngIf="ongoing?.enrollmentType==='invite-only'" (click)="openContactDetailsDialog(ongoing)">Contact</button>
-                              <button class="btn btn-warning" *ngIf="ongoing?.enrollmentType==='open' && ongoing?.participant && (ongoing?.participant?.hasOwnProperty(userId) || showUnenroll)"
-                                  (click)="unEnroll(ongoing)">UnEnroll</button>
+                              <button class="btn btn-warning" *ngIf="ongoing?.enrollmentType==='open' && ongoing?.participant && ongoing?.participant?.hasOwnProperty(userId)"
+                                  (click)="unEnroll(ongoing,i)" id=`UnEnroll{{i}}`>UnEnroll</button>
                           </mat-card-actions>
                       </mat-card>
                   </div>
@@ -86,10 +86,10 @@
                             </p>
                           </mat-card-content>
                           <mat-card-actions class="align-content">
-                              <button class=" btn btn-info" *ngIf="upcoming?.enrollmentType==='open' && !(upcoming?.participant?.hasOwnProperty(userId)) && !showUnenroll"
+                              <button class=" btn btn-info" *ngIf="upcoming?.enrollmentType==='open' &&  !(upcoming?.participant?.hasOwnProperty(userId))"
                                   (click)="openEnrollDetailsDialog(upcoming)">Enroll</button>
                               <button class="btn btn-primary" *ngIf="upcoming?.enrollmentType==='invite-only'" (click)="openContactDetailsDialog(upcoming)">Contact</button>
-                              <button class="btn btn-warning" *ngIf="upcoming?.enrollmentType==='open' && upcoming?.participant  && (upcoming?.participant?.hasOwnProperty(userId) || showUnenroll)"
+                              <button class="btn btn-warning" *ngIf="upcoming?.enrollmentType==='open' && upcoming?.participant?.hasOwnProperty(userId)"
                                   (click)="unEnroll(upcoming)">UnEnroll</button>
                           </mat-card-actions>
                       </mat-card>

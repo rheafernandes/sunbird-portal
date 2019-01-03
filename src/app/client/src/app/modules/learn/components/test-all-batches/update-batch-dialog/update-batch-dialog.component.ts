@@ -71,16 +71,17 @@ export class UpdateBatchDialogComponent implements OnInit {
   ) {
 
     this.existingBatchDetail = this.data.batchDetail;
-
+    console.log(this.existingBatchDetail);
     if (this.data.batchDetail.mentors.length > 0) {
       this.mentorIds = _.union(this.data.batchDetail.mentors);
+    } else {
+      this.mentorIds = [];
     }
 
-    if (
-      this.data.batchDetail.participant !== undefined ||
-      this.data.batchDetail.participant !== null
-    ) {
+    if (this.existingBatchDetail.hasOwnProperty('participant')) {
       this.participantIds = _.union(_.keys(this.data.batchDetail.participant));
+    } else {
+      this.participantIds = [];
     }
 
     this.shouldSizeUpdate = data.shouldSizeUpdate;
@@ -232,6 +233,7 @@ export class UpdateBatchDialogComponent implements OnInit {
       this.courseBatchService.updateBatch(requestBody)
       .subscribe(
         (data) => {
+          console.log(data);
           this.toasterService.success('You successfully updated the batch');
         },
         err => {

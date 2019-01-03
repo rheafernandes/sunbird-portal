@@ -17,7 +17,8 @@ import {
 import {
   LearnerService,
   UserService,
-  PermissionService
+  PermissionService,
+  CoursesService
 } from '@sunbird/core';
 import { pluck, takeUntil, tap } from 'rxjs/operators';
 import { Subject, of as observableOf } from 'rxjs';
@@ -102,7 +103,8 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
     public userService: UserService,
     public toasterService: ToasterService,
     public resourceService: ResourceService,
-    public permissionService: PermissionService
+    public permissionService: PermissionService,
+    public coursesService: CoursesService
   ) {
     this.userId = this.userService.userid;
   }
@@ -182,19 +184,19 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       .pipe(pluck('result', 'response'));
     return response;
   }
-  openEnrollDetailsDialog(batch) {
+  openEnrollDetailsDialog(batch, i) {
     this.courseBatchService.setEnrollToBatchDetails(batch);
     this.router.navigate(['enroll/batch', batch.identifier], {
       relativeTo: this.activatedRoute
     });
-    this.enrollToCourse(batch);
+    this.enrollToCourse(batch, i);
   }
-  enrollToCourse(batch) {
+  enrollToCourse(batch, i) {
     console.log('batch ', batch);
     const request = {
       request: {
         courseId: batch.courseId,
-        batchId: batch.id,
+        batchId: batch.identifier,
         userId: this.userId
       }
     };
@@ -204,14 +206,29 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       .subscribe(
         data => {
           if (data.result.response === 'SUCCESS') {
-            this.showUnenroll = true;
+            // document.getElementById(`Enroll${i}`).style.display = 'none';
+            // document.getElementById(`UnEnroll${i}`).style.display = 'block';
           }
           this.toasterService.success(this.resourceService.messages.smsg.m0036);
+          this.fetchEnrolledCourseData(batch);
         },
         err => {
           this.toasterService.error('Unsuccesful, try again later');
         }
       );
+  }
+  fetchEnrolledCourseData(batch) {
+    setTimeout(() => {
+      this.coursesService.getEnrolledCourses().pipe(
+        takeUntil(this.unsubscribe))
+        .subscribe(() => {
+          this.toasterService.success(this.resourceService.messages.smsg.m0036);
+          this.router.navigate(['/learn/course', batch.courseId, 'batch', batch.identifier]);
+          window.location.reload();
+        }, (err) => {
+          this.router.navigate(['/learn']);
+        });
+    }, 2000);
   }
   unEnroll(batch) {
     this.courseBatchService.setEnrollToBatchDetails(batch);
