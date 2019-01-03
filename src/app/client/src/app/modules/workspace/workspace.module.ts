@@ -24,6 +24,10 @@ import { CreateSessionComponent } from './components/create-session/create-sessi
 import {CourseConsumptionService, CourseProgressService, CourseBatchService} from '../learn/services';
 import { SessionDetailsComponent } from './components/session-details/session-details.component';
 import { SessionService } from './services/session/session.service';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { FilterSessionPipe } from './pipes/filter-session.pipe';
+import { AttendanceComponent } from './components/attendance/attendance.component';
+import { LearnMaterialComponent } from './components/learn-material/learn-material.component';
 
 @NgModule({
   imports: [
@@ -35,7 +39,8 @@ import { SessionService } from './services/session/session.service';
     CoreModule,
     ReactiveFormsModule,
     NgInviewModule,
-    TelemetryModule
+    TelemetryModule,
+    NgxMaterialTimepickerModule.forRoot()
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
@@ -53,10 +58,14 @@ import { SessionService } from './services/session/session.service';
     AllMyContentFilterComponent,
     SessionListComponent,
     CreateSessionComponent,
-    SessionDetailsComponent
+    SessionDetailsComponent,
+    FilterSessionPipe,
+    AttendanceComponent,
+    LearnMaterialComponent
   ],
+  exports: [SessionDetailsComponent],
   providers: [WorkSpaceService, EditorService, BatchService, CourseConsumptionService,
     CourseProgressService, CourseBatchService , SessionService],
-  entryComponents: [CreateSessionComponent, SessionDetailsComponent]
+  entryComponents: [CreateSessionComponent, SessionDetailsComponent, AttendanceComponent],
 })
 export class WorkspaceModule { }

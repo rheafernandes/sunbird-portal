@@ -1,73 +1,74 @@
-import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
-// import { ToasterService } from 'src/app/modules/shared';
+import { Injectable, OnInit } from '@angular/core';
+import { of, from } from 'rxjs';
+import { filter, tap } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ToasterService } from '../../../shared/services/toaster/toaster.service';
 @Injectable({
   providedIn: 'root'
 })
 export class SessionService {
-
   sessions = [];
-  constructor() {
+  // address="http://13.233.213.245:8080"
+  address = 'http://localhost:8080';
+  constructor(private http: HttpClient, private toasterService: ToasterService) {
   }
 
-  // create session
-  addSession(sessionDelta) {
-    this.sessions.push(sessionDelta);
-    // this.toasterService.info("session successfully added");
+  addSession(sessionDelta: {}): any {
+    const result = this.http.post(`${this.address}/create-session`, sessionDelta);
+    result.subscribe((data) => {
+      console.log(data);
+    }, (err) => {
+      console.log('Error', err);
+    });
   }
 
-  // returns all sessions
-  getSessions() {
-    return of(this.sessions);
+  getSessions(userId) {
+    return this.http.post(`${this.address}/user-sessions`, { 'userId': userId })
+      .pipe(tap((data) => {
+        console.log('Response from API', data);
+      }));
+  }
+
+  getSessionsFilter(batchId, courseId) {
+    return this.http.post(`${this.address}/getsessions`, { 'batchId': batchId });
   }
 
   updateSession(session) {
-    const batchId = session.identifier;
-    const courseId = session.courseId;
-    const courseUnitId = session.sessionDetails.courseUnit;
-    const batchIndex = this.sessions.findIndex((batch) => {
-      if (batch.identifier === batchId && batch.courseId === courseId && batch.sessionDetails.courseUnit === courseUnitId) {
-        return true;
-      }
-      return false;
+    this.http.post(`${this.address}/update-session`, session).subscribe((data) => {
+      console.log('updated method called', data);
     });
-
-    this.sessions[batchIndex] = session;
-    // this.toasterService.info("session successfully updated");
-
   }
 
   deleteSession(session) {
-    const batchId = session.identifier;
-    const courseId = session.courseId;
-    const courseUnitId = session.sessionDetails.courseUnit;
-    const batchIndex = this.sessions.findIndex((batch) => {
-      if (batch.identifier === batchId && batch.courseId === courseId && batch.sessionDetails.courseUnit === courseUnitId) {
-        return true;
-      }
-      return false;
+    this.http.post(`${this.address}/delete-session`, session).subscribe((data) => {
+      console.log('deletion methods caled', data);
     });
-    this.sessions.splice(batchIndex, 1);
-    // this.toasterService.info("session successfully removed");
-
   }
-
 
   publishSession(session) {
-    const batchId = session.identifier;
-    const courseId = session.courseId;
-    const courseUnitId = session.sessionDetails.courseUnit;
-    const batchIndex = this.sessions.findIndex((batch) => {
-      if (batch.identifier === batchId && batch.courseId === courseId && batch.sessionDetails.courseUnit === courseUnitId) {
-        return true;
-      }
-      return false;
-    });
-    this.sessions[batchIndex].sessionDetails.status = 'published';
-    // this.toasterService.info("session successfully published");
-
+    session.sessionDetails.status = 'published';
+    this.updateSession(session);
   }
 
+  joinSession(userId, session) {
+    console.log('sessionService : userID', userId);
+    console.log('sessionService : session', session);
+    const eligibilty = Object.keys(session.participant).includes(userId);
+    if (eligibilty) {
+      const attendee = {
+        id: userId,
+        joinedAt: new Date()
+      };
+      session.sessionDetails.attendees.push(attendee);
+      session.sessionDetails.enrolledCount = session.sessionDetails.attendees.length;
+      this.updateSession(session);
+      console.log('attendance captured for', session.sessionDetails);
+    } else {
+      this.toasterService.error('you are not eligible to join the session');
+    }
+  }
 
-
+  getSessionById(sessionId) {
+    return this.http.post(`${this.address}/single-session`, { 'sessionId': sessionId });
+  }
 }

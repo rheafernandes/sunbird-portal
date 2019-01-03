@@ -17,32 +17,30 @@
           <mat-expansion-panel-header>
             <mat-panel-title>course schedule</mat-panel-title>
           </mat-expansion-panel-header>
-          <mat-card>
-            <mat-card-header>{{ enrolledBatchInfo.name }}</mat-card-header>
-            <mat-card-content>
-              <i class="material-icons">schedule</i>
+          <mat-panel-description class="mat-expansion-panel-header-description">
+            <h6 class="text-center">{{ enrolledBatchInfo.name }}</h6>
+            <p> <i class="fa fa-calendar" aria-hidden="true"></i>
+              &nbsp;
               <span>{{ enrolledBatchInfo.startDate | date }}</span
               >&nbsp;<span *ngIf="enrolledBatchInfo.endDate" class="date">
                 - {{ enrolledBatchInfo.endDate | date }}</span
-              >
-            </mat-card-content>
-            <mat-divider></mat-divider>
-            <mat-card-footer>
-              <span class="left-float">
+              ></p>
+              <mat-divider></mat-divider>
+              <p>
+              <span class="left-float" *ngIf="enrolledBatchInfo.participant.length>0">&nbsp;
                 {{ enrolledBatchInfo.participant.length }}
                 {{ resourceService.frmelmnts.lbl.learners }}
               </span>
               &nbsp; &nbsp; &nbsp;
-              <span
+              <span class="mentor"
                 >{{ enrolledBatchInfo.mentors.length }}
-                {{ resourceService.frmelmnts.lbl.mentors }}</span
-              >
-            </mat-card-footer>
-          </mat-card>
-        </mat-expansion-panel>
+                {{ resourceService.frmelmnts.lbl.mentors }} &nbsp;</span
+              ></p>
+          </mat-panel-description>
+          </mat-expansion-panel>
       </mat-accordion>
     </div>
-    <app-collection-tree
+    <app-collection-tree [session]="sessions"
       *ngIf="collectionTreeNodes; else: dataCommingSoon"
       (contentSelect)="navigateToContent($event)"
       [nodes]="collectionTreeNodes"
@@ -84,17 +82,14 @@
           </h2>
         </div>
       </li>
-      <li>
-
-        <a (click)= "session = !session" data-toggle="modal" data-target="#exampleModal">
-          <!-- <app-session-list id="#exampleModal" *ngIf="session"></app-session-list> -->
+      <li *ngIf="sessions.length>0" (click)="openDialog()">
+        <a>
             <i id="sessionlist"
-
              class="material-icons">
-                account_box
+                live_tv
                 </i>
         </a>
-  </li>
+      </li>
       <!-- <span>{{enableContentPlayer}} {{loader}}</span> -->
     </ul>
   </div>
