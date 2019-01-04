@@ -1,81 +1,45 @@
 <div class="container">
-  <!--filerStart -->
-  <div class="container1">
-  <div class="row">
-      <div id="filter-panel" class="collapse filter-panel">
-          <div class="panel panel-default">
-              <div class="panel-body">
-                  <form class="form-inline" role="form">
-                      <div class="">
-                          <label class="filter-col" style="margin-right:0;" for="pref-perpage">Session Title</label>
-                       <input type="text" class="form-control input-sm" style="margin-right: 1rem;" placeholder="Title"/>
-                      </div>
-                      <!-- form group [rows] -->
-                      <div class="">
-                          <label class="filter-col" style="margin-right:0;" for="pref-search" placeholder="name">Course Name</label>
-                          <input type="text" class="form-control input-sm" style="margin-right: 1rem;" id="pref-search">
-                      </div><!-- form group [search] -->
-                      <div class="">
-                          <label class="filter-col" style="margin-right:0;" for="pref-orderby">Batch</label>
-                          <select id="pref-orderby" class="form-control" style="margin-right: 1rem;" placeholder="select batch">
-                              <option>batch 1</option>
-                               <option>batch 2</option>
-                          </select>
-                      </div>
-                       <div class="">
-                          <label class="filter-col" style="margin-right:0;" for="pref-orderby">Status</label>
-                          <select id="pref-orderby" class="form-control" style="margin-right: 1rem;" placeholder="Session status">
-                              <option>Draft</option>
-                               <option>Released</option>
-                          </select>
-                      </div>
-                       <div class="">
-                          <label class="filter-col" style="margin-right:0;" for="pref-orderby">Select</label>
-                          <select id="pref-orderby" class="form-control" style="margin-right: 1rem;" placeholder=" status">
-                              <option>Completed</option>
-                               <option>Not Completed</option>
-                          </select>
-                      </div>
-                      <!-- form group [order by] -->
-
-                  </form>
-              </div>
-          </div>
-      </div>
-      <button type="button" class="btn btn-primary mt-2" data-toggle="collapse" data-target="#filter-panel">
-          <span class="glyphicon glyphicon-cog"></span> Session Filters
-      </button>
-</div>
-</div>
-  <!--filter end-->
-  <br>
-  <br>
   <div class="row">
     <div class="col-md-12">
+      <div class="float-right">
+        <mat-form-field>
+          <mat-select placeholder="Select your view" [formControl]="views" multiple>
+            <mat-option *ngFor="let view of viewsList" [value]="view">{{view}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="alert alert-dismissible alert-primary">
+        <strong> List of Sessions </strong>
+      </div>
       <table class="ui upForReviewTable table">
         <thead>
           <tr>
-            <th class="four wide UpReviewTableHeader">Session
+            <th class="two wide UpReviewTableHeader">Session
             </th>
             <th class="two wide UpReviewTableHeader">Course
             </th>
-            <th class="two wide UpReviewTableHeader">Date
+            <th class="two wide UpReviewTableHeader" *ngIf="view('startDate')">StartDate
             </th>
-            <th class="two wide UpReviewTableHeader">Status
+            <th class="two wide UpReviewTableHeader" *ngIf="view('endDate')">EndDate
             </th>
-            <th class="two wide UpReviewTableHeader">Delete
+            <th class="two wide UpReviewTableHeader" *ngIf="view('time')">Time
             </th>
-            <th class="two wide UpReviewTableHeader">Update
+            <th class="two wide UpReviewTableHeader" *ngIf="view('status')">Status
             </th>
+            <th class="two wide UpReviewTableHeader">Action</th>
           </tr>
         </thead>
         <tbody>
-
-
-          <tr in-view-item class="UpForReviewListHover cursor-pointer" *ngFor="let session of sessionsList">
+          <tr in-view-item class="UpForReviewListHover cursor-pointer" *ngFor="let session of sessionsList" data-toggle="tooltip" data-placement="bottom"
+          title={{session?.courseAdditionalInfo?.description}}>
             <td (click)="openSession(session)">
+              <!-- | filterSession:title:course:batch:status:completion -->
               <h5 class="ui image header">
-                <img src="https://images-na.ssl-images-amazon.com/images/I/31E%2BwRLUqNL._US500_.jpg" class="ui tiny image UpReviewTinyImage">
                 <div class="content ">
                   <div class="UpReviewHeader"> {{ session?.sessionDetails?.sessionTitle}}</div>
                   <div class="UpReviewSubHeader"> {{session?.name}}
@@ -86,25 +50,58 @@
             <td>
               <h5 class="ui image header">
                 <div class="content ">
-                  <div class="UpReviewHeader">{{session?.courseAdditionalInfo?.courseName}}</div>
+                  <div class="UpReviewSubHeader">{{session?.courseAdditionalInfo?.courseName}}</div>
                 </div>
               </h5>
             </td>
-            <td>
+            <td *ngIf="view('startDate')">
               <h5 class="ui image header">
                 <div class="content">
-                  <div class="UpReviewSubHeader"> {{session?.sessionDetails?.sessionDate}}
+                  <div class="UpReviewSubHeader"> {{session?.sessionDetails?.sessionStartDate | date}}
                   </div>
                 </div>
               </h5>
             </td>
-            <td class="UpForReviewStatusOrange"> <button class="btn btn-primary" (click)="publish(session)" [disabled]="session?.sessionDetails?.status==='published'">{{session?.sessionDetails?.status}}</button></td>
+            <td *ngIf="view('endDate')">
+              <h5 class="ui image header">
+                <div class="content">
+                  <div class="UpReviewSubHeader"> {{session?.sessionDetails?.sessionEndDate | date}}
+                  </div>
+                </div>
+              </h5>
+            </td>
+            <td *ngIf="view('time')">
+              <h5 class="ui image header">
+                <div class="content">
+                  <div class="UpReviewSubHeader"> {{session?.sessionDetails?.sessionTime}}
+                  </div>
+                </div>
+              </h5>
+            </td>
+
             <td>
-              <i class="trash large icon" (click)="deleteSession(session)">
-              </i>
+              <mat-icon *ngIf="session?.sessionDetails?.status === 'published'" data-toggle="tooltip" data-placement="bottom"
+                title="Published">check</mat-icon>
+              <a *ngIf="session?.sessionDetails?.status === 'draft'" data-toggle="tooltip" data-placement="bottom"
+                title="Publish session" (click)="publish(session)">Publish</a>
             </td>
             <td>
-              <i class="fa fa-refresh" mat-raised-button (click)="openDialog(session)" aria-hidden="true"></i>
+              <mat-icon mat-icon-button [matMenuTriggerFor]="menu" data-toggle="tooltip" data-placement="bottom" title="More">more_vert</mat-icon>
+
+              <mat-menu #menu="matMenu" yPosition="below" [overlapTrigger]="false">
+                <div mat-menu-item (click)="deleteSession(session)">
+                  <mat-icon>delete</mat-icon>Delete
+                </div>
+                <div mat-menu-item (click)="openDialog(session)">
+                  <mat-icon>create</mat-icon>Update
+                </div>
+                <div mat-menu-item [routerLink]="['/workspace/content/sessions' ,session.sessionDetails?.sessionId ]">
+                  <mat-icon>info</mat-icon>Attendance
+                </div>
+                <div mat-menu-item [routerLink]="['/workspace/content/sessions/addMaterial' , session.sessionDetails?.sessionId]">
+                  <mat-icon>add_circle_outline</mat-icon>Add Materials
+                </div>
+              </mat-menu>
             </td>
           </tr>
         </tbody>
@@ -112,6 +109,5 @@
     </div>
   </div>
 </div>
-
 
 <router-outlet> </router-outlet>

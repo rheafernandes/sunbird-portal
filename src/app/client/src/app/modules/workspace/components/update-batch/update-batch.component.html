@@ -115,7 +115,7 @@
   </div>
   <div class="actions">
     <button class="ui secondary button" [ngClass]="{ 'disabled': batchDetails.status === 2 }" (click)="batchUpdateForm.reset()">Clear</button>
-    <button class="ui primary button" data-toggle="modal" data-target="#updateSession" [ngClass]="{ 'disabled': batchDetails.status === 2 }" (click)="sessionUpdate(batchDetails)">Update Session</button>
+    <!-- <button class="ui primary button" data-toggle="modal" data-target="#updateSession" [ngClass]="{ 'disabled': batchDetails.status === 2 }" (click)="sessionUpdate(batchDetails)">Update Session</button> -->
     <button class="ui primary button" [ngClass]="{ 'disabled': batchDetails.status === 2 }" [disabled]="disableSubmitBtn"
       (click)="updateBatch()">Update</button>
   </div>

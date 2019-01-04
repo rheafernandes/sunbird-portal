@@ -1,4 +1,4 @@
-<div class="ui secondary pointing menu" *ngIf="userService.userid">
+<div class="ui secondary pointing menu" *ngIf="userService.userid" id="menu" style="background-color: black">
 	<a class="item" [class.active]="router.isActive('/search/All') || router.isActive('/home')" routerLink="/home">
 		{{resourceService?.frmelmnts?.tab?.home}}
 	</a>
@@ -12,21 +12,31 @@
 	<a class="item" mat-button [matMenuTriggerFor]="main_menu">
 		Catalog
 	</a>
-
 	<extension-point name="header-menu-item"></extension-point>
 </div>
 
-<mat-menu #main_menu="matMenu">
-	<button mat-menu-item routerLink="/search/catalog/1">View All Courses</button>
-	<button mat-menu-item [matMenuTriggerFor]="sub_main_menu">Browse With</button>
-</mat-menu>
 
-<mat-menu #sub_main_menu="matMenu">
-	<ng-container *ngFor="let category of categoryMasterList">
-		<button mat-menu-item [matMenuTriggerFor]="sub_menu">{{ category?.code}}</button>
-		<mat-menu #sub_menu="matMenu">
-			<button *ngFor="let subItem of category?.terms" mat-menu-item (click)="filter(category?.code , subItem?.name)">{{
-				subItem?.name }}</button>
-		</mat-menu>
-	</ng-container>
+<mat-menu #main_menu="matMenu" xPosition="after" yPosition="below" [overlapTrigger]="false">
+  <button mat-menu-item routerLink="/search/catalog/1">
+    <mat-icon>view_list</mat-icon>
+    <span>View All Courses</span>
+  </button>
+  <button mat-menu-item [matMenuTriggerFor]="sub_main_menu">
+    <mat-icon>keyboard_arrow_right</mat-icon>
+    <span>Browse With</span>
+  </button>
+</mat-menu>
+<mat-menu #sub_main_menu="matMenu" xPosition="after" yPosition="below" [overlapTrigger]="false">
+  <ng-container *ngFor="let category of categoryMasterList">
+    <button mat-menu-item [matMenuTriggerFor]="sub_menu">
+      <mat-icon>import_contacts</mat-icon>
+      <span>{{ category?.code}}</span>
+    </button>
+    <mat-menu #sub_menu="matMenu" xPosition="after" yPosition="below" [overlapTrigger]="false">
+      <button *ngFor="let subItem of category?.terms" mat-menu-item (click)="filter(category?.code , subItem?.name)">
+        <mat-icon>note</mat-icon>
+        <span>{{ subItem?.name }}</span>
+      </button>
+    </mat-menu>
+  </ng-container>
 </mat-menu>

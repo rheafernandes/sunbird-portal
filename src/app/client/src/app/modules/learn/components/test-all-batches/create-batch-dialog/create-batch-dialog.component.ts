@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CourseBatchService } from '../../../services';
+import { CourseBatchService, UpdateBatchService } from '../../../services';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { Inject } from '@angular/core';
 import {
@@ -79,6 +79,7 @@ export class CreateBatchDialogComponent implements OnInit {
     public toasterService: ToasterService,
     public learnerService: LearnerService,
     public configService: ConfigService,
+    public updateBatchService: UpdateBatchService,
     public dialogRef: MatDialogRef<CreateBatchDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -109,16 +110,16 @@ export class CreateBatchDialogComponent implements OnInit {
     if (this.shouldSizeUpdate) {
       this.updateSize();
     }
-    const data = this.userService.userProfile;
+    const userdata = this.userService.userProfile;
     this.allMembers = this.removeUserFromList(
       this.allMembers,
       'id',
-      data.identifier
+      userdata.identifier
     );
     this.allMentors = this.removeUserFromList(
       this.allMentors,
       'id',
-      data.identifier
+      userdata.identifier
     );
   }
   updateSize() {
@@ -159,6 +160,7 @@ export class CreateBatchDialogComponent implements OnInit {
     if (index >= 0) {
       this.mentors.splice(index, 1);
     }
+    // this.allMentors.push(mentor);
   }
 
   selectedMentor(event: MatAutocompleteSelectedEvent): void {
@@ -179,9 +181,11 @@ export class CreateBatchDialogComponent implements OnInit {
   }
   removeMentorFromMentorsList(mentor) {
     const index = this.allMentors.indexOf(mentor);
+    console.log('removed mentor', mentor);
     if (index >= 0) {
       this.allMentors.splice(index, 1);
     }
+    console.log('removed mentor', this.allMentors);
   }
   addMember(event: MatChipInputEvent): void {
     if (!this.matMemberAutocomplete.isOpen) {
@@ -202,11 +206,13 @@ export class CreateBatchDialogComponent implements OnInit {
     if (index >= 0) {
       this.members.splice(index, 1);
     }
+    this.allMembers.push(member);
   }
 
   selectedMember(event: MatAutocompleteSelectedEvent): void {
     this.members.push(event.option.value);
-    this.removeMemberFromMembersList(event.option.value);
+    console.log('selected ', event.option.value);
+    this.removeMemberFromMembersList(event.option.value.id);
     this.memberInput.nativeElement.value = '';
     this.memberCtrl.setValue(null);
   }
@@ -226,10 +232,15 @@ export class CreateBatchDialogComponent implements OnInit {
       this.allMembers.splice(index, 1);
     }
   }
+
+
   submit(startDate, endDate) {
     const participants = [];
     startDate = new Date(Date.parse(startDate)).toISOString().slice(0, 10);
     endDate = new Date(Date.parse(endDate)).toISOString().slice(0, 10);
+
+
+
 
     const mentorIds = [];
     for (const mentor of this.mentors) {
@@ -247,6 +258,7 @@ export class CreateBatchDialogComponent implements OnInit {
       createdFor: this.userService.userProfile.organisationIds,
       mentors: _.compact(mentorIds)
     };
+
     for (const memberId of this.members) {
       participants.push(memberId.id);
     }
@@ -255,23 +267,35 @@ export class CreateBatchDialogComponent implements OnInit {
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(
         response => {
+          console.log(response);
           if (participants && participants.length > 0) {
             this.addParticipantToBatch(response.result.batchId, participants);
           } else {
             this.toasterService.success(
-              this.resourceService.messages.smsg.m0033
+             'Batch created successfully'
             );
           }
+          const request = {
+            request: {
+            courseId: this.courseId,
+            batchId: response.result.batchId,
+            createdById: this.userService.userid,
+            mentorsPresent: [],
+            mentorWhoUpdated : this.userService.userid,
+            mentorsAdded: _.compact(mentorIds),
+            mentorsDeleted : [],
+            }
+          };
+            this.updateBatchService.updateMentors(request).subscribe((res: any) => { });
         },
         err => {
           if (err.error && err.error.params.errmsg) {
             this.toasterService.error(err.error.params.errmsg);
-          } else {
-            this.toasterService.error(this.resourceService.messages.fmsg.m0052);
           }
         }
       );
       this.dialogRef.close();
+//       window.location.reload();
 
   }
   private addParticipantToBatch(batchId, participants) {
@@ -282,9 +306,14 @@ export class CreateBatchDialogComponent implements OnInit {
       .addUsersToBatch(userRequest, batchId)
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(res => {
-        this.disableSubmitBtn = false;
+        // this.disableSubmitBtn = false;
         this.toasterService.success(this.resourceService.messages.smsg.m0033);
-      });
-  }
+      },
+      (err) => {
+              this.toasterService.error(err.error.params.errmsg);
+            });
+        }
+
+
 }
 

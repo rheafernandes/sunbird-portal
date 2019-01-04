@@ -16,6 +16,11 @@ import {
 import { HomeAnnouncementService } from './service/index';
 import { NgInviewModule } from 'angular-inport';
 import { TelemetryModule } from '@sunbird/telemetry';
+import {MatTooltipModule} from '@angular/material/tooltip';
+
+
+
+
 @NgModule({
   imports: [
     SuiModule,
@@ -27,7 +32,8 @@ import { TelemetryModule } from '@sunbird/telemetry';
     SharedModule,
     CoreModule,
     NgInviewModule,
-    TelemetryModule
+    TelemetryModule,
+    MatTooltipModule
   ],
   declarations: [
     ProfileCardComponent,
@@ -37,6 +43,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
     HomeAnnouncementComponent,
     NotificationComponent,
   ],
+  entryComponents: [HomeCalendarCardComponent],
   providers: [HomeAnnouncementService]
 })
 export class HomeModule {

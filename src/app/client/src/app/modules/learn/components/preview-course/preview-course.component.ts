@@ -57,7 +57,7 @@ export class PreviewCourseComponent implements OnInit {
           this.toaster.error('Fetching Details Failed');
         },
         () => {
-          this.getpreviewlinks();
+          // this.getpreviewlinks();
         }
       );
   }
@@ -68,7 +68,7 @@ export class PreviewCourseComponent implements OnInit {
         (data: any) => {
         this.batches = data.result.response.content;
         for (const batch of this.batches) {
-          if (batch.participant !== null || batch.participant !== undefined) {
+          if (batch.hasOwnProperty('participant')) {
             this.totalParticipants = this.totalParticipants + _.keys(batch.participant).length;
           }
         }

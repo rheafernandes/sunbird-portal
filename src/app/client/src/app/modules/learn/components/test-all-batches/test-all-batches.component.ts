@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CourseBatchService } from '../../services';
+import { CourseBatchService, UpdateBatchService } from '../../services';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { Inject } from '@angular/core';
 import {
@@ -21,7 +21,7 @@ import {
   CoursesService
 } from '@sunbird/core';
 import { pluck, takeUntil, tap } from 'rxjs/operators';
-import { Subject, of as observableOf } from 'rxjs';
+import { Subject, of as observableOf, Observable } from 'rxjs';
 import * as _ from 'lodash';
 import { CreateBatchDialogComponent } from './create-batch-dialog/create-batch-dialog.component';
 import { UpdateBatchDialogComponent } from './update-batch-dialog/update-batch-dialog.component';
@@ -89,7 +89,9 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
   userCreatedbatchList = [];
   courseBatchList = [];
   userCourseBatches = [];
-  IsUserCreatedBatch: boolean;
+  enrolledCourses;
+  userEnrolledToCourse;
+  mentorIsPresent;
   ngOnDestroy(): void {}
 
   constructor(
@@ -104,7 +106,8 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
     public toasterService: ToasterService,
     public resourceService: ResourceService,
     public permissionService: PermissionService,
-    public coursesService: CoursesService
+    public coursesService: CoursesService,
+    public updateBatchService: UpdateBatchService,
   ) {
     this.userId = this.userService.userid;
   }
@@ -154,9 +157,25 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
         }
 
       });
+      this.fetchEnrolledCourses();
     this.checkRoles();
     this.getMentorslist();
     this.getMemberslist();
+  }
+  fetchEnrolledCourses() {
+      this.coursesService.getEnrolledCourses().pipe(
+        takeUntil(this.unsubscribe))
+        .subscribe((data: any) => {
+          this.enrolledCourses = data.result.courses;
+          for (const enrolledcourse of this.enrolledCourses) {
+            if (this.courseId === enrolledcourse.courseId) {
+              this.userEnrolledToCourse = true;
+            }
+
+          }
+        }, (err) => {
+          this.router.navigate(['/learn']);
+        });
   }
   openContactDetailsDialog(batch): void {
     this.getUserDetails(batch.createdBy)
@@ -189,10 +208,9 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
     this.router.navigate(['enroll/batch', batch.identifier], {
       relativeTo: this.activatedRoute
     });
-    this.enrollToCourse(batch, i);
+    this.enrollToCourse(batch);
   }
-  enrollToCourse(batch, i) {
-    console.log('batch ', batch);
+  enrollToCourse(batch) {
     const request = {
       request: {
         courseId: batch.courseId,
@@ -205,10 +223,6 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(
         data => {
-          if (data.result.response === 'SUCCESS') {
-            // document.getElementById('Enroll' + i).style.display = 'none';
-            // document.getElementById('UnEnroll' + i).style.display = 'block';
-          }
           this.toasterService.success(this.resourceService.messages.smsg.m0036);
           this.fetchEnrolledCourseData(batch);
         },
@@ -254,7 +268,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
             this.showUnenroll = false;
           }
           this.toasterService.success(
-            'You have successfully un-enrolled from this batch'
+            'Successfully un-enrolled from this batch'
           );
         },
         err => {
@@ -274,11 +288,21 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {});
   }
   updateBatch(batch): void {
     const notCreator = this.checkMentorIsPresent(batch);
     const usersOfCourse = this.allMembers.concat(this.allMentors);
+    this.mentorIsPresent = batch.mentors.includes(this.userService.userid);
+    const requestBody = {
+      request: {
+      batchId: batch.identifier,
+      }
+    };
+    this.updateBatchService.getMentors(requestBody)
+    .subscribe((res: any) => {
+    this.mentorIsPresent = res.result.data.hasOwnProperty(this.userService.userid);
+    console.log('menor', this.mentorIsPresent);
+    const userMentors = res.result.data;
     const dialogRef = this.dialog.open(UpdateBatchDialogComponent, {
       data: {
         title: 'update',
@@ -286,11 +310,38 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
         memberDetail: usersOfCourse,
         batchDetail: batch,
         courseId: this.courseId,
-        creator: notCreator
+        creator: notCreator,
+        mentorIsPresent: this.mentorIsPresent,
+        userMentors: userMentors,
       }
-    });
+      });
 
-    dialogRef.afterClosed().subscribe(result => {});
+    },
+    (err: any) => {
+      this.toasterService.error('Posting additional details, Please wait');
+    if (err.status === 404) {
+        const request = {
+        request: {
+        courseId: batch.courseId,
+        batchId: batch.identifier,
+        createdById: batch.createdBy,
+        mentorsPresent: batch.mentors,
+        mentorWhoUpdated : this.userService.userid,
+        mentorsAdded: [],
+        mentorsDeleted : [],
+        }
+      };
+        this.updateBatchService.updateMentors(request).subscribe((res: any) => {
+        console.log(res);
+        this.toasterService.success('Batch updated successfully');
+        },
+        error => {
+          console.log(error);
+          this.toasterService.error('Please try again');
+        });
+    }
+    }
+    );
   }
 
   onResize(event) {
@@ -344,6 +395,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
               this.allMentors = _.compact(this.allMentors);
             }
           }
+          this.allMentors = this.allMentors.filter((set => f => !set.has(f.id) && set.add(f.id))(new Set));
       },
       err => {
         this.toasterService.error(err.error.params.errmsg);
@@ -372,21 +424,22 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
           && (memberDetail.lastName === undefined || memberDetail.lastName === null)) {
           obj['name'] = memberDetail.firstName;
           obj['id'] = memberDetail.identifier;
-          this.allMentors.push(obj);
-          this.allMentors = _.compact(this.allMentors);
+          this.allMembers.push(obj);
+          this.allMembers = _.compact(this.allMembers);
           } else if ((memberDetail.firstName === null && memberDetail.firstName === undefined)
           && (memberDetail.lastName !== undefined || memberDetail.lastName !== null)) {
             obj['name'] = memberDetail.lastName;
             obj['id'] = memberDetail.identifier;
-            this.allMentors.push(obj);
-            this.allMentors = _.compact(this.allMentors);
+            this.allMembers.push(obj);
+            this.allMembers = _.compact(this.allMembers);
           } else {
             obj['name'] = memberDetail.firstName + ' ' + memberDetail.lastName;
             obj['id'] = memberDetail.identifier;
-            this.allMentors.push(obj);
-            this.allMentors = _.compact(this.allMentors);
+            this.allMembers.push(obj);
+            this.allMembers = _.compact(this.allMembers);
           }
             }
+            this.allMembers = this.allMembers.filter((set => f => !set.has(f.id) && set.add(f.id))(new Set));
 
       },
       err => {
