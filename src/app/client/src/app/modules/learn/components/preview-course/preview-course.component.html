@@ -109,7 +109,7 @@
               <section class="course-preview-section container-fluid" data-aos="fade-left" id="preview">
                 <mat-tab-group class="video-text">
                   <mat-tab label="Sample Video ">
-                    <iframe width="720" height="450" [src]='safeUrl' frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    <iframe width="720" height="450" src='https://www.youtube.com/embed/6opf_ke2Hlk' frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                       allowfullscreen></iframe>
                     <!-- <iframe width="650" height="450" src="https://www.youtube.com/embed/Zv8-hrGiGno" frameborder="0"
                             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
@@ -129,27 +129,27 @@
             <div class="row">
               <div class="col-sm-2">
                 <i class="fa fa-play-circle fa-lg text-primary" aria-hidden="true"></i>
-                <h4>5</h4>
+                <h4 style="color:black !important;">5</h4>
               </div>
               <div class="col-sm-2">
                 <i class="fa fa-file-pdf-o fa-lg text-success" aria-hidden="true"></i>
-                <h4>10</h4>
+                <h4 style="color:black !important;">10</h4>
               </div>
               <div class="col-sm-2">
                 <i class="fa fa-code fa-lg text-danger" aria-hidden="true"></i>
-                <h4>100</h4>
+                <h4 style="color:black !important;">100</h4>
               </div>
               <div class="col-sm-2">
                 <i class="fa fa-clock-o fa-lg text-primary" aria-hidden="true"></i>
-                <h4>36</h4>
+                <h4 style="color:black !important;">36</h4>
               </div>
               <div class="col-sm-2">
                 <i class="fa fa-desktop fa-lg text-success" aria-hidden="true"></i>
-                <h4>15</h4>
+                <h4 style="color:black !important;">15</h4>
               </div>
               <div class="col-sm-2">
                 <i class="fa  fa-file-text fa-lg text-danger" aria-hidden="true"></i>
-                <h4>28</h4>
+                <h4 style="color:black !important;">28</h4>
               </div>
             </div>
             <br />
@@ -256,7 +256,7 @@
                   </div>
                   <h2>{{mentor?.firstName}} {{mentor?.lastName}}<br><span>{{mentor?.jobProfile[0]}}Web Graphic Designer</span></h2>
                   <p>
-                    {{mentor?.profileSummary}}
+                    {{mentor?.profileSummary | slice: 0 : 40}}
                   </p>
                   <span>
                     <ul>

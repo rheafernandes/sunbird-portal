@@ -52,7 +52,6 @@ export class PreviewCourseComponent implements OnInit {
           this.courseDetails = response;
           this.getUserDetails(this.courseDetails.createdBy);
           this.coursechapters = this.courseDetails.children;
-          console.log(this.coursechapters);
           this.getpreviewlinks();
         }
       );
@@ -81,7 +80,6 @@ export class PreviewCourseComponent implements OnInit {
     const response = this.learnerService.get(option).pipe(pluck('result', 'response'));
     response.subscribe(data => {
       this.mentorsDetails.push(data);
-      console.log(data);
     }
     );
   }
