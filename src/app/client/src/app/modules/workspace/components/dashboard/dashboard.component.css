@@ -41,7 +41,7 @@
 
 
 .card.bg-primary {
-  background-image: -webkit-linear-gradient(90deg, #3f5efb 0%, #fc469b 100%);
+  /* background-image: -webkit-linear-gradient(90deg, #3f5efb 0%, #fc469b 100%); */
 }
 .bg-primary, .bg-success, .bg-info, .bg-warning, .bg-danger, .bg-dark {
   color: #fff;

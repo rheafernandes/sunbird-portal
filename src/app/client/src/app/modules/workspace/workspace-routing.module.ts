@@ -201,7 +201,7 @@ const routes: Routes = [
         }],
       },
       {
-        path: 'userList', component: UsersListComponent, canActivate: [AuthGuard],
+        path: 'userList/:batchId', component: UsersListComponent, canActivate: [AuthGuard],
         data: {
           telemetry: {
             env: telemetryEnv, pageid: 'batch-edit', subtype: 'paginate', uri: '/workspace/userList',

@@ -60,7 +60,7 @@ export class BatchCardComponent {
   }
   public onAction(batchdata) {
     this.batchService.setBatchData(batchdata);
-    this.route.navigate(['update/batch', batchdata.identifier], {relativeTo: this.activatedRoute});
+    this.route.navigate(['update/batch', batchdata.identifier], { relativeTo: this.activatedRoute });
   }
 
   openDialog(): void {
@@ -68,21 +68,15 @@ export class BatchCardComponent {
       width: '50%',
       height: '100%',
       scrollStrategy: this.overlay.scrollStrategies.reposition(),
-      data: {sessionData: this.batch , create: true}
+      data: { sessionData: this.batch, create: true }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-console.log('result', result);
+      console.log('result', result);
     });
   }
-  listOfUsers(batch) {
-    console.log('user list full', batch );
-    console.log('user list', batch.participant);
-    console.log('created for', batch.createdFor);
-    console.log('status', batch.status );
-    console.log('addition', batch.courseAdditionalInfo);
-    console.log('addition1', batch.courseAdditionalInfo.courseName );
-    this.route.navigate(['/workspace/content/userList', batch.participant ]);
-  }
 
+  listOfUsers(batch) {
+    this.route.navigate(['/workspace/content/userList', batch.identifier]);
+  }
 }

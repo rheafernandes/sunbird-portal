@@ -25,11 +25,9 @@ export class CreateBadgeComponent implements OnInit {
     });
   }
 
-
   onNoClick(): void {
     this.dialogRef.close();
   }
-
 
   submit(form) {
     console.log(form);

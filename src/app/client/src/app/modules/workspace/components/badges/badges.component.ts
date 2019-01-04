@@ -4,8 +4,6 @@ import { BadgesService } from '@sunbird/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { CreateBadgeComponent } from '../../badging/../../badging/components/create-badge/create-badge.component';
 
-
-
 export interface UserData {
   id: string;
   name: string;
@@ -14,17 +12,15 @@ export interface UserData {
 }
 
 /** Constants used to fill up our data base. */
-const COLORS: string[] = ['maroon', 'red', 'orange', 'yellow', 'olive', 'green', 'purple',
-  'fuchsia', 'lime', 'teal', 'aqua', 'blue', 'navy', 'black', 'gray'];
-const NAMES: string[] = ['Maia', 'Asher', 'Olivia', 'Atticus', 'Amelia', 'Jack',
-  'Charlotte', 'Theodore', 'Isla', 'Oliver', 'Isabella', 'Jasper',
-  'Cora', 'Levi', 'Violet', 'Arthur', 'Mia', 'Thomas', 'Elizabeth'];
+const COLORS: string[] = ['NIIT', 'NIIT', 'CISCO', 'COURSEERA'];
+const NAMES: string[] = ['JAVA', 'CISCO', 'CCNA' , 'CCNP'];
 
 @Component({
   selector: 'app-badges',
   templateUrl: './badges.component.html',
   styleUrls: ['./badges.component.css']
 })
+
 export class BadgesComponent implements OnInit {
 
   displayedColumns: string[] = ['id', 'name', 'progress', 'color'];
@@ -52,7 +48,7 @@ export class BadgesComponent implements OnInit {
       }
     };
 
-    this.badgeService.getAllBadgeList(req).subscribe((data) => console.log('badges', data));
+    // this.badgeService.getAllBadgeList(req).subscribe((data) => console.log('badges', data));
   }
 
   applyFilter(filterValue: string) {
@@ -70,6 +66,7 @@ export class BadgesComponent implements OnInit {
       data: { sessionData: 'test' }
     });
   }
+
   createNewUser(id): UserData {
     const name =
       NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
