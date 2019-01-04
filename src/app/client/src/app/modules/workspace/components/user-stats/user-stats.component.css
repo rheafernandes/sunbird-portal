@@ -1,0 +1,79 @@
+@import "~bootstrap/dist/css/bootstrap.min.css";
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|PT+Sans');
+
+.bg-light{
+    background: white !important;
+}
+.bg-secondary{
+   background-color:  rgb(237, 252, 248) !important;
+}
+
+.card{
+    border:none;
+    border-radius: 0;
+    overflow-y: hidden;
+}
+.large-card{
+    height: 35vh;
+}
+.blue-hover {
+    transition: all 0.25s ease-in;
+    border-bottom: 5px solid transparent;
+}
+.blue-hover:hover {
+    transform: translateY(-5px);
+    border: none;
+    border-bottom: 5px solid #2196fe;
+}
+.red-hover {
+    transition: all 0.25s ease-in;
+    border-bottom: 5px solid transparent;
+}
+.red-hover:hover {
+    transform: translateY(-5px);
+    border: none;
+    border-bottom: 5px solid rgb(223, 1, 1);
+}
+.green-hover {
+    transition: all 0.25s ease-in;
+    border-bottom: 5px solid transparent;
+}
+.green-hover:hover {
+    transform: translateY(-5px);
+    border: none;
+    border-bottom: 5px solid rgb(0, 82, 0);
+}
+.yellow-hover {
+    transition: all 0.25s ease-in;
+    border-bottom: 5px solid transparent;
+}
+.yellow-hover:hover {
+    transform: translateY(-5px);
+    border: none;
+    border-bottom: 5px solid  yellow;
+}
+.purple-hover {
+    transition: all 0.25s ease-in;
+    border-bottom: 5px solid transparent;
+}
+.purple-hover:hover {
+    transform: translateY(-5px);
+    border: none;
+    border-bottom: 5px solid  purple;
+}
+
+
+h4,h5,h3{
+    font-family: "PT Sans",sans-serif !important;
+}
+
+
+@media screen and (min-width: 320px) {
+   
+}
+@media screen and (min-width: 768px) {
+  
+}
+@media screen and (min-width: 1024px) {
+
+}

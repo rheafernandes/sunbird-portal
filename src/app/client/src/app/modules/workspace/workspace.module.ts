@@ -24,6 +24,7 @@ import { CreateSessionComponent } from './components/create-session/create-sessi
 import {CourseConsumptionService, CourseProgressService, CourseBatchService} from '../learn/services';
 import { SessionDetailsComponent } from './components/session-details/session-details.component';
 import { SessionService } from './services/session/session.service';
+import { UserStatsComponent } from './components/user-stats/user-stats.component';
 
 @NgModule({
   imports: [
@@ -35,7 +36,7 @@ import { SessionService } from './services/session/session.service';
     CoreModule,
     ReactiveFormsModule,
     NgInviewModule,
-    TelemetryModule
+    TelemetryModule,
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
@@ -53,7 +54,8 @@ import { SessionService } from './services/session/session.service';
     AllMyContentFilterComponent,
     SessionListComponent,
     CreateSessionComponent,
-    SessionDetailsComponent
+    SessionDetailsComponent,
+    UserStatsComponent
   ],
   providers: [WorkSpaceService, EditorService, BatchService, CourseConsumptionService,
     CourseProgressService, CourseBatchService , SessionService],

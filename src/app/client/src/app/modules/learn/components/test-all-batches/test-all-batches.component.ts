@@ -206,8 +206,8 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       .subscribe(
         data => {
           if (data.result.response === 'SUCCESS') {
-            // document.getElementById(`Enroll${i}`).style.display = 'none';
-            // document.getElementById(`UnEnroll${i}`).style.display = 'block';
+            // document.getElementById('Enroll' + i).style.display = 'none';
+            // document.getElementById('UnEnroll' + i).style.display = 'block';
           }
           this.toasterService.success(this.resourceService.messages.smsg.m0036);
           this.fetchEnrolledCourseData(batch);
