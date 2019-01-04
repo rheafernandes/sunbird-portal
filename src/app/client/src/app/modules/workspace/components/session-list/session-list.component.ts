@@ -81,4 +81,3 @@ export class SessionListComponent implements OnInit {
   }
 
 }
-

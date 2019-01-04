@@ -30,6 +30,8 @@ import { AttendanceComponent } from './components/attendance/attendance.componen
 import { LearnMaterialComponent } from './components/learn-material/learn-material.component';
 import { BadgesComponent } from './components/badges/badges.component';
 import { BadgingModule } from '../badging';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { UsersListComponent } from './components/users-list/users-list.component';
 
 @NgModule({
   imports: [
@@ -65,7 +67,9 @@ import { BadgingModule } from '../badging';
     FilterSessionPipe,
     AttendanceComponent,
     LearnMaterialComponent,
-    BadgesComponent
+    BadgesComponent,
+    DashboardComponent,
+    UsersListComponent
   ],
   exports: [SessionDetailsComponent],
   providers: [WorkSpaceService, EditorService, BatchService, CourseConsumptionService,
