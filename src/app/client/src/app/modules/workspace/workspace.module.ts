@@ -28,6 +28,8 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { FilterSessionPipe } from './pipes/filter-session.pipe';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { LearnMaterialComponent } from './components/learn-material/learn-material.component';
+import { BadgesComponent } from './components/badges/badges.component';
+import { BadgingModule } from '../badging';
 
 @NgModule({
   imports: [
@@ -40,6 +42,7 @@ import { LearnMaterialComponent } from './components/learn-material/learn-materi
     ReactiveFormsModule,
     NgInviewModule,
     TelemetryModule,
+    BadgingModule,
     NgxMaterialTimepickerModule.forRoot()
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
@@ -61,7 +64,8 @@ import { LearnMaterialComponent } from './components/learn-material/learn-materi
     SessionDetailsComponent,
     FilterSessionPipe,
     AttendanceComponent,
-    LearnMaterialComponent
+    LearnMaterialComponent,
+    BadgesComponent
   ],
   exports: [SessionDetailsComponent],
   providers: [WorkSpaceService, EditorService, BatchService, CourseConsumptionService,

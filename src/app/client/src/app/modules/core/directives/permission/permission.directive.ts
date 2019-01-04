@@ -24,8 +24,8 @@ export class PermissionDirective implements OnInit {
    * constructor
    */
   constructor(elementRef: ElementRef, permissionService: PermissionService) {
-      this.elementRef = elementRef;
-      this.permissionService = permissionService;
+    this.elementRef = elementRef;
+    this.permissionService = permissionService;
   }
   ngOnInit() {
     this.permissionService.permissionAvailable$.subscribe(

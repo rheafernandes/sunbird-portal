@@ -32,6 +32,7 @@ export class ContentBadgeService {
     };
     return this.learner.post(option);
   }
+
   public setAssignBadge(badges) {
     this.badges.emit(badges);
   }

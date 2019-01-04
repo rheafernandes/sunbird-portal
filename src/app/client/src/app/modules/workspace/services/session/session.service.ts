@@ -8,7 +8,7 @@ import { ToasterService } from '../../../shared/services/toaster/toaster.service
 })
 export class SessionService {
   sessions = [];
-  // address="http://13.233.213.245:8080"
+  // address = "http://13.233.213.245:8080"
   address = 'http://localhost:8080';
   constructor(private http: HttpClient, private toasterService: ToasterService) {
   }

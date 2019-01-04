@@ -1,0 +1,64 @@
+<div style="overflow:scroll-y">
+  <form #sessionForm="ngForm" novalidate>
+    <h5 class="modal-title" id="ModalLabel" style="text-align: center;font-weight: bold;"> <i class="fas fa-medal"></i>
+      Create a Badge
+      <i class="fas fa-times-circle float-right" (click)="onNoClick()"></i>
+    </h5>
+    <hr />
+
+    <div class="form-group">
+      <label><i class="fas fa-id-card" style="color:blue;"></i>&nbsp;&nbsp; Issuer</label>
+      <input type="text" readonly="" class="form-control-plaintext" value="NIIT CERTIFICATIONS">
+    </div>
+
+    <div class="form-group">
+      <label><i class="	fa fa-pencil-square-o" style="color:blue;"></i>&nbsp;&nbsp; Name of Badge</label>
+      <input ngModel type="text" class="form-control" name="title" #title placeholder="Badge name" required minlength="4">
+      <div *ngIf="title.invalid && (title.dirty || title.touched) " class="alert alert-danger">
+        <div *ngIf="title.errors.required">
+          Name is required.
+        </div>
+        <div *ngIf="title.errors.minlength">
+          Name must be at least 4 characters long.
+        </div>
+      </div>
+    </div>
+    <br>
+
+    <div class="form-group">
+      <label for="sessionDescription"><i class="fa fa-commenting-o" style="color:blue;"></i> &nbsp;&nbsp;Description
+      </label>
+      <textarea ngModel name="description" #description class="form-control" id="sessionDescription" rows="3"
+        placeholder="Badge Description" required></textarea>
+      <div *ngIf="description.invalid && (description.dirty || description.touched) " class="alert alert-danger">
+        <div *ngIf="description.errors.required">
+          Description is required.
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label><i class="	fa fa-book" style="color:blue;"></i>&nbsp;&nbsp;Select a Badge Type</label>
+      <select ngModel class="form-control" #badgeType name="badgeType" required>
+        <option>Award</option>
+        <option>Endorement</option>
+        <option>Certificate</option>
+        <option>authorization</option>
+      </select>
+      <div *ngIf="badgeType.invalid && (badgeType.dirty || badgeType.touched)" class="alert alert-danger">
+        <div *ngIf="badgeType.errors.required">
+          Badge Type is Required is required.
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="exampleInputFile">Upload Image</label>
+      <input ngModel type="file" class="form-control-file" name="badgeImage" #badgeImage aria-describedby="fileHelp">
+      <small id="fileHelp" class="form-text text-muted">It is a graphic which represents the Badge</small>
+    </div>
+    <div>
+      <button class="btn btn-primary" (click)="submit(sessionForm)" >Create</button>
+    </div>
+  </form>
+</div>
