@@ -24,6 +24,7 @@ export class SessionDetailsComponent implements OnInit {
   ngOnInit() {
     this.sessions = this.data.sessionData;
     this.participants = this.sessions.hasOwnProperty('participant') ? this.sessions.participant : {};
+    console.log('parshf', this.participants);
     this.userIds = Object.keys(this.participants);
     for (const userId of this.userIds) {
       this.getParticipantsDetails(userId);
@@ -42,6 +43,7 @@ export class SessionDetailsComponent implements OnInit {
     };
     const response = this.learnerService.get(option).pipe(pluck('result', 'response'));
     response.subscribe(data => {
+      console.log('user details', data);
       this.participantsDetails.push(data);
     }
     );

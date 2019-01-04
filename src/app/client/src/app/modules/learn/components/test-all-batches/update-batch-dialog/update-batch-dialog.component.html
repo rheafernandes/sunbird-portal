@@ -73,18 +73,23 @@
         </div>
           </div>
       </form>
+
       <form (ngSubmit)="updateMentors()" *ngIf="mentorIsPresent">
         <mat-card-content>
           <mat-form-field style="width: 100% !important">
             <input matInput placeholder="Name" [ngModel]="existingBatchDetail? existingBatchDetail.name :''" name="title" disabled
               #title="ngModel" >
           </mat-form-field>
+
           <br>
+
           <mat-form-field style="width:100% !important">
             <textarea matInput placeholder="Description" [ngModel]="existingBatchDetail? existingBatchDetail.description :''"
               name="description" #description="ngModel"></textarea>
           </mat-form-field>
+
           <br>
+
           <mat-form-field style="width: 45% !important">
             <input matInput [matDatepicker]="picker1" placeholder="Start Date" [ngModel]="existingBatchDetail? existingBatchDetail.startDate :''"
               #startDate="ngModel" name="startDate">
@@ -100,18 +105,58 @@
           </mat-form-field>
 
           <br>
+
           <mat-form-field style="width: 100% !important">
-            <mat-chip-list #chipList>
+            <mat-chip-list #mentorList>
               <mat-chip
-              *ngFor="let mentor of mentors"
+              *ngFor="let mentor of userMentors"
               [selectable]="selectable"
               [removable]="removable"
-              (removed)="removeMentor(mentor)"
+              (removed)="removeUserMentor(mentor)"
             >
               {{ mentor.name }}
               <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
             </mat-chip>
-              <input placeholder="Add Mentors" #mentorInput [formControl]="mentorCtrl" [matAutocomplete]="autoMentor"
+              <input placeholder="Mentors" #userMentorInput [formControl]="userMentorCtrl" [matAutocomplete]="userAutoMentor"
+                [matChipInputFor]="mentorList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                (matChipInputTokenEnd)="addUserMentor($event)" name="mentors">
+            </mat-chip-list>
+            <mat-autocomplete
+            #userAutoMentor="matAutocomplete"
+            (optionSelected)="selectedUserMentor($event)"
+          >
+            <mat-option
+            [value]="mentor"
+              *ngFor="let mentor of (filteredMentors | async)"
+            >
+              {{ mentor.name }}
+            </mat-option>
+          </mat-autocomplete>
+          </mat-form-field>
+          <br>
+
+          <mat-form-field style="width: 100% !important">
+            <label>Members</label>
+            <mat-chip-list #memberList>
+              <mat-chip *ngFor="let member of members" [selectable]="selectable" removable="false">
+                {{member.name}}
+              </mat-chip>
+            </mat-chip-list>
+          </mat-form-field>
+         <br>
+
+         <mat-form-field style="width: 100% !important">
+            <mat-chip-list #chipList>
+              <mat-chip
+              *ngFor="let mentor of mentors"
+              [selectable]="selectable"
+              [removable]="false"
+              (removed)="removeMentor(mentor)"
+            >
+              {{ mentor.name }}
+              <!-- <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon> -->
+            </mat-chip>
+              <input placeholder="Mentors" #mentorInput [formControl]="mentorCtrl" [matAutocomplete]="autoMentor"
                 [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
                 (matChipInputTokenEnd)="addMentor($event)" name="mentors">
             </mat-chip-list>
@@ -120,20 +165,12 @@
             (optionSelected)="selectedMentor($event)"
           >
             <mat-option
+            [value]="mentor"
               *ngFor="let mentor of filteredMentors | async"
-              [value]="mentor"
             >
               {{ mentor.name }}
             </mat-option>
           </mat-autocomplete>
-          </mat-form-field>
-          <br>
-          <mat-form-field style="width: 100% !important">
-            <mat-chip-list #memberList>
-              <mat-chip *ngFor="let member of members" [selectable]="selectable" removable="false">
-                {{member.name}}
-              </mat-chip>
-            </mat-chip-list>
           </mat-form-field>
         </mat-card-content>
         <div class="container">
