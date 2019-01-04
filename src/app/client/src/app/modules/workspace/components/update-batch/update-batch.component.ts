@@ -110,6 +110,8 @@ export class UpdateBatchComponent implements OnInit, OnDestroy {
    * Initialize form fields and getuserlist
   */
   ngOnInit() {
+    console.log('modal', this.updateBatchModal);
+    // console.log('modal3', this.updateBatchModal.deny);
     combineLatest(this.activatedRoute.params, this.activatedRoute.parent.params,
       (params, parentParams) => ({ ...params, ...parentParams }))
       .pipe(

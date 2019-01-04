@@ -1,0 +1,26 @@
+@import "~bootstrap/dist/css/bootstrap.css";
+@import url('https://fonts.googleapis.com/css?family=Carter+One%7CCabin+Sketch');
+table {
+  width: 100%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+td, th {
+  width: 25%;
+}
+th{
+  color: teal;font-weight: bold;font-size: 1rem;
+}
+.b {
+  white-space: nowrap;
+  width: 13rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tooltip {
+  display: none!important;
+  }
