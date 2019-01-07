@@ -18,7 +18,8 @@ import { NgInviewModule } from 'angular-inport';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { BadgingModule } from '@sunbird/badge';
-// import { HomeSearchComponent, HomeFilterComponent } from '../search';
+import { SlickModule } from 'ngx-slick';
+
 
 @NgModule({
   imports: [
@@ -33,6 +34,7 @@ import { BadgingModule } from '@sunbird/badge';
     NgInviewModule,
     DeviceDetectorModule,
     BadgingModule,
+    SlickModule,
   ],
   declarations: [LandingPageComponent, SignupComponent, GetComponent, DialCodeComponent,
     PublicFooterComponent, PublicContentPlayerComponent, PublicCollectionPlayerComponent ],

@@ -227,6 +227,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
           this.fetchEnrolledCourseData(batch);
         },
         err => {
+          this.showUnenroll = false;
           this.toasterService.error('Unsuccesful, try again later');
         }
       );
@@ -290,6 +291,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
 
   }
   updateBatch(batch): void {
+    console.log('batch', batch);
     const notCreator = this.checkMentorIsPresent(batch);
     const usersOfCourse = this.allMembers.concat(this.allMentors);
     this.mentorIsPresent = batch.mentors.includes(this.userService.userid);
@@ -354,7 +356,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
   }
   checkRoles() {
     if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
-      this.courseMentor = true;
+            this.courseMentor = true;
     } else {
       this.courseMentor = false;
     }

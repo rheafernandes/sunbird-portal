@@ -1,7 +1,7 @@
 
 import { filter } from 'rxjs/operators';
 import { combineLatest as observableCombineLatest } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { ResourceService, ConfigService, ServerResponse } from '@sunbird/shared';
 import { Observable } from 'rxjs';
@@ -14,6 +14,69 @@ import { SearchService, ContentService } from '@sunbird/core';
   styleUrls: ['./landing-page.component.css']
 })
 export class LandingPageComponent implements OnInit  {
+  slideConfig = {
+    'slidesToShow': 4,
+    'slidesToScroll': 4,
+    'responsive': [
+      {
+        'breakpoint': 2800,
+        'settings': {
+          'slidesToShow': 8,
+          'slidesToScroll': 4,
+        }
+      },
+      {
+        'breakpoint': 2200,
+        'settings': {
+          'slidesToShow': 6,
+          'slidesToScroll': 4,
+        }
+      },
+      {
+        'breakpoint': 2000,
+        'settings': {
+          'slidesToShow': 5,
+          'slidesToScroll': 4,
+        }
+      },
+      {
+        'breakpoint': 1400,
+        'settings': {
+          'slidesToShow': 4,
+          'slidesToScroll': 4,
+        }
+      },
+      {
+        'breakpoint': 1200,
+        'settings': {
+          'slidesToShow': 4,
+          'slidesToScroll': 4,
+        }
+      },
+      {
+        'breakpoint': 800,
+        'settings': {
+          'slidesToShow': 3,
+          'slidesToScroll': 3,
+        }
+      },
+      {
+        'breakpoint': 600,
+        'settings': {
+          'slidesToShow': 2,
+          'slidesToScroll': 2
+        }
+      },
+      {
+        'breakpoint': 425,
+        'settings': {
+          'slidesToShow': 1,
+          'slidesToScroll': 1
+        }
+      }
+    ],
+    infinite: false,
+  };
   private route: Router;
   public content: ContentService;
   key: string;
@@ -22,8 +85,12 @@ export class LandingPageComponent implements OnInit  {
   queryParam: any = {};
   filters: any;
   pageNumber: number;
+  trendingCourse = [];
+  trendingCount: number;
+  // @Input() section: ICaraouselData;
+  // @Output() visits = new EventEmitter<any>();
   constructor(private config: ConfigService , private searchService: SearchService ,
-    route: Router, activatedRoute: ActivatedRoute) {
+    route: Router, activatedRoute: ActivatedRoute , ) {
       this.route = route;
     }
 ngOnInit() {
@@ -54,9 +121,14 @@ ngOnInit() {
         this.queryParam.sortType = this.queryParam.sortType.toString();
       }
     });
-  this.searchService.courseSearchTrending().subscribe((datas) => {
-    console.log('data', datas);
-  });
+    this.searchService.courseSearchTrending().subscribe((data) => {
+        console.log('jhsdjk', data);
+        this.trendingCount = data.result.count;
+        for (const trending of data.result.course) {
+             this.trendingCourse.push(trending);
+        }
+    });
+    console.log('tranding', this.trendingCourse);
 }
 onEnter(key) {
   this.populateCourseSearch(key);
@@ -94,4 +166,49 @@ populateCourseSearch(key) {
     }
   );
 }
+inview(event) {
+  // const visitsLength = this.inviewLogs.length;
+  // const visits = [];
+  // _.forEach(event.inview, (inview, key) => {
+  //   const content = _.find(this.inviewLogs, (eachContent) => {
+  //     if (inview) {
+  //       return eachContent.metaData = 'jm';
+  //        }
+  //   });
+  //   if (content === undefined) {
+  //     inview.data.section = 'trending';
+  //     this.inviewLogs.push(inview.data);
+  //     visits.push(inview.data);
+  //   }
+  // });
+  // if (visits.length > 0) {
+  //   this.visits.emit(visits);
+  // }
 }
+/**
+ * get inviewChange
+*/
+inviewChange(contentList, event) {
+  // const visits = [];
+  // const slideData = contentList.slice(event.currentSlide + 1, event.currentSlide + 5);
+  // _.forEach(slideData, (slide, key) => {
+  //   const content = _.find(this.inviewLogs, (eachContent) => {
+      // if (slide.metaData.courseId) {
+      //   return eachContent.metaData.courseId === slide.metaData.courseId;
+      // } else if (slide.metaData.identifier) {
+      //   return eachContent.metaData.identifier === slide.metaData.identifier;
+      // }
+//     });
+//     if (content === undefined) {
+//       // slide.section = this.section.name;
+//       this.inviewLogs.push(slide);
+//       visits.push(slide);
+//     }
+//   });
+//   if (visits.length > 0) {
+//     this.visits.emit(visits);
+//   }
+// }
+}
+}
+
