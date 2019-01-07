@@ -201,6 +201,18 @@ export class SearchService {
     };
     return this.content.post(option);
   }
+  courseSearchTrending(): Observable<ServerResponse> {
+    const option = {
+      url: this.config.urlConFig.URLS.COURSE.SEARCH,
+      data: {
+        request: {
+          filters: { keywords: ['Trending']},
+          limit: 10
+        }
+      }
+    };
+    return this.content.post(option);
+  }
   /**
    * Content Search.
    *
