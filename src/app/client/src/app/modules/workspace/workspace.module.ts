@@ -30,6 +30,7 @@ import { AttendanceComponent } from './components/attendance/attendance.componen
 import { LearnMaterialComponent } from './components/learn-material/learn-material.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { UsersListComponent } from './components/users-list/users-list.component';
+import { UserStatsComponent } from './components/user-stats/user-stats.component';
 
 @NgModule({
   imports: [
@@ -65,7 +66,8 @@ import { UsersListComponent } from './components/users-list/users-list.component
     AttendanceComponent,
     LearnMaterialComponent,
     DashboardComponent,
-    UsersListComponent
+    UsersListComponent,
+    UserStatsComponent
   ],
   exports: [SessionDetailsComponent],
   providers: [WorkSpaceService, EditorService, BatchService, CourseConsumptionService,

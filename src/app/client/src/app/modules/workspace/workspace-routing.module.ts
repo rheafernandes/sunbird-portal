@@ -15,6 +15,7 @@ import { LearnMaterialComponent } from './components/learn-material/learn-materi
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { UsersListComponent } from './components/users-list/users-list.component';
 import { updateBatchDetails } from '../learn/components/batch/update-course-batch/update-course-batch.component.data';
+import { UserStatsComponent } from './components/user-stats/user-stats.component';
 const telemetryEnv = 'workspace';
 const objectType = 'workspace';
 const routes: Routes = [
@@ -255,6 +256,17 @@ const routes: Routes = [
         },
       },
       {
+        path: 'user-stats/:userId', component: UserStatsComponent, canActivate: [AuthGuard],
+        data: {
+          telemetry: {
+            env: telemetryEnv, pageid: 'workspace-course-batch', subtype: 'paginate', uri: '/workspace/user-stats',
+            type: 'list', mode: 'create', object: { type: objectType, ver: '1.0' }
+          }, roles: 'coursebacthesRole',
+          breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' },
+           { label: 'User Info', url: '' }]
+        },
+      },
+      {
         path: 'allcontent/:pageNumber', component: AllContentComponent, canActivate: [AuthGuard],
         data: {
           telemetry: {
@@ -312,7 +324,7 @@ const routes: Routes = [
       roles: 'workspace',
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
     }
-  }
+  },
 ];
 
 @NgModule({

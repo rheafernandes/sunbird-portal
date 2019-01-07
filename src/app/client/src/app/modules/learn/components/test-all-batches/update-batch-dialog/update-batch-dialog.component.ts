@@ -1,118 +1,247 @@
-import { Component, OnInit, OnDestroy, ElementRef,
-  VERSION, ViewChild, ChangeDetectorRef, Injectable, OnChanges, SimpleChanges } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CourseBatchService } from '../../../services';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { MatDialogRef } from '@angular/material';
+import { ActivatedRoute } from '@angular/router';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { Inject } from '@angular/core';
-import { ConfigService, ToasterService, ResourceService,  ServerResponse  } from '@sunbird/shared';
-import { LearnerService, UserService, SearchParam } from '@sunbird/core';
-import { pluck, takeUntil, tap } from 'rxjs/operators';
-import { Subject,  of as observableOf, Observable } from 'rxjs';
-import {FormControl} from '@angular/forms';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {MatAutocompleteSelectedEvent, MatChipInputEvent, MatAutocomplete} from '@angular/material';
-import {map, startWith} from 'rxjs/operators';
+import {
+  ConfigService,
+  ToasterService,
+  IUserProfile,
+  ServerResponse
+} from '@sunbird/shared';
+import { UserService, LearnerService } from '@sunbird/core';
+import { of as observableOf, Observable } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import {
+  MatAutocompleteSelectedEvent,
+  MatChipInputEvent,
+  MatAutocomplete
+} from '@angular/material';
+import { map, startWith, pluck } from 'rxjs/operators';
 import * as _ from 'lodash';
+import { CourseBatchService } from '../../../services';
 
-export interface DialogData {
-  shouldSizeUpdate: boolean;
-  title: string;
-}
 @Component({
   selector: 'app-update-batch-dialog',
   templateUrl: './update-batch-dialog.component.html',
   styleUrls: ['./update-batch-dialog.component.css']
 })
 export class UpdateBatchDialogComponent implements OnInit {
-
-  courseId = this.route.snapshot.paramMap.get('courseId');
+  public courseId;
+  existingBatchDetail;
   shouldSizeUpdate: boolean;
   breakpoint: number;
   date = new FormControl(new Date());
-  serializedDate = new FormControl((new Date()).toISOString());
-  private courseBatchService: CourseBatchService;
+  serializedDate = new FormControl(new Date().toISOString());
   visible = true;
   selectable = true;
   removable = true;
   addOnBlur = true;
+  userProfile: IUserProfile;
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  fruitCtrl = new FormControl();
-  filteredFruits: Observable<string[]>;
-  fruits: string[] = ['Lemon'];
-  allFruits: string[] = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
-  @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
-  @ViewChild('auto') matAutocomplete: MatAutocomplete;
+  mentorCtrl = new FormControl();
+  filteredMentors: Observable<any>;
+  mentors = [];
+  allMentors = [];
+  memberCtrl = new FormControl();
+  filteredMembers: Observable<any>;
+  members = [];
+  allMembers = [];
+  mentorIds;
+  batchId;
+  membersDetails = [];
+  participantIds;
+  creator: boolean;
+
+  @ViewChild('memberInput') memberInput: ElementRef<HTMLInputElement>;
+  @ViewChild('autoMember') matMemberAutocomplete: MatAutocomplete;
+  @ViewChild('mentorInput') mentorInput: ElementRef<HTMLInputElement>;
+  @ViewChild('autoMentor') matMentorAutocomplete: MatAutocomplete;
 
   constructor(
     private route: ActivatedRoute,
-    courseBatchService: CourseBatchService,
     public userService: UserService,
-    public configService: ConfigService,
+    public learnerService: LearnerService,
+    public config: ConfigService,
+    public toasterService: ToasterService,
+    public courseBatchService: CourseBatchService,
     public dialogRef: MatDialogRef<UpdateBatchDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {
-      this.shouldSizeUpdate = data.shouldSizeUpdate;
-      this.filteredFruits = this.fruitCtrl.valueChanges.pipe(
-        startWith(null),
-        map((fruit: string | null) => fruit ? this._filter(fruit) : this.allFruits.slice()));
-    }
-     onNoClick(): void {
-    this.dialogRef.close();
-  }
-  ngOnInit(): void {
-    this.breakpoint = (window.innerWidth <= 550) ? 1 : 1;
-    if (this.shouldSizeUpdate) { this.updateSize(); }
-    const orddata = {
-      filters: {
-      courseId: this.courseId
-    }
-  };
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
 
-}
+    this.existingBatchDetail = this.data.batchDetail;
+    console.log(this.existingBatchDetail);
+    if (this.data.batchDetail.mentors.length > 0) {
+      this.mentorIds = _.union(this.data.batchDetail.mentors);
+    } else {
+      this.mentorIds = [];
+    }
+
+    if (this.existingBatchDetail.hasOwnProperty('participant')) {
+      this.participantIds = _.union(_.keys(this.data.batchDetail.participant));
+    } else {
+      this.participantIds = [];
+    }
+
+    this.shouldSizeUpdate = data.shouldSizeUpdate;
+
+    this.filteredMentors = this.mentorCtrl.valueChanges.pipe(
+      startWith(null),
+      map((mentor: string) =>
+        mentor ? this._filterMentor(mentor) : this.allMentors.slice()
+      )
+    );
+   }
+
+  ngOnInit(): void {
+    this.courseId = this.data.courseId;
+    this.creator = this.data.creator;
+      this.allMembers = this.data.memberDetail;
+    this.allMentors = this.data.mentorDetail;
+
+    this.breakpoint = window.innerWidth <= 550 ? 1 : 1;
+    if (this.shouldSizeUpdate) {
+      this.updateSize();
+    }
+    this.getMemberslist();
+    this.getMentorslist();
+  }
+
   updateSize() {
     this.dialogRef.updateSize('600px', '300px');
-}
-  onResize(event) {
-    this.breakpoint = (event.target.innerWidth <= 550) ? 1 : 1;
   }
-  add(event: MatChipInputEvent): void {
-    // Add fruit only when MatAutocomplete is not open
-    // To make sure this does not conflict with OptionSelected Event
-    if (!this.matAutocomplete.isOpen) {
+
+  onResize(event) {
+    this.breakpoint = event.target.innerWidth <= 550 ? 1 : 1;
+  }
+
+  addMentor(event: MatChipInputEvent): void {
+    if (!this.matMentorAutocomplete.isOpen) {
       const input = event.input;
       const value = event.value;
-
-      // Add our fruit
       if ((value || '').trim()) {
-        this.fruits.push(value.trim());
+        this.mentors.push(value.trim());
       }
-
-      // Reset the input value
       if (input) {
         input.value = '';
       }
-
-      this.fruitCtrl.setValue(null);
+      this.mentorCtrl.setValue(null);
     }
   }
-
-  remove(fruit: string): void {
-    const index = this.fruits.indexOf(fruit);
-
+  removeMentor(mentor): void {
+    const index = this.mentors.indexOf(mentor);
     if (index >= 0) {
-      this.fruits.splice(index, 1);
+      this.mentors.splice(index, 1);
+    }
+  }
+  selectedMentor(event: MatAutocompleteSelectedEvent): void {
+    this.mentors.push(event.option.value);
+    this.removeMentorFromMentorsList(event.option.value);
+
+    this.mentorInput.nativeElement.value = '';
+    this.mentorCtrl.setValue(null);
+  }
+
+  private _filterMentor(value: string) {
+    if (value !== undefined) {
+      const filterValue = value.toString().toLowerCase();
+      return this.allMentors.filter(mentor => mentor.name.toLowerCase().indexOf(filterValue) === 0);
+    }
+    return this.allMentors;
+  }
+  removeMentorFromMentorsList(mentor) {
+    const index = this.allMentors.indexOf(mentor);
+    if (index >= 0) {
+      this.allMentors.splice(index, 1);
     }
   }
 
-  selected(event: MatAutocompleteSelectedEvent): void {
-    this.fruits.push(event.option.viewValue);
-    this.fruitInput.nativeElement.value = '';
-    this.fruitCtrl.setValue(null);
+  getMentorslist() {
+    const option = {
+      url: this.config.urlConFig.URLS.ADMIN.USER_SEARCH,
+      data: {
+        request: {
+          filters: {
+            identifier : this.mentorIds,
+          },
+        }
+      }
+    };
+    this.learnerService.post(option)
+      .subscribe(
+        data => {
+          const mentorsDetails = data.result.response.content;
+          for (const mentorDetail of mentorsDetails ) {
+            if (mentorDetail.firstName !== undefined && mentorDetail.lastName !== undefined) {
+              const obj = {};
+              obj['name'] = mentorDetail.firstName + ' ' + mentorDetail.lastName;
+              obj['id'] = mentorDetail.identifier;
+              this.mentors.push(obj);
+            }
+          }
+        }
+      );
+  }
+  getMemberslist() {
+    const option = {
+      url: this.config.urlConFig.URLS.ADMIN.USER_SEARCH,
+      data: {
+        request: {
+          filters: {
+            identifier: this.participantIds,
+          },
+        }
+      }
+    };
+    this.learnerService.post(option)
+      .subscribe(
+        data => {
+          const membersDetails = data.result.response.content;
+          for (const memberDetail of membersDetails ) {
+            if (memberDetail.firstName !== undefined && memberDetail.lastName !== undefined) {
+              const obj = {};
+              obj['name'] = memberDetail.firstName + ' ' + memberDetail.lastName;
+              obj['id'] = memberDetail.identifier;
+              this.members.push(obj);
+            }
+          }
+        }
+      );
+  }
+  onSubmit(title, description, startDate, endDate) {
+    startDate = new Date(Date.parse(startDate)).toISOString().slice(0, 10);
+    endDate = new Date(Date.parse(endDate)).toISOString().slice(0, 10);
+    if (this.date.value > this.serializedDate.value) {
+      this.toasterService.error('End Date should be greater than start date');
+    } else {
+      const mentorIds = [];
+      for (const mentor of this.mentors) {
+        mentorIds.push(mentor.id);
+      }
+      const requestBody = {
+        id: this.data.batchDetail.identifier,
+        name: title,
+        description: description,
+        // tslint:disable-next-line:quotemark
+        enrollmentType: 'open',
+        startDate: startDate,
+        endDate: endDate || null,
+        createdFor: this.userService.userProfile.organisationIds,
+        mentors: _.compact(mentorIds)
+      };
+      this.courseBatchService.updateBatch(requestBody)
+      .subscribe(
+        (data) => {
+          console.log(data);
+          this.toasterService.success('You successfully updated the batch');
+        },
+        err => {
+          this.toasterService.error('Cant update. ' + err.error.params.errmsg);
+        }
+      );
+      this.dialogRef.close();
+    }
   }
 
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.allFruits.filter(fruit => fruit.toLowerCase().indexOf(filterValue) === 0);
-  }
 }
