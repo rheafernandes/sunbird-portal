@@ -51,7 +51,6 @@ export class AttendanceComponent implements OnInit, OnDestroy {
       });
       chart.render();
     });
-
   }
   participantDetails() {
     const participantDetailDialog = this.dialog.open(SessionDetailsComponent, {

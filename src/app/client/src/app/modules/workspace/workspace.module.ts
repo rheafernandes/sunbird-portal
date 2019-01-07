@@ -28,6 +28,9 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { FilterSessionPipe } from './pipes/filter-session.pipe';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { LearnMaterialComponent } from './components/learn-material/learn-material.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { UsersListComponent } from './components/users-list/users-list.component';
+import { UserStatsComponent } from './components/user-stats/user-stats.component';
 
 @NgModule({
   imports: [
@@ -61,11 +64,14 @@ import { LearnMaterialComponent } from './components/learn-material/learn-materi
     SessionDetailsComponent,
     FilterSessionPipe,
     AttendanceComponent,
-    LearnMaterialComponent
+    LearnMaterialComponent,
+    DashboardComponent,
+    UsersListComponent,
+    UserStatsComponent
   ],
   exports: [SessionDetailsComponent],
   providers: [WorkSpaceService, EditorService, BatchService, CourseConsumptionService,
     CourseProgressService, CourseBatchService , SessionService],
-  entryComponents: [CreateSessionComponent, SessionDetailsComponent, AttendanceComponent],
+  entryComponents: [CreateSessionComponent, SessionDetailsComponent, AttendanceComponent ],
 })
 export class WorkspaceModule { }

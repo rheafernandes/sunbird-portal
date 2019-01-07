@@ -6,6 +6,13 @@ import { ConfigService, ToasterService } from '@sunbird/shared';
 import { pluck } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as _ from 'lodash';
+import { FormControl, Validators } from '@angular/forms';
+
+export interface Batches {
+  name: string;
+  status: string;
+}
+
 
 @Component({
   selector: 'app-preview-course',
@@ -13,9 +20,15 @@ import * as _ from 'lodash';
   styleUrls: ['./preview-course.component.css']
 })
 export class PreviewCourseComponent implements OnInit {
+  batchControl = new FormControl('', [Validators.required]);
+  batch: Batches[] = [
+    {name: 'Ongoing', status: '1'},
+    {name: 'Upcoming', status: '0'},
+    {name: 'Previous', status: '2'},
+  ];
   courseId = this.route.snapshot.paramMap.get('courseId');
   courseDetails;
-  public ongoingSearch: any;
+  public search: any;
   totalParticipants = 0;
   batches = [];
   mentorsDetails = [];
@@ -37,14 +50,14 @@ export class PreviewCourseComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.ongoingSearch = {
+    this.search = {
       filters: {
         status: '1',
         courseId: this.courseId
       }
     };
     this.getCourseDetails();
-    this.getBatchDetails();
+    this.getBatchDetails(this.search);
   }
   getCourseDetails() {
     this.courseConsumptionService.getCourseHierarchy(this.courseId)
@@ -62,17 +75,17 @@ export class PreviewCourseComponent implements OnInit {
       );
   }
 
-  getBatchDetails() {
-    this.courseBatchService.getAllBatchDetails(this.ongoingSearch)
+  getBatchDetails(search) {
+    this.courseBatchService.getAllBatchDetails(search)
       .subscribe(
         (data: any) => {
         this.batches = data.result.response.content;
         for (const batch of this.batches) {
-          if (batch.participant !== null || batch.participant !== undefined) {
+          if (batch.hasOwnProperty('participant')) {
             this.totalParticipants = this.totalParticipants + _.keys(batch.participant).length;
           }
         }
-        if (this.batches.length > 0) {
+        if (this.batches.length > 0 && this.mentorsDetails.length === 0) {
           const mentorIds = _.union(this.batches[0].mentors);
           this.getMentorslist(mentorIds);
         }
@@ -139,5 +152,16 @@ export class PreviewCourseComponent implements OnInit {
         }
       }
     }
+  }
+
+  fetchBatches(input) {
+    console.log('fETCH', input);
+    this.search = {
+      filters: {
+        status: input.status,
+        courseId: this.courseId
+      }
+    };
+    this.getBatchDetails(this.search);
   }
 }

@@ -1,4 +1,4 @@
-<div class="ui stackable grid landing-page-section">
+<!-- <div class="ui stackable grid landing-page-section">
   <div class="one wide column"></div>
   <div class="five wide column landing-page-image">
       <img class="ui fluid image" src="{{'assets/images/landingPage.jpg' |  cdnprefixurl}} " />
@@ -108,4 +108,108 @@
   </div>
   <div class="one wide column"></div>
 </div>
+<router-outlet></router-outlet> -->
+
+<!-- <div >
+    <img src="https://researchgirltoday.files.wordpress.com/2015/07/80ryzdj8ue.jpg" alt="landing-page-image" style="width: 100%; ">
+  </div> -->
+      <!-- <input type="text" id="keyword" name="filter_search" title="Search" placeholder="search"
+          class="" [(ngModel)]="key" (keyup.enter)="onEnter(key)" />
+      <i class="circular search link icon" id="circular" (click)="onEnter(key)"></i> -->
+      <section class="search-banner text-white py-3 form-arka-plan" id="search-banner">
+        <div class="container py-5 my-5">
+            <div class="row text-center pb-4">
+                <div class="col-md-12">
+                    <h2 class="text-white siyah-cerceve">Search By Catagories</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card acik-renk-form">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group ">
+                                        <select id="iller" class="form-control" >
+                                            <option selected>Topics</option>
+                                            <option>Machine Learning</option>
+                                            <option>Airtificial Intelligence</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group ">
+                                        <select id="ilceler" class="form-control" >
+                                            <option selected>Department</option>
+                                            <option></option>
+                                            <option>Science</option>
+                                            <option>Mechines</option>
+                                            <option>IT</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group ">
+                                        <select id="arac-turu" class="form-control" >
+                                            <option selected>Author</option>
+                                            <option>Otobüs</option>
+                                            <option>Minibüs</option>
+                                            <option>Karavan</option>
+                                            <option>Vito</option>
+                                            <option>Limuzin</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="font-weight-light text-dark text-center" style="font-size: 2rem;"> Search here</p>
+                            <div class="row">
+                                <div class="col-md-9" style="margin-left: 10rem">
+                                    <div class="form-group ">
+                                        <div class="searchicon ui fluid icon input">
+                                            <input type="text" id="keyword" name="filter_search" title="Search" placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}"
+                                                class="" [(ngModel)]="key" (keyup.enter)="onEnter(key)" />
+                                            <i class="circular search link icon" (click)="onEnter(key)"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+<section class="trending_courses">
+<div class="ui link popular-section">
+<h4 class="ui header card-section-header sectionHeading">Trending courses
+<span class="ui red circular inline label">{{trendingCount}}</span>
+</h4>
+<div>
+<ngx-slick in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="trendingCourse" (afterChange)="inviewChange(trendingCourse,$event)"class="carousel" #slickModal="slick-modal" [config]="slideConfig">
+    <div in-view-item [id]="i" [data]="content" ngxSlickItem *ngFor="let content of trendingCourse;let i = index" class="slide">
+        <!-- <app-card (clickEvent)="playContent($event)"[data]="content" [customClass]="'margin-right-20'"></app-card> -->
+        <div class="card" style="width: 18rem;" >
+            <img class="card-img-top" src="{{content.posterImage}}" alt="Card image cap" style="width: 100% !important; height: 10rem;">
+            <hr>
+            <div class="card-body">
+              <p class="card-title">{{content.name}}</p>
+              <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+              <a href="#" class="btn btn-primary float-right">preview</a>
+            </div>
+          </div>
+    </div>
+</ngx-slick>
+</div>
+</div>
+ </section>
+
+
+
+    <!-- <div *ngFor="let section of caraouselData">
+        <app-page-section (visits)="prepareVisits($event)" (playEvent)="playContent($event)" [section]="section"></app-page-section>
+    </div> -->
 <router-outlet></router-outlet>

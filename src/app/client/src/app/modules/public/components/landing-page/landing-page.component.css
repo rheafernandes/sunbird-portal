@@ -1,27 +1,30 @@
-.landing-page-section {
-  background-color: #ffffff;
-  border-bottom: 1px solid rgba(206, 197, 197, 0.79);
-  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.075);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.075);
+@import "~bootstrap/dist/css/bootstrap.css";
+@import url("https://fonts.googleapis.com/css?family=Hind:400,700");
+.firma-ara{
+  padding-bottom: 100px;
+  padding-top: 100px;
 }
-.landing-page-image {
-  margin: 40px 0 40px 0;
+.form-arka-plan{
+  background-image: url("https://researchgirltoday.files.wordpress.com/2015/07/80ryzdj8ue.jpg");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
 }
-.landing-page-image img {
-  border-radius: 0.65em;
+.acik-renk-form{
+  background: rgba(255, 255, 255, 0.58);
 }
-.landing-page-description {
-  padding-top: 3em;
+.siyah-cerceve{
+  -webkit-text-fill-color: white;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
 }
-.landing-page-description p {
-  margin: 0;
-  font-size: 14px;
+.ui.styled.accordion.align-content {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  padding: 16px 13px 16px 17px;
+  width: 100%;
 }
-.ui.card>.card-opacity {
-  opacity: 0.2;
-}
-.ui.card .article-header-padding {
-  padding: 0 0 1em 1em;
-  font-family: 'sunbirdboldfont';
-  font-size: 1.25em;
+
+.trending_courses {
+  padding: 3rem;
 }

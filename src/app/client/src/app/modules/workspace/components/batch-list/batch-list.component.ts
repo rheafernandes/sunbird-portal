@@ -209,7 +209,7 @@ export class BatchListComponent extends WorkSpace implements OnInit {
     };
     this.getBatches(searchParams).subscribe(
       (data: ServerResponse) => {
-        console.log('get all batches', data);
+        console.log('get all batches', data, searchParams);
         if (data.result.response.count && data.result.response.content.length > 0) {
           this.noResult = false;
           this.batchList = data.result.response.content;
@@ -228,7 +228,8 @@ export class BatchListComponent extends WorkSpace implements OnInit {
         this.showError = true;
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
       }
-    );
+    );        console.log('get all batches', this.batchList );
+
   }
 
   /**
@@ -259,6 +260,7 @@ export class BatchListComponent extends WorkSpace implements OnInit {
       participants[item.id] = !_.isUndefined(item.participant) ? _.size(item.participant) : 0;
       userList.push(item.createdBy);
       this.batchList[key].label = participants[item.id];
+      console.log('item', item.participant );
     });
     userList = _.compact(_.uniq(userList));
     const req = {

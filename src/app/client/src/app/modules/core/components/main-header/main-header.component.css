@@ -13,11 +13,11 @@
   justify-content: center;
   align-items: center;
 }
-.ui.grid {
-  /* margin-top: -1rem;
-  margin-bottom: -1rem;
-  margin-left: -1rem; */
-  /* margin-right: 0rem; */
+
+.nav-link{
+  color: white;
+  margin-top:2rem;
+  font-family: fantasy;
 }
 #beforelogin {
   background-color: black;
@@ -68,4 +68,3 @@
   background-color: black;
 }
 }
-

@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { updateBatchDetails } from '../../components/batch/update-course-batch/update-course-batch.component.data';
+import { Observable } from 'rxjs';
 
 @Injectable({
- providedIn: 'root'
+  providedIn: 'root'
 })
 export class UpdateBatchService {
- url = 'http://localhost:8080';
- constructor(private http: HttpClient) { }
+   url = 'http://13.233.213.245:8080';
+  constructor(private http: HttpClient) { }
 
- updateMentors(request) {
- this.http.post(`${this.url}/updateBatch`, request).subscribe(data => {
-   console.log('requst', data);
- });
- }
+  updateMentors(request): Observable<{}> {
+  return this.http.post(`${this.url}/update-batch`, request);
+  }
+  getMentors(request): Observable<{}> {
+    return this.http.post(`${this.url}/fetch-batch`, request);
+  }
 }

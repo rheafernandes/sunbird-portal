@@ -1,105 +1,110 @@
 <section class="all-batches-section container">
-  <mat-tab-group class="grid">
-      <mat-tab label="Ongoing Batches">
-          <mat-grid-list [cols]="breakpoint" (window:resize)="onResize($event)">
-              <mat-card *ngIf="courseMentor === true  && !userEnrolledToCourse">
-                  <button class="btn btn-info" (click)="createNewBatch()" >New Batch</button>
-              </mat-card>
-              <mat-grid-tile  data-aos="fade-right" *ngFor="let ongoing of ongoingBatches">
-                  <div class="wrapper">
-                      <mat-card class="styleClass">
-                          <div class="container text-right">
-                              <button mat-icon-button color ="primary" (click)="updateBatch(ongoing)" *ngIf="courseMentor">
-                                  <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
-                              </button>
-                          </div>
-                          <mat-card-header>
-                              <div mat-card-avatar class="example-header-image"></div>
-                              <mat-card-title>{{ongoing?.name}}</mat-card-title>
-                              <mat-card-subtitle>{{ongoing?.enrollmentType}}</mat-card-subtitle>
-                          </mat-card-header>
-                          <mat-card-content>
-                            <p *ngIf="ongoing?.description !==null && ongoing?.description !== undefined && ongoing?.description !== ''" class="description">
-                              Description :{{ongoing?.description}}
-                          </p>
-                          <p *ngIf="ongoing?.description === null || ongoing?.description === undefined || ongoing?.description === ''">
-                              Description : No Description
-                          </p>
-                          <p>
-                              Start Date : {{ongoing?.startDate|date}}
-                          </p>
-                          <p *ngIf="ongoing?.endDate !== undefined && ongoing?.endDate !== null">
-                              End Date : {{ongoing?.endDate|date}}
-                          </p>
-                          <p *ngIf="ongoing?.endDate === undefined || ongoing?.endDate === null">
-                              End Date : No End Date
-                              {{showUnenroll}}
-                            </p>
+    <h6 class="text-secondary mb-0 font-weight-bold">ENROLL NOW</h6>
+    <h3 class="text-left section-headers">COURSE BATCHES</h3>
+    <mat-tab-group class="grid">
+        <mat-tab label="Ongoing Batches">
+            <mat-grid-list [cols]="breakpoint" (window:resize)="onResize($event)">
+                <mat-card *ngIf="courseMentor === true  && !userEnrolledToCourse">
+                    <button class="btn btn-info" (click)="createNewBatch()">New Batch</button>
+                </mat-card>
+                <mat-grid-tile data-aos="fade-right" *ngFor="let ongoing of ongoingBatches; let i = index">
+                    <div class="wrapper">
+                        <mat-card class="styleClass">
+                            <div class="container text-right">
+                                <button mat-icon-button color="primary" (click)="updateBatch(ongoing)" *ngIf="courseMentor">
+                                    <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
+                                </button>
+                            </div>
+                            <mat-card-header>
+                                <div mat-card-avatar class="example-header-image"></div>
+                                <mat-card-title>{{ongoing?.name}}</mat-card-title>
+                                <mat-card-subtitle>{{ongoing?.enrollmentType}}</mat-card-subtitle>
+                            </mat-card-header>
+                            <mat-card-content>
+                                <p *ngIf="ongoing?.description !==null && ongoing?.description !== undefined && ongoing?.description !== ''"
+                                    class="description">
+                                    Description :{{ongoing?.description | slice: 0 : 40}}
+                                </p>
+                                <p *ngIf="ongoing?.description === null || ongoing?.description === undefined || ongoing?.description === ''">
+                                    Description : No Description
+                                </p>
+                                <p>
+                                    Start Date : {{ongoing?.startDate|date}}
+                                </p>
+                                <p *ngIf="ongoing?.endDate !== undefined && ongoing?.endDate !== null">
+                                    End Date : {{ongoing?.endDate|date}}
+                                </p>
+                                <p *ngIf="ongoing?.endDate === undefined || ongoing?.endDate === null">
+                                    End Date : No End Date
+                                    {{showUnenroll}}
+                                </p>
 
-                          </mat-card-content>
+                            </mat-card-content>
 
-                          <mat-card-actions class="align-content">
-                            <button class=" btn btn-info" *ngIf="ongoing?.enrollmentType==='open' && (ongoing?.createdBy !== userId && !mentorIsPresent) && !(ongoing?.participant?.hasOwnProperty(userId)) && !showUnenroll"
-                                (click)="openEnrollDetailsDialog(ongoing)">Enroll</button>
-                            <button class="btn btn-primary" *ngIf="ongoing?.enrollmentType==='invite-only' && (ongoing?.createdBy !== userId || !mentorIsPresent)" (click)="openContactDetailsDialog(ongoing)">Contact</button>
-                            <button class="btn btn-warning" *ngIf="ongoing?.enrollmentType==='open' && (ongoing?.participant?.hasOwnProperty(userId) || showUnenroll)"
-                                (click)="unEnroll(ongoing)">UnEnroll</button>
-                        </mat-card-actions>
-                      </mat-card>
-                  </div>
-              </mat-grid-tile>
+                            <mat-card-actions class="align-content">
+                                <button class=" btn btn-primary" *ngIf="ongoing?.enrollmentType==='open' && (ongoing?.createdBy !== userId && !mentorIsPresent) && !(ongoing?.participant?.hasOwnProperty(userId)) && !showUnenroll"
+                                    (click)="openEnrollDetailsDialog(ongoing)">Enroll</button>
+                                <button class="btn btn-primary" *ngIf="ongoing?.enrollmentType==='invite-only' && (ongoing?.createdBy !== userId || !mentorIsPresent)"
+                                    (click)="openContactDetailsDialog(ongoing)">Contact</button>
+                                <button class="btn btn-primary" *ngIf="ongoing?.enrollmentType==='open' && (ongoing?.participant?.hasOwnProperty(userId) || showUnenroll)"
+                                    (click)="unEnroll(ongoing)">UnEnroll</button>
+                            </mat-card-actions>
+                        </mat-card>
+                    </div>
+                </mat-grid-tile>
 
-          </mat-grid-list>
-      </mat-tab>
-      <mat-tab label="Upcoming Batches">
-          <mat-grid-list [cols]="breakpoint" (window:resize)="onResize($event)">
-              <mat-card *ngIf="courseMentor === true && !userEnrolledToCourse">
-                  <button class="btn btn-info" (click)="createNewBatch()">New Batch</button>
-              </mat-card>
-              <mat-grid-tile  *ngFor="let upcoming of upcomingBatches">
-                  <div class="wrapper">
-                      <mat-card class="styleClass">
-                          <div class="container text-right">
-                              <button mat-icon-button color ="primary" (click)="updateBatch(upcoming)" *ngIf="courseMentor">
-                                  <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
-                              </button>
-                          </div>
-                          <mat-card-header>
-                              <div mat-card-avatar class="example-header-image"></div>
-                              <mat-card-title>{{upcoming?.name}}</mat-card-title>
-                              <mat-card-subtitle>{{upcoming?.enrollmentType}}</mat-card-subtitle>
-                          </mat-card-header>
-                          <mat-card-content>
-                            <p *ngIf="upcoming?.description !== null && upcoming?.description !== undefined" class="description">
-                              Description :{{upcoming?.description}}
-                          </p>
-                          <p *ngIf="upcoming?.description === null || upcoming?.description === undefined">
-                              Description : No Description
-                          </p>
-                          <p>
-                              Start Date : {{upcoming?.startDate|date}}
-                          </p>
-                          <p *ngIf="upcoming?.endDate !== undefined && upcoming?.endDate !== null">
-                              End Date : {{upcoming?.endDate|date}}
+            </mat-grid-list>
+        </mat-tab>
+        <mat-tab label="Upcoming Batches">
+            <mat-grid-list [cols]="breakpoint" (window:resize)="onResize($event)">
+                <mat-card *ngIf="courseMentor === true && !userEnrolledToCourse">
+                    <button class="btn btn-info" (click)="createNewBatch()">New Batch</button>
+                </mat-card>
+                <mat-grid-tile *ngFor="let upcoming of upcomingBatches">
+                    <div class="wrapper">
+                        <mat-card class="styleClass">
+                            <div class="container text-right">
+                                <button mat-icon-button color="primary" (click)="updateBatch(upcoming)" *ngIf="courseMentor">
+                                    <mat-icon aria-label="Example icon-button with a heart icon">edit</mat-icon>
+                                </button>
+                            </div>
+                            <mat-card-header>
+                                <div mat-card-avatar class="example-header-image"></div>
+                                <mat-card-title>{{upcoming?.name}}</mat-card-title>
+                                <mat-card-subtitle>{{upcoming?.enrollmentType}}</mat-card-subtitle>
+                            </mat-card-header>
+                            <mat-card-content>
+                                <p *ngIf="upcoming?.description !== null && upcoming?.description !== undefined" class="description">
+                                    Description :{{upcoming?.description | slice: 0 : 40}}
+                                </p>
+                                <p *ngIf="upcoming?.description === null || upcoming?.description === undefined">
+                                    Description : No Description
+                                </p>
+                                <p>
+                                    Start Date : {{upcoming?.startDate|date}}
+                                </p>
+                                <p *ngIf="upcoming?.endDate !== undefined && upcoming?.endDate !== null">
+                                    End Date : {{upcoming?.endDate|date}}
 
-                          </p>
-                          <p *ngIf="upcoming?.endDate === undefined || upcoming?.endDate === null">
-                              End Date : No End Date
-                            </p>
-                          </mat-card-content>
+                                </p>
+                                <p *ngIf="upcoming?.endDate === undefined || upcoming?.endDate === null">
+                                    End Date : No End Date
+                                </p>
+                            </mat-card-content>
 
-                          <mat-card-actions class="align-content">
-                            <button class=" btn btn-info" *ngIf="upcoming?.enrollmentType==='open' && (upcoming?.createdBy !== userId && !mentorIsPresent )&& !(upcoming?.participant?.hasOwnProperty(userId)) && !showUnenroll"
-                                (click)="openEnrollDetailsDialog(upcoming)">Enroll</button>
-                            <button class="btn btn-primary" *ngIf="upcoming?.enrollmentType==='invite-only' && upcoming?.createdBy !== userId || !mentorIsPresent" (click)="openContactDetailsDialog(upcoming)">Contact</button>
-                            <button class="btn btn-warning" *ngIf="upcoming?.enrollmentType==='open'  && (upcoming?.participant?.hasOwnProperty(userId) && showUnenroll)"
-                                (click)="unEnroll(upcoming)">UnEnroll</button>
-                        </mat-card-actions>
-                      </mat-card>
-                  </div>
-              </mat-grid-tile>
+                            <mat-card-actions class="align-content">
+                                <button class=" btn btn-primary" *ngIf="upcoming?.enrollmentType==='open' && (upcoming?.createdBy !== userId && !mentorIsPresent )&& !(upcoming?.participant?.hasOwnProperty(userId)) && !showUnenroll"
+                                    (click)="openEnrollDetailsDialog(upcoming)">Enroll</button>
+                                <button class="btn btn-primary" *ngIf="upcoming?.enrollmentType==='invite-only' && upcoming?.createdBy !== userId || !mentorIsPresent"
+                                    (click)="openContactDetailsDialog(upcoming)">Contact</button>
+                                <button class="btn btn-primary" *ngIf="upcoming?.enrollmentType==='open'  && (upcoming?.participant?.hasOwnProperty(userId) && showUnenroll)"
+                                    (click)="unEnroll(upcoming)">UnEnroll</button>
+                            </mat-card-actions>
+                        </mat-card>
+                    </div>
+                </mat-grid-tile>
 
-          </mat-grid-list>
-      </mat-tab>
-  </mat-tab-group>
+            </mat-grid-list>
+        </mat-tab>
+    </mat-tab-group>
 </section>

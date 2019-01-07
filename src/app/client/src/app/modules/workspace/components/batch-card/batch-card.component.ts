@@ -75,5 +75,14 @@ export class BatchCardComponent {
 console.log('result', result);
     });
   }
+  listOfUsers(batch) {
+    // console.log('user list full', batch );
+    // console.log('user list', batch.participant);
+    // console.log('created for', batch.createdFor);
+    // console.log('status', batch.identifier );
+    // console.log('addition', batch.courseAdditionalInfo);
+    // console.log('addition1', batch.courseAdditionalInfo.courseName );
+    this.route.navigate(['/workspace/content/userList', batch.identifier]);
+  }
 
 }

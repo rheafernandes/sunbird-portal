@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CourseBatchService } from '../../services';
+import { CourseBatchService, UpdateBatchService } from '../../services';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { Inject } from '@angular/core';
 import {
@@ -21,7 +21,7 @@ import {
   CoursesService
 } from '@sunbird/core';
 import { pluck, takeUntil, tap } from 'rxjs/operators';
-import { Subject, of as observableOf } from 'rxjs';
+import { Subject, of as observableOf, Observable } from 'rxjs';
 import * as _ from 'lodash';
 import { CreateBatchDialogComponent } from './create-batch-dialog/create-batch-dialog.component';
 import { UpdateBatchDialogComponent } from './update-batch-dialog/update-batch-dialog.component';
@@ -91,7 +91,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
   userCourseBatches = [];
   enrolledCourses;
   userEnrolledToCourse;
-  mentorIsPresent = false;
+  mentorIsPresent;
   ngOnDestroy(): void {}
 
   constructor(
@@ -106,7 +106,8 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
     public toasterService: ToasterService,
     public resourceService: ResourceService,
     public permissionService: PermissionService,
-    public coursesService: CoursesService
+    public coursesService: CoursesService,
+    public updateBatchService: UpdateBatchService,
   ) {
     this.userId = this.userService.userid;
   }
@@ -202,7 +203,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       .pipe(pluck('result', 'response'));
     return response;
   }
-  openEnrollDetailsDialog(batch) {
+  openEnrollDetailsDialog(batch, i) {
     this.courseBatchService.setEnrollToBatchDetails(batch);
     this.router.navigate(['enroll/batch', batch.identifier], {
       relativeTo: this.activatedRoute
@@ -213,7 +214,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
     const request = {
       request: {
         courseId: batch.courseId,
-        batchId: batch.id,
+        batchId: batch.identifier,
         userId: this.userId
       }
     };
@@ -222,16 +223,27 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(
         data => {
-          // if (data.result.response === 'SUCCESS') {
-            this.showUnenroll = true;
-          // }
           this.toasterService.success(this.resourceService.messages.smsg.m0036);
+          this.fetchEnrolledCourseData(batch);
         },
         err => {
           this.showUnenroll = false;
           this.toasterService.error('Unsuccesful, try again later');
         }
       );
+  }
+  fetchEnrolledCourseData(batch) {
+    setTimeout(() => {
+      this.coursesService.getEnrolledCourses().pipe(
+        takeUntil(this.unsubscribe))
+        .subscribe(() => {
+          this.toasterService.success(this.resourceService.messages.smsg.m0036);
+          this.router.navigate(['/learn/course', batch.courseId, 'batch', batch.identifier]);
+          window.location.reload();
+        }, (err) => {
+          this.router.navigate(['/learn']);
+        });
+    }, 2000);
   }
   unEnroll(batch) {
     this.courseBatchService.setEnrollToBatchDetails(batch);
@@ -283,6 +295,16 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
     const notCreator = this.checkMentorIsPresent(batch);
     const usersOfCourse = this.allMembers.concat(this.allMentors);
     this.mentorIsPresent = batch.mentors.includes(this.userService.userid);
+    const requestBody = {
+      request: {
+      batchId: batch.identifier,
+      }
+    };
+    this.updateBatchService.getMentors(requestBody)
+    .subscribe((res: any) => {
+    this.mentorIsPresent = res.result.data.hasOwnProperty(this.userService.userid);
+    console.log('menor', this.mentorIsPresent);
+    const userMentors = res.result.data;
     const dialogRef = this.dialog.open(UpdateBatchDialogComponent, {
       data: {
         title: 'update',
@@ -292,9 +314,36 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
         courseId: this.courseId,
         creator: notCreator,
         mentorIsPresent: this.mentorIsPresent,
+        userMentors: userMentors,
       }
-    });
+      });
 
+    },
+    (err: any) => {
+      this.toasterService.error('Posting additional details, Please wait');
+    if (err.status === 404) {
+        const request = {
+        request: {
+        courseId: batch.courseId,
+        batchId: batch.identifier,
+        createdById: batch.createdBy,
+        mentorsPresent: batch.mentors,
+        mentorWhoUpdated : this.userService.userid,
+        mentorsAdded: [],
+        mentorsDeleted : [],
+        }
+      };
+        this.updateBatchService.updateMentors(request).subscribe((res: any) => {
+        console.log(res);
+        this.toasterService.success('Batch updated successfully');
+        },
+        error => {
+          console.log(error);
+          this.toasterService.error('Please try again');
+        });
+    }
+    }
+    );
   }
 
   onResize(event) {
@@ -348,6 +397,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
               this.allMentors = _.compact(this.allMentors);
             }
           }
+          this.allMentors = this.allMentors.filter((set => f => !set.has(f.id) && set.add(f.id))(new Set));
       },
       err => {
         this.toasterService.error(err.error.params.errmsg);
@@ -376,21 +426,22 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
           && (memberDetail.lastName === undefined || memberDetail.lastName === null)) {
           obj['name'] = memberDetail.firstName;
           obj['id'] = memberDetail.identifier;
-          this.allMentors.push(obj);
-          this.allMentors = _.compact(this.allMentors);
+          this.allMembers.push(obj);
+          this.allMembers = _.compact(this.allMembers);
           } else if ((memberDetail.firstName === null && memberDetail.firstName === undefined)
           && (memberDetail.lastName !== undefined || memberDetail.lastName !== null)) {
             obj['name'] = memberDetail.lastName;
             obj['id'] = memberDetail.identifier;
-            this.allMentors.push(obj);
-            this.allMentors = _.compact(this.allMentors);
+            this.allMembers.push(obj);
+            this.allMembers = _.compact(this.allMembers);
           } else {
             obj['name'] = memberDetail.firstName + ' ' + memberDetail.lastName;
             obj['id'] = memberDetail.identifier;
-            this.allMentors.push(obj);
-            this.allMentors = _.compact(this.allMentors);
+            this.allMembers.push(obj);
+            this.allMembers = _.compact(this.allMembers);
           }
             }
+            this.allMembers = this.allMembers.filter((set => f => !set.has(f.id) && set.add(f.id))(new Set));
 
       },
       err => {

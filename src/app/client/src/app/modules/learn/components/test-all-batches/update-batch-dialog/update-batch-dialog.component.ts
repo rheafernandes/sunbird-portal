@@ -45,6 +45,7 @@ export class UpdateBatchDialogComponent implements OnInit {
   userMentorCtrl = new FormControl();
   filteredMentors: Observable<any>;
   mentors = [];
+  minDate = new Date();
   allMentors = [];
   memberCtrl = new FormControl();
   filteredMembers: Observable<any>;
@@ -52,6 +53,7 @@ export class UpdateBatchDialogComponent implements OnInit {
   members = [];
   allMembers = [];
   mentorIds;
+  userMentorIds;
   batchId;
   membersDetails = [];
   participantIds;
@@ -59,9 +61,9 @@ export class UpdateBatchDialogComponent implements OnInit {
   mentorIsPresent = false;
   addedMentors = [];
   userMentors = [];
-  mentorAddedMentors = [];
-  mentorRemovedMentors = [];
+  removedMentors = [];
   existingMentors = [];
+  // existingMentorIds;
   public unsubscribe = new Subject<void>();
   @ViewChild('memberInput') memberInput: ElementRef<HTMLInputElement>;
   @ViewChild('autoMember') matMemberAutocomplete: MatAutocomplete;
@@ -81,17 +83,14 @@ export class UpdateBatchDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<UpdateBatchDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-
     this.existingBatchDetail = this.data.batchDetail;
-
     if (this.data.batchDetail.mentors.length > 0) {
       this.mentorIds = _.union(this.data.batchDetail.mentors);
+    } else {
+      this.mentorIds = [];
     }
 
-    if (
-      this.data.batchDetail.participant !== undefined ||
-      this.data.batchDetail.participant !== null
-    ) {
+    if (this.existingBatchDetail.hasOwnProperty('participant')) {
       this.participantIds = _.union(_.keys(this.data.batchDetail.participant));
     } else {
       this.participantIds = [];
@@ -104,24 +103,28 @@ export class UpdateBatchDialogComponent implements OnInit {
         mentor ? this._filterMentor(mentor) : this.allMentors.slice()
       )
     );
+    this.filteredUserMentors = this.userMentorCtrl.valueChanges.pipe(
+      startWith(null),
+      map((mentor: string) =>
+        mentor ? this._filterUserMentor(mentor) : this.allMentors.slice()
+      )
+    );
 
-    // this.filteredUserMentors = this.userMentorCtrl.valueChanges.pipe(
-    //   startWith(null),
-    //   map((mentor: string) =>
-    //     mentor ? this._filterUserMentor(mentor) : this.allMentors.slice()
-    //   )
-    // );
    }
 
   ngOnInit(): void {
-    console.log('data', this.data);
     this.courseId = this.data.courseId;
     this.creator = this.data.creator;
     this.mentorIsPresent = this.data.mentorIsPresent;
     this.allMembers = this.data.memberDetail;
     this.allMentors = this.data.mentorDetail;
-    this.existingMentors = this.data.batchDetail.mentors;
-    console.log('existing mentors', this.existingMentors);
+
+    this.userMentors = this.data.userMentors.hasOwnProperty(this.userService.userid) ? this.data.userMentors[this.userService.userid] : [];
+    // tslint:disable-next-line: max-line-length
+    this.existingMentors = this.data.userMentors.hasOwnProperty(this.data.batchDetail.createdBy) ? this.data.userMentors[this.data.batchDetail.createdBy] : [];
+   if (this.userMentors.length > 0) {
+      this.userMentorIds = _.union(this.userMentors);
+    }
     this.breakpoint = window.innerWidth <= 550 ? 1 : 1;
     if (this.shouldSizeUpdate) {
       this.updateSize();
@@ -133,9 +136,29 @@ export class UpdateBatchDialogComponent implements OnInit {
       userdata.identifier
     );
 
+  for (const mentor of this.userMentors) {
+  this.allMentors.filter(data => {
+    if (data.id === mentor) {
+      const index = this.allMentors.indexOf(data);
+      if (index > 0) {
+        this.allMentors.splice(index, 1);
+          }
+        }
+      });
+    }
+    for (const mentor of this.existingMentors) {
+      this.allMentors.filter(data => {
+        if (data.id === mentor) {
+          const index = this.allMentors.indexOf(data);
+          if (index > 0) {
+            this.allMentors.splice(index, 1);
+              }
+            }
+          });
+        }
     this.getMembers();
     this.getMentorslist();
-
+    this.getUserMentorslist();
   }
 
   updateSize() {
@@ -151,49 +174,47 @@ export class UpdateBatchDialogComponent implements OnInit {
       const input = event.input;
       const value = event.value;
       if ((value || '').trim()) {
-        this.userMentors.push(value.trim());
-        this.existingMentors.push(value.trim());
+        this.addedMentors.push(value.trim());
       }
       if (input) {
         input.value = '';
       }
-      this.mentorCtrl.setValue(null);
+      this.userMentorCtrl.setValue(null);
     }
-  }
-  removeUserMentor(mentor): void {
-    this.mentorRemovedMentors.push(mentor);
-    const index = this.userMentors.indexOf(mentor);
-    if (index >= 0) {
-      this.userMentors.splice(index, 1);
-      this.existingMentors.splice(index, 1);
-    }
-    this.allMentors.push(mentor);
-  }
-  selectedUserMentor(event: MatAutocompleteSelectedEvent): void {
-    this.userMentors.push(event.option.value);
-    this.existingMentors.push(event.option.value);
-    this.removeMentorFromMentorsList(event.option.value);
-    this.mentorAddedMentors.push(event.option.value);
-    console.log('usermentors', this.mentorAddedMentors);
-    this.mentorInput.nativeElement.value = '';
-    this.mentorCtrl.setValue(null);
   }
 
-  // private _filterUserMentor(value: string) {
-  //   if (value !== undefined) {
-  //     const filterValue = value.toString().toLowerCase();
-  //     return this.allMentors.filter(mentor => mentor.name.toLowerCase().indexOf(filterValue) === 0);
-  //   }
-  //   return this.allMentors;
-  // }
+  removeUserMentor(mentor): void {
+    const index = this.addedMentors.indexOf(mentor);
+    const mentorindex = this.mentors.indexOf(mentor);
+    this.removedMentors.push(mentor);
+    if (index >= 0) {
+      this.addedMentors.splice(index, 1);
+    }
+    if (mentorindex >= 0) {
+      this.mentors.splice(index, 1);
+    }
+  }
+
+  selectedUserMentor(event: MatAutocompleteSelectedEvent): void {
+    this.addedMentors.push(event.option.value);
+    this.removeMentorFromMentorsList(event.option.value);
+    this.userMentors.push(event.option.value.id);
+    this.usermentorInput.nativeElement.value = '';
+    this.userMentorCtrl.setValue(null);
+  }
+  private _filterUserMentor(value: string) {
+    if (value !== undefined) {
+      const filterValue = value.toString().toLowerCase();
+      return this.allMentors.filter(mentor => mentor.name.toLowerCase().indexOf(filterValue) === 0);
+    }
+    return this.allMentors;
+  }
   removeUserMentorFromMentorsList(mentor) {
     const index = this.allMentors.indexOf(mentor);
     if (index >= 0) {
       this.allMentors.splice(index, 1);
     }
   }
-
-
 
 
   addMentor(event: MatChipInputEvent): void {
@@ -209,41 +230,40 @@ export class UpdateBatchDialogComponent implements OnInit {
       this.mentorCtrl.setValue(null);
     }
   }
+  removeUserFromList(arr, attr, value): any[] {
+  let i = arr.length;
+    while (i--) {
+      if (
+        arr[i] &&
+        arr[i].hasOwnProperty(attr) &&
+        (arguments.length > 2 && arr[i][attr] === value)
+      ) {
+        arr.splice(i, 1);
+      }
+    }
+    return arr;
+  }
+
   removeMentor(mentor): void {
-    this.mentorRemovedMentors.push(mentor);
     const index = this.mentors.indexOf(mentor);
     if (index >= 0) {
       this.mentors.splice(index, 1);
-      this.existingMentors.splice(index, 1);
     }
-    this.allMentors.push(mentor);
   }
+
   selectedMentor(event: MatAutocompleteSelectedEvent): void {
     this.mentors.push(event.option.value);
-    // this.existingMentors.push(event.option.value);
     this.removeMentorFromMentorsList(event.option.value);
-    this.mentorAddedMentors.push(event.option.value);
-    console.log('usermentors', this.mentorAddedMentors);
     this.mentorInput.nativeElement.value = '';
     this.mentorCtrl.setValue(null);
   }
-  removeUserFromList(arr, attr, value): any[] {
-    let i = arr.length;
-      while (i--) {
-        if (
-          arr[i] &&
-          arr[i].hasOwnProperty(attr) &&
-          (arguments.length > 2 && arr[i][attr] === value)
-        ) {
-          arr.splice(i, 1);
-        }
-      }
-      return arr;
-    }
+
   private _filterMentor(value: string) {
     if (value !== undefined) {
       const filterValue = value.toString().toLowerCase();
-      return this.allMentors.filter(mentor => mentor.name.toLowerCase().indexOf(filterValue) === 0);
+      return this.allMentors.filter(
+        mentor => mentor.name.toLowerCase().indexOf(filterValue) === 0
+      );
     }
     return this.allMentors;
   }
@@ -253,13 +273,14 @@ export class UpdateBatchDialogComponent implements OnInit {
       this.allMentors.splice(index, 1);
     }
   }
+
   getMentorslist() {
    const option = {
      url: this.config.urlConFig.URLS.ADMIN.USER_SEARCH,
      data: {
        request: {
          filters: {
-           identifier : this.mentorIds,
+           identifier : this.existingMentors,
          },
        }
      }
@@ -277,11 +298,42 @@ export class UpdateBatchDialogComponent implements OnInit {
              this.mentors = _.compact(this.mentors);
            }
          }
+        //  this.getUserMentorslist();
        }
      );
      this.mentors = this.mentors.filter((set => f => !set.has(f.id) && set.add(f.id))(new Set));
-
  }
+
+ getUserMentorslist() {
+   if (this.userMentors.length > 0) {
+  const option = {
+    url: this.config.urlConFig.URLS.ADMIN.USER_SEARCH,
+    data: {
+      request: {
+        filters: {
+          identifier : this.userMentors,
+        },
+      }
+    }
+  };
+  this.learnerService.post(option)
+    .subscribe(
+      data => {
+        const mentorsDetails = data.result.response.content;
+        for (const mentorDetail of mentorsDetails ) {
+          if (mentorDetail.firstName !== undefined && mentorDetail.lastName !== undefined) {
+            const obj = {};
+            obj['name'] = mentorDetail.firstName + ' ' + mentorDetail.lastName;
+            obj['id'] = mentorDetail.identifier;
+            this.addedMentors.push(obj);
+            this.addedMentors = _.compact(this.addedMentors);
+          }
+        }
+      }
+    );
+    }
+    this.addedMentors = this.addedMentors.filter((set => f => !set.has(f.id) && set.add(f.id))(new Set));
+}
  getMembers() {
   const key = this.data.batchDetail.participant;
   if (key !== undefined && key !== null) {
@@ -308,6 +360,7 @@ export class UpdateBatchDialogComponent implements OnInit {
 }
 
  onSubmit(title, description, startDate, endDate) {
+   let requestBody;
   const participants = [];
     startDate = new Date(Date.parse(startDate)).toISOString().slice(0, 10);
     endDate = new Date(Date.parse(endDate)).toISOString().slice(0, 10);
@@ -318,24 +371,21 @@ export class UpdateBatchDialogComponent implements OnInit {
       for (const mentor of this.mentors) {
         mentorIds.push(mentor.id);
       }
-      console.log('memtorid', mentorIds);
-      const requestBody = {
-        id: this.data.batchDetail,
-        name: title,
-        description: description,
-        // tslint:disable-next-line:quotemark
-        enrollmentType: 'open',
-        startDate: startDate,
-        endDate: endDate || null,
-        createdFor: this.userService.userProfile.organisationIds,
-        mentors: _.compact(mentorIds)
-      };
+        requestBody = {
+          id: this.data.batchDetail,
+          name: title,
+          description: description,
+          enrollmentType: 'invite-only',
+          startDate: startDate,
+          endDate: endDate || null,
+          createdFor: this.userService.userProfile.organisationIds,
+          mentors: _.compact(mentorIds)
+        };
+
       for (const memberId of this.members) {
-        console.log('meemId', memberId.id);
         participants.push(memberId.id);
       }
-      console.log('members', this.members);
-      console.log('participants', participants);
+
       this.courseBatchService.updateBatch(requestBody).pipe(takeUntil(this.unsubscribe))
       .subscribe((response) => {
         if (participants && participants.length > 0) {
@@ -372,20 +422,18 @@ export class UpdateBatchDialogComponent implements OnInit {
   }
 
 updateMentors() {
-  console.log('existing', this.existingMentors);
-  console.log('user mentors', this.userMentors);
  const batch = this.data.batchDetail;
   const mentorIds = [];
   for (const mentor of this.mentors) {
     mentorIds.push(mentor.id);
   }
-  const addedmentorIds = [];
-  for (const addMentorId  of this.mentorAddedMentors) {
-    addedmentorIds.push(addMentorId.id);
-  }
   const deletedmemberIds = [];
-  for (const deleteMemberId  of this.mentorRemovedMentors) {
+  for (const deleteMemberId  of this.removedMentors) {
     deletedmemberIds.push(deleteMemberId.id);
+  }
+  const addedmemberIds = [];
+  for (const addedMemberId  of this.addedMentors) {
+    addedmemberIds.push(addedMemberId.id);
   }
   const requestBody = {
     request: {
@@ -394,12 +442,18 @@ updateMentors() {
     createdById: batch.createdBy,
     mentorsPresent: _.compact(mentorIds),
     mentorWhoUpdated : this.userService.userid,
-    mentorsAdded: _.compact(addedmentorIds),
+    mentorsAdded: _.compact(addedmemberIds),
     mentorsDeleted : _.compact(deletedmemberIds),
     }
   };
-    this.updateBatchService.updateMentors(requestBody);
+    this.updateBatchService.updateMentors(requestBody).subscribe((res: any) => {
+    console.log(res);
+    this.toasterService.success('batch updated successfully');
+    },
+    err => {
+      console.log(err);
+      this.toasterService.error('please try again');
+    });
     this.dialogRef.close();
   }
-
 }
