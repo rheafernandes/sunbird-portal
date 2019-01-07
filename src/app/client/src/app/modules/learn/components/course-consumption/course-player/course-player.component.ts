@@ -306,7 +306,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   toggle() {
-    console.log('============togle');
     document.getElementById('icon_view_list').click();
   }
   private parseChildContent() {

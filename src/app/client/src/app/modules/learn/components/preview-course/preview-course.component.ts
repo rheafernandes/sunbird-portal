@@ -57,7 +57,7 @@ export class PreviewCourseComponent implements OnInit {
           this.toaster.error('Fetching Details Failed');
         },
         () => {
-          this.getpreviewlinks();
+          // this.getpreviewlinks();
         }
       );
   }
