@@ -70,6 +70,6 @@ import { UsersListComponent } from './components/users-list/users-list.component
   exports: [SessionDetailsComponent],
   providers: [WorkSpaceService, EditorService, BatchService, CourseConsumptionService,
     CourseProgressService, CourseBatchService , SessionService],
-  entryComponents: [CreateSessionComponent, SessionDetailsComponent, AttendanceComponent],
+  entryComponents: [CreateSessionComponent, SessionDetailsComponent, AttendanceComponent ],
 })
 export class WorkspaceModule { }

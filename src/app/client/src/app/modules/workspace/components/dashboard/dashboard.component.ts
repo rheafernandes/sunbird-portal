@@ -175,11 +175,6 @@ export class DashboardComponent extends WorkSpace implements OnInit {
               y: this.previousBatchCount,
               name: 'PreviousBatches',
               label: 'PrevoiusBatches'
-            } ,
-            {
-              y: this.batchCount,
-              name: 'Total number of Batches',
-              label: 'Total Batches '
             }
           ]
         }
