@@ -7,11 +7,11 @@ import { ToasterService } from '../../../shared/services/toaster/toaster.service
  providedIn: 'root'
 })
 export class SessionService {
- sessions = [];
- // address="http://13.233.213.245:8080"
- address = 'http://localhost:8080';
- constructor(private http: HttpClient, private toasterService: ToasterService) {
- }
+  sessions = [];
+  address = 'http://13.233.213.245:8080';
+  // address = 'http://localhost:8080';
+  constructor(private http: HttpClient, private toasterService: ToasterService) {
+  }
 
  addSession(sessionDelta: {}): any {
    const result = this.http.post(`${this.address}/create-session`, sessionDelta);

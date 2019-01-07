@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfigService } from '@sunbird/shared';
 import { UserService, LearnerService, SearchService } from '@sunbird/core';
 import { pluck } from 'rxjs/operators';
@@ -10,6 +10,7 @@ import { WorkSpace } from '../../classes/workspace';
 import { WorkSpaceService, BatchService } from '../../services';
 import { ServerResponse } from '../../../shared/interfaces';
 export interface UserData {
+  identifier: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -53,7 +54,8 @@ export class UsersListComponent extends WorkSpace implements OnInit {
     private paginationService: PaginationService,
     public workSpaceService: WorkSpaceService,
     public searchService: SearchService,
-    public batchService: BatchService
+    public batchService: BatchService,
+    public router: Router,
   ) {
     super(searchService, workSpaceService);
     this.userService = userService;
@@ -94,4 +96,7 @@ export class UsersListComponent extends WorkSpace implements OnInit {
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+  showUserStats(userId) {
+    this.router.navigate(['/workspace/content/user-stats', userId]);
+   }
 }

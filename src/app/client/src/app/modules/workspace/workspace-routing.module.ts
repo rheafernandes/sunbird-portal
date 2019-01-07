@@ -10,12 +10,12 @@ import {
 } from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 import { SessionListComponent } from './components/session-list/session-list.component';
+import { UserStatsComponent } from './components/user-stats/user-stats.component';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { LearnMaterialComponent } from './components/learn-material/learn-material.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { UsersListComponent } from './components/users-list/users-list.component';
 import { updateBatchDetails } from '../learn/components/batch/update-course-batch/update-course-batch.component.data';
-import { UserStatsComponent } from './components/user-stats/user-stats.component';
 const telemetryEnv = 'workspace';
 const objectType = 'workspace';
 const routes: Routes = [
