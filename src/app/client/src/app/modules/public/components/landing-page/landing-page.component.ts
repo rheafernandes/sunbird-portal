@@ -181,4 +181,9 @@ export class LandingPageComponent implements OnInit {
     //   }
     // }
   }
+
+
+  preview() {
+
+  }
 }

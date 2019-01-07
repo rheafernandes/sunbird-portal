@@ -189,7 +189,7 @@
 <span class="ui red circular inline label">{{trendingCount}}</span>
 </h4>
 <div>
-<ngx-slick in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="trendingCourse" (afterChange)="inviewChange(trendingCourse,$event)"class="carousel" #slickModal="slick-modal" [config]="slideConfig">
+<ngx-slick in-view-container [throttle]="[1000]" [trigger]="trendingCourse" class="carousel" #slickModal="slick-modal" [config]="slideConfig">
     <div in-view-item [id]="i" [data]="content" ngxSlickItem *ngFor="let content of trendingCourse;let i = index" class="slide">
         <!-- <app-card (clickEvent)="playContent($event)"[data]="content" [customClass]="'margin-right-20'"></app-card> -->
         <div class="card" style="width: 18rem;" >
@@ -198,7 +198,7 @@
             <div class="card-body">
               <p class="card-title">{{content.name}}</p>
               <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
-              <a href="#" class="btn btn-primary float-right">preview</a>
+              <a href="#" class="btn btn-primary float-right"  (click)=preview(content.IL_UNIQUE_ID)>preview</a>
             </div>
           </div>
     </div>
