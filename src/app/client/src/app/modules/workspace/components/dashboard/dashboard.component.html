@@ -1,0 +1,54 @@
+<div>
+<div class="animated fadeIn">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="card text-white bg-primary">
+          <div class="card-body pb-0">
+            <div class="btn-group float-right">
+            </div>
+            <div class="text-center"> Number of Batches</div>
+            <div class="text-value text-center">{{batchCount}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+          <div class="card text-white bg-primary">
+            <div class="card-body pb-0">
+              <div class="btn-group float-right">
+              </div>
+              <div class="text-center">Ongoing Batches</div>
+              <div class="text-value text-center">{{ongoingBatchCount}} </div>
+            </div>
+          </div>
+        </div>
+
+      <div class="col-md-3">
+        <div class="card text-white bg-primary">
+          <div class="card-body pb-0">
+            <div class="btn-group float-right">
+            </div>
+            <div class="text-center">UpComming Batches</div>
+            <div class="text-value text-center">{{upcommingBatchCount}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+          <div class="card text-white bg-primary">
+            <div class="card-body pb-0">
+              <div class="btn-group float-right">
+              </div>
+              <div class="text-center"> previous Batches</div>
+              <div class="text-value text-center">{{previousBatchCount}} </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+  <!--graph-->
+
+  <mat-card>
+      <div id="chartContainer" style="height: 370px; width: 100%; margin-left:auto;margin-right:auto;"></div>
+    </mat-card>
+</div>

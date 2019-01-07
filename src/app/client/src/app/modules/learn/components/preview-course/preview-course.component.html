@@ -19,9 +19,9 @@
               {{courseDetails?.description}}
             </p>
           </section>
-          <div class="row icon-section mt-3">
+          <div class="row icon-section mt-3" style="color:white !important;">
             <div class="col-sm-6 col-md-3">
-              <h4 style="color:black !important;">22</h4>
+              <h4>22</h4>
               <p> Hours</p>
             </div>
             <div class="col-sm-6 col-md-3">
@@ -61,7 +61,7 @@
         <div class="card highlight-card" data-aos="fade-right">
           <i class="fas fa-laptop fa-4x text-info text-center mt-1" aria-hidden="true"></i>
           <div class="card-body text-center">
-            <h4 class="card-title ">CAREER-READY</h4>
+            <h4 class="card-title " style="font-size: 2em;">CAREER-READY</h4>
             <hr />
             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
               card's content.</p>
@@ -72,7 +72,7 @@
         <div class="card highlight-card" data-aos="fade-right">
           <i class="fas fa-award fa-4x text-success text-center mt-1" aria-hidden="true"></i>
           <div class="card-body text-center">
-            <h4 class="card-title ">TRENDING #3</h4>
+            <h4 class="card-title" style="font-size: 2em;">TRENDING #3</h4>
             <hr />
             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
               card's
@@ -84,7 +84,7 @@
         <div class="card highlight-card" data-aos="fade-right">
           <i class="fas fa-users-cog fa-4x text-danger text-center mt-1" aria-hidden="true"></i>
           <div class="card-body text-center">
-            <h4 class="card-title ">GLOBAL COMMUNITY </h4>
+            <h4 class="card-title" style="font-size: 2em;">GLOBAL COMMUNITY </h4>
             <hr />
             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
               card's
@@ -97,6 +97,7 @@
 </section>
 <!-- Section #4
       This section is for Preview/Sample video  -->
+<app-course-player></app-course-player>
 <section class="container-fluid bg-secondary">
   <div class="container">
     <div class="row">
@@ -109,8 +110,8 @@
               <section class="course-preview-section container-fluid" data-aos="fade-left" id="preview">
                 <mat-tab-group class="video-text">
                   <mat-tab label="Sample Video ">
-                    <iframe width="720" height="450" src='https://www.youtube.com/embed/6opf_ke2Hlk' frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                      allowfullscreen></iframe>
+                    <iframe width="720" height="450" src='https://www.youtube.com/embed/6opf_ke2Hlk' frameborder="0"
+                      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     <!-- <iframe width="650" height="450" src="https://www.youtube.com/embed/Zv8-hrGiGno" frameborder="0"
                             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
                   </mat-tab>
@@ -205,6 +206,38 @@
     </div>
   </div>
 </section>
+
+<section data-aos="fade-right" class="Batches">
+  <div class="container">
+    <h6 class="text-secondary mb-0 font-weight-bold">BATCHES</h6>
+    <div class="row">
+      <div class="col-sm-6">
+        <h3 class="text-left section-headers">ENROLL NOW</h3>
+      </div>
+      <div class="col-sm-6">
+        <div data-aos="fade-left" class="container text-right">
+          <mat-form-field>
+            <mat-select placeholder="Batch Type" [formControl]="batchControl" (selectionChange)="fetchBatches($event.value)"
+              required>
+              <mat-option *ngFor="let bat of batch" [value]="bat">
+                {{bat.name}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="batchControl.hasError('required')">Batch type</mat-error>
+            <!-- <mat-hint>{{batchControl.value?.status}}</mat-hint> -->
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid bg-secondary">
+    <div class="container">
+      <div class="row">
+          <app-batch-card class="col-sm-4 mt-3" *ngFor="let bat of batches" [batch]=bat></app-batch-card>
+      </div>
+    </div>
+  </div>
+</section>
 <!-- Section #6
       This section is for Instructors/Mentors -->
 <section class="container-fluid">
@@ -247,8 +280,8 @@
         <section data-aos="fade-left" class="mentors-section">
           <h6 class="text-secondary text-right mb-0 font-weight-bold">MENTORS</h6>
           <h3 class="text-right section-headers">WE'RE HERE TO HELP</h3>
-          <div class="row">
-            <div class="col-lg-6 col-sm-12" data-aos="fade-left" *ngFor="let mentor of mentorsDetails">
+          <div class="row mt-3" data-aos="fade-left">
+            <div class="col-lg-6 col-sm-12"  *ngFor="let mentor of mentorsDetails">
               <div class="card mentor-card">
                 <div class="box">
                   <div class="img">

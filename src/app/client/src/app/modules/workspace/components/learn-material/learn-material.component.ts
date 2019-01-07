@@ -63,6 +63,7 @@ export class LearnMaterialComponent implements OnInit {
         this.selectedCourses.add(course);
       }
     });
+    console.log('seesfs', this.session);
   }
 
   addMaterial() {

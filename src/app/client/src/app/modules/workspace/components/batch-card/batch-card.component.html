@@ -1,10 +1,10 @@
 <div class="ui link cards margin-top-15">
   <div class="ui fluid card mouse-pointer">
-    <div class="image" (click)="onAction(batch)"
+    <div class="image"
     appTelemetryInteract [telemetryInteractObject]="{id:batch.identifier,type:'batch',ver:'1.0'}" [telemetryInteractEdata]="{id:'batchId',type:'click',pageid:'course-batch'}">
       <div class="ui fluid image">
-          <div class="ui black right ribbon label">Batch of {{batch.label}} </div>
-        <img src="{{'assets/images/default.png' | cdnprefixurl}}">
+          <div class="ui black right ribbon label" (click)="listOfUsers(batch)">Batch of {{batch.label}} </div>
+        <img  (click)="onAction(batch)" src="{{'assets/images/default.png' | cdnprefixurl}}">
       </div>
       <div class="batch-content" suiPopup popupText="{{batch.name}}">
         <span class="batch-content-description">{{batch.name | slice:0:20}}
