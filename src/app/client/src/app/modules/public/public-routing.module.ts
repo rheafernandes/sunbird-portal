@@ -8,6 +8,7 @@ import {
   PublicCollectionPlayerComponent
 } from './components';
 import { SignupGuard, LandingpageGuard } from './services';
+import { PreviewCourseComponent } from '../learn';
 
 const routes: Routes = [
   {
@@ -63,9 +64,10 @@ const routes: Routes = [
   {
     path: ':slug/explore', loadChildren: './module/explore/explore.module#ExploreModule'
   }
+
 ];
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  imports: [RouterModule.forChild(routes) ],
+  exports: [RouterModule],
 })
 export class PublicRoutingModule { }

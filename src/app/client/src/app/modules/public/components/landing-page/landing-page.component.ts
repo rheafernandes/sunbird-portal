@@ -210,5 +210,9 @@ inviewChange(contentList, event) {
 //   }
 // }
 }
+gotoPreview(courseId) {
+  console.log('id' , courseId);
+this.route.navigate(['preview/', courseId]);
+}
 }
 

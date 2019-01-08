@@ -37,7 +37,7 @@ import { BatchCardComponent } from './components/preview-course/batch-card/batch
     NotesModule,
     TelemetryModule,
     NgInviewModule,
-    WorkspaceModule
+    WorkspaceModule,
   ],
   providers: [CourseConsumptionService, CourseBatchService, CourseProgressService, PlayContent],
   exports: [UpdateBatchDialogComponent, CreateBatchDialogComponent],
