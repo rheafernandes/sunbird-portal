@@ -201,7 +201,6 @@ export class SearchService {
     };
     return this.content.post(option);
   }
-
   courseSearchTrending(): Observable<ServerResponse> {
     const option = {
       url: this.config.urlConFig.URLS.COURSE.SEARCH,

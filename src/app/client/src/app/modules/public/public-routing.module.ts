@@ -8,6 +8,8 @@ import {
   PublicCollectionPlayerComponent
 } from './components';
 import { SignupGuard, LandingpageGuard } from './services';
+import { PreviewCourseComponent } from '../learn/components/preview-course/preview-course.component';
+import { CatalogComponent} from '../search/components/catalog/catalog.component';
 
 const routes: Routes = [
   {
@@ -62,6 +64,12 @@ const routes: Routes = [
   },
   {
     path: ':slug/explore', loadChildren: './module/explore/explore.module#ExploreModule'
+  },
+  {
+    path: 'preview/:courseId' , component: PreviewCourseComponent
+  },
+  {
+    path: 'catalog/:pageNumber' , component: CatalogComponent
   }
 ];
 @NgModule({
