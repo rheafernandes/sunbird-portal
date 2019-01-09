@@ -1,17 +1,17 @@
-      <section class="search-banner text-white py-3 form-arka-plan" id="search-banner">
+      <!-- <section class="search-banner text-white py-3 form-arka-plan" id="search-banner">
         <div class="container py-5 my-5">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card acik-renk-form">
                         <div class="card-body">
-                            <!-- <p class="font-weight-light text-dark text-center" style="font-size: 2rem;"> Search here</p> -->
                             <div class="row">
                                 <div class="col-md-9" style="margin-left: 10rem">
                                     <div class="form-group ">
                                         <div class="searchicon ui fluid icon input">
                                             <input type="text" id="keyword" name="filter_search" title="Search" placeholder="Search"
                                                 class="" [(ngModel)]="key" (keyup.enter)="onEnter(key)" />
-                                            <i class="circular search link icon" (click)="onEnter(key)"></i>
+                                                <i class="circular search link icon" (click)="onEnter(key)"></i>
+
                                         </div>
                                     </div>
                                 </div>
@@ -22,8 +22,30 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
+
+    <header class="masthead text-white text-center">
+        <div class="overlay"></div>
+        <div class="container">
+          <div class="row">
+            <div class="col-xl-9 mx-auto">
+              <h1 class="mb-5" style=" font-family: fantasy;">Take the words best courses, online</h1>
+            </div>
+            <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+              <form>
+                <div class="form-group">
+                  <div class="col-12  mb-2 mb-md-0 searchicon ui fluid icon input">
+                    <input  type="text" id="keyword" name="filter_search" class="form-control form-control-lg" title="Search" placeholder="Search for courses"
+                    [(ngModel)]="key" (keyup.enter)="onEnter(key)" />
+                    <i class="circular search link icon" id="searchIcon" (click)="onEnter(key)"></i>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </header>
 
 <section class="trending_courses">
 <div class="ui link popular-section">
@@ -31,27 +53,284 @@
 <span class="ui red circular inline label">{{trendingCount}}</span>
 </h4>
 <div>
-<ngx-slick in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="trendingCourse" (afterChange)="inviewChange(trendingCourse,$event)"class="carousel" #slickModal="slick-modal" [config]="slideConfig">
+<ngx-slick in-view-container [throttle]="[1000]" [trigger]="trendingCourse" class="carousel" #slickModal="slick-modal" [config]="slideConfig">
     <div in-view-item [id]="i" [data]="content" ngxSlickItem *ngFor="let content of trendingCourse;let i = index" class="slide">
-        <!-- <app-card (clickEvent)="playContent($event)"[data]="content" [customClass]="'margin-right-20'"></app-card> -->
-        <div class="card" style="width: 18rem;" >
-            <img class="card-img-top" src="{{content.posterImage}}" alt="Card image cap" style="width: 100% !important; height: 10rem;">
-            <hr>
-            <div class="card-body">
-              <p class="card-title">{{content.name}}</p>
-              <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
-              <a href="#" class="btn btn-primary float-right" (click)="gotoPreview(content.IL_UNIQUE_ID)">preview</a>
-            </div>
-          </div>
+        <div class="my-2 mx-auto p-relative bg-white shadow-1 blue-hover"
+         style="width: 216px; height: 290px;overflow: hidden; border-radius: 1px;" >
+<div  class="box">
+  <div style="border: 0.1rem solid black">
+  <img class="card-img-top" src="{{content.posterImage}}" alt="Card image cap" style="width: 100% !important; height: 135px;">
+ </div>
+  <div class="card-body" style="flex: 1 1 auto;
+  padding: 0.25rem;
+  margin-top: 1rem;
+  text-align: center;">
+    <p class="card-title">{{content.name}}</p>
+    <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+   </div>
+    <div class="buttons">
+       <button class="btn-hover color-3" (click)=preview(content.IL_UNIQUE_ID)>preview</button>
     </div>
+    <br>
+
+</div>
+</div>
+       </div>
 </ngx-slick>
 </div>
 </div>
  </section>
 
+ <section class="catagories">
+ <mat-tab-group>
+    <mat-tab label="IT & software" style="margin-left: 22rem;">
+      <section class="trending_courses">
+        <div class="ui link popular-section">
+        <h4 class="ui header card-section-header sectionHeading">Trending courses
+        <span class="ui red circular inline label">{{trendingCount}}</span>
+        </h4>
+        <div>
+        <ngx-slick in-view-container [throttle]="[1000]" [trigger]="trendingCourse" class="carousel" #slickModal="slick-modal" [config]="slideConfig">
+            <div in-view-item [id]="i" [data]="content" ngxSlickItem *ngFor="let content of softwareCourse;let i = index" class="slide">
+                <div class="my-2 mx-auto p-relative bg-white shadow-1 blue-hover"
+                 style="width: 216px; height: 290px;overflow: hidden; border-radius: 1px;" >
+        <div  class="box">
+          <div style="border: 0.1rem solid black">
+          <img class="card-img-top" src="{{content.posterImage}}" alt="Card image cap" style="width: 100% !important; height: 135px;">
+         </div>
+          <div class="card-body" style="flex: 1 1 auto;
+          padding: 0.25rem;
+          margin-top: 1rem;
+          text-align: center;">
+            <p class="card-title">{{content.name}}</p>
+            <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+           </div>
+            <div class="buttons">
+               <button class="btn-hover color-3" (click)=preview(content.IL_UNIQUE_ID)>preview</button>
+            </div>
+            <br>
+
+        </div>
+        </div>
+               </div>
+        </ngx-slick>
+        </div>
+        </div>
+         </section>
+        </mat-tab>
+    <mat-tab label="Development">
+        c<section class="trending_courses">
+          <div class="ui link popular-section">
+          <h4 class="ui header card-section-header sectionHeading">Trending courses
+          <span class="ui red circular inline label">{{trendingCount}}</span>
+          </h4>
+          <div>
+          <ngx-slick in-view-container [throttle]="[1000]" [trigger]="trendingCourse" class="carousel" #slickModal="slick-modal" [config]="slideConfig">
+              <div in-view-item [id]="i" [data]="content" ngxSlickItem *ngFor="let content of developmentCourse;let i = index" class="slide">
+                  <div class="my-2 mx-auto p-relative bg-white shadow-1 blue-hover"
+                   style="width: 216px; height: 290px;overflow: hidden; border-radius: 1px;" >
+          <div  class="box">
+            <div style="border: 0.1rem solid black">
+            <img class="card-img-top" src="{{content.posterImage}}" alt="Card image cap" style="width: 100% !important; height: 135px;">
+           </div>
+            <div class="card-body" style="flex: 1 1 auto;
+            padding: 0.25rem;
+            margin-top: 1rem;
+            text-align: center;">
+              <p class="card-title">{{content.name}}</p>
+              <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+             </div>
+              <div class="buttons">
+                 <button class="btn-hover color-3" (click)=preview(content.IL_UNIQUE_ID)>preview</button>
+              </div>
+              <br>
+
+          </div>
+          </div>
+                 </div>
+          </ngx-slick>
+          </div>
+          </div>
+           </section>
+             </mat-tab>
+    <mat-tab label="Design">
+        <section class="trending_courses">
+            <div class="ui link popular-section">
+            <h4 class="ui header card-section-header sectionHeading">Trending courses
+            <span class="ui red circular inline label">{{trendingCount}}</span>
+            </h4>
+            <div>
+            <ngx-slick in-view-container [throttle]="[1000]" [trigger]="trendingCourse" class="carousel" #slickModal="slick-modal" [config]="slideConfig">
+                <div in-view-item [id]="i" [data]="content" ngxSlickItem *ngFor="let content of designCourse;let i = index" class="slide">
+                 <div class="my-2 mx-auto p-relative bg-white shadow-1 blue-hover"
+                  style="width: 216px; height: 290px;overflow: hidden; border-radius: 1px;" >
+         <div  class="box">
+           <div style="border: 0.1rem solid black">
+           <img class="card-img-top" src="{{content.posterImage}}" alt="Card image cap" style="width: 100% !important; height: 135px;">
+          </div>
+           <div class="card-body" style="flex: 1 1 auto;
+           padding: 0.25rem;
+           margin-top: 1rem;
+           text-align: center;">
+             <p class="card-title">{{content.name}}</p>
+             <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+            </div>
+             <div class="buttons">
+                <button class="btn-hover color-3" (click)=preview(content.IL_UNIQUE_ID)>preview</button>
+             </div>
+             <br>
+
+         </div>
+         </div>
+                </div>
+            </ngx-slick>
+            </div>
+            </div>
+             </section>
+        </mat-tab>
+        <mat-tab label="Business">
+            <section class="trending_courses">
+                <div class="ui link popular-section">
+                <h4 class="ui header card-section-header sectionHeading">Trending courses
+                <span class="ui red circular inline label">{{trendingCount}}</span>
+                </h4>
+                <div>
+                <ngx-slick in-view-container [throttle]="[1000]" [trigger]="trendingCourse" class="carousel" #slickModal="slick-modal" [config]="slideConfig">
+                    <div in-view-item [id]="i" [data]="content" ngxSlickItem *ngFor="let content of businessCourse;let i = index" class="slide">
+                        <div class="my-2 mx-auto p-relative bg-white shadow-1 blue-hover"
+                         style="width: 216px; height: 290px;overflow: hidden; border-radius: 1px;" >
+                <div  class="box">
+                  <div style="border: 0.1rem solid black">
+                  <img class="card-img-top" src="{{content.posterImage}}" alt="Card image cap" style="width: 100% !important; height: 135px;">
+                 </div>
+                  <div class="card-body" style="flex: 1 1 auto;
+                  padding: 0.25rem;
+                  margin-top: 1rem;
+                  text-align: center;">
+                    <p class="card-title">{{content.name}}</p>
+                    <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+                   </div>
+                    <div class="buttons">
+                       <button class="btn-hover color-3" (click)=preview(content.IL_UNIQUE_ID)>preview</button>
+                    </div>
+                    <br>
+
+                </div>
+                </div>
+                       </div>
+                </ngx-slick>
+                </div>
+                </div>
+                 </section>
+            </mat-tab>
+        </mat-tab-group>
+
+ </section>
 
 
-    <!-- <div *ngFor="let section of caraouselData">
-        <app-page-section (visits)="prepareVisits($event)" (playEvent)="playContent($event)" [section]="section"></app-page-section>
-    </div> -->
+ <section class="testimonials text-center bg-light">
+  <div class="container">
+    <h2 class="mb-5" style="font-family: fantasy;">What people are saying...</h2>
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+          <img class="img-fluid rounded-circle mb-3" src="../../../../../../../tenant/sunbird/images/testimonials-2.jpg" alt="images">
+          <h5>Margaret E.</h5>
+          <p class="font-weight-light mb-0" id="p">"This is fantastic! Thanks so much guys!"</p>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+          <img class="img-fluid rounded-circle mb-3" src="../../../../../../../tenant/sunbird/images/testimonials-1.jpg" alt="">
+          <h5>Fred S.</h5>
+          <p class="font-weight-light mb-0" id="p">"I believe in lifelong learning and it is a great place to learn from experts. I've learned a lot and recommend it to all my friends."</p>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+          <img class="img-fluid rounded-circle mb-3" src="../../../../../../../tenant/sunbird/images/testimonials-3.jpg" alt="">
+          <h5>Sarah	W.</h5>
+          <p class="font-weight-light mb-0" id="p">"The personalized mentorship, industry-relevant and projects of Nanodegree guided me towards a career as Business Analyst in one of India's top startups"</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Footer -->
+<div class="footer">
+    <div class="container">
+        <div class="row ">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                <div class="ft-logo"><img src="../../../../../../../tenant/sunbird/sunbird_logo .png" alt=""></div>
+            </div>
+        </div>
+        <hr class="footer-line">
+        <div class="row ">
+            <!-- footer-about -->
+            <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6 ">
+                <div class="footer-widget ">
+                    <div class="footer-title">Company</div>
+                    <ul class="list-unstyled">
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Support</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Legal & Privacy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.footer-about -->
+            <!-- footer-links -->
+            <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6 ">
+                <div class="footer-widget ">
+                    <div class="footer-title">Quick Links</div>
+                    <ul class="list-unstyled">
+                        <li><a href="#">News</a></li>
+                        <li><a href="#">Contact us</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.footer-links -->
+            <!-- footer-links -->
+            <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6 ">
+                <div class="footer-widget ">
+                    <div class="footer-title">Social</div>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Google +</a></li>
+                        <li><a href="#">Linked In</a></li>
+                        <li><a href="#">Facebook</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.footer-links -->
+            <!-- footer-links -->
+            <div class="col-xl-3 col-lg-3 col-md-12 col-sm-6 col-6 ">
+                <div class="footer-widget ">
+                    <h3 class="footer-title">Subscribe Newsletter</h3>
+                    <form>
+                        <div class="newsletter-form">
+                            <input class="form-control" placeholder="Enter Your Email address" type="text">
+                            <button class="btn btn-default btn-sm" type="submit">Go</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- /.footer-links -->
+            <!-- tiny-footer -->
+        </div>
+        <div class="row ">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-center ">
+                <div class="tiny-footer">
+                    <p>Copyright © All Rights Reserved 2020 | Template Design & Development by <a href="https://easetemplate.com/downloads/bitcoin-cryptocurrency-website-template-amazing-design " target="_blank" class="copyrightlink">EaseTemplate</a></p>
+                </div>
+            </div>
+            <!-- /. tiny-footer -->
+        </div>
+    </div>
+</div>
+<!-- ./Footer -->
+
 <router-outlet></router-outlet>

@@ -201,6 +201,54 @@ export class SearchService {
     };
     return this.content.post(option);
   }
+  courseSearchIT(): Observable<ServerResponse> {
+    const option = {
+      url: this.config.urlConFig.URLS.COURSE.SEARCH,
+      data: {
+        request: {
+          filters: { keywords: ['Software']},
+          limit: 10
+        }
+      }
+    };
+    return this.content.post(option);
+  }
+  courseSearchDesign(): Observable<ServerResponse> {
+    const option = {
+      url: this.config.urlConFig.URLS.COURSE.SEARCH,
+      data: {
+        request: {
+          filters: { keywords: ['Design']},
+          limit: 10
+        }
+      }
+    };
+    return this.content.post(option);
+  }
+  courseSearchDevelopment(): Observable<ServerResponse> {
+    const option = {
+      url: this.config.urlConFig.URLS.COURSE.SEARCH,
+      data: {
+        request: {
+          filters: { keywords: ['Development']},
+          limit: 10
+        }
+      }
+    };
+    return this.content.post(option);
+  }
+  courseSearchBusiness(): Observable<ServerResponse> {
+    const option = {
+      url: this.config.urlConFig.URLS.COURSE.SEARCH,
+      data: {
+        request: {
+          filters: { keywords: ['Business']},
+          limit: 10
+        }
+      }
+    };
+    return this.content.post(option);
+  }
   courseSearchTrending(): Observable<ServerResponse> {
     const option = {
       url: this.config.urlConFig.URLS.COURSE.SEARCH,

@@ -232,6 +232,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     console.log(node, '-', child);
     const queryParams = {};
     queryParams[node] = child;
+    console.log('node' , node , 'child' , child );
     this.router.navigate(['search/catalog/1', {cat: node}], {queryParams: queryParams});
   }
 

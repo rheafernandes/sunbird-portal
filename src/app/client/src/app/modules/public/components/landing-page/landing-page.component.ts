@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import * as _ from 'lodash';
 import { SearchService, ContentService } from '@sunbird/core';
 
+
 @Component({
   selector: 'app-landing-page',
   templateUrl: './landing-page.component.html',
@@ -15,7 +16,7 @@ import { SearchService, ContentService } from '@sunbird/core';
 })
 export class LandingPageComponent implements OnInit  {
   slideConfig = {
-    'slidesToShow': 4,
+    'slidesToShow': 5,
     'slidesToScroll': 4,
     'responsive': [
       {
@@ -42,14 +43,14 @@ export class LandingPageComponent implements OnInit  {
       {
         'breakpoint': 1400,
         'settings': {
-          'slidesToShow': 4,
+          'slidesToShow': 5,
           'slidesToScroll': 4,
         }
       },
       {
         'breakpoint': 1200,
         'settings': {
-          'slidesToShow': 4,
+          'slidesToShow': 5,
           'slidesToScroll': 4,
         }
       },
@@ -86,6 +87,10 @@ export class LandingPageComponent implements OnInit  {
   filters: any;
   pageNumber: number;
   trendingCourse = [];
+  softwareCourse = [];
+  designCourse = [];
+  businessCourse = [];
+  developmentCourse = [];
   trendingCount: number;
   // @Input() section: ICaraouselData;
   // @Output() visits = new EventEmitter<any>();
@@ -128,10 +133,40 @@ ngOnInit() {
              this.trendingCourse.push(trending);
         }
     });
-    console.log('tranding', this.trendingCourse);
+    this.searchService.courseSearchDevelopment().subscribe((data) => {
+      console.log('jhsdjk', data);
+      this.trendingCount = data.result.count;
+      for (const course of data.result.course) {
+           this.developmentCourse.push(course);
+      }
+  });
+  this.searchService.courseSearchIT().subscribe((data) => {
+    console.log('jhsdjk', data);
+    this.trendingCount = data.result.count;
+    for (const course of data.result.course) {
+      this.softwareCourse.push(course);
+ }
+});
+this.searchService.courseSearchDesign().subscribe((data) => {
+  console.log('jhsdjk', data);
+  this.trendingCount = data.result.count;
+  for (const course of data.result.course) {
+    this.designCourse.push(course);
+}
+});
+this.searchService.courseSearchBusiness().subscribe((data) => {
+  console.log('jhsdjk', data);
+  this.trendingCount = data.result.count;
+  for (const course of data.result.course) {
+    this.businessCourse.push(course);
+}
+});
+    console.log('trending', this.trendingCourse);
 }
 onEnter(key) {
   this.populateCourseSearch(key);
+  const queryParams = {};
+  this.route.navigate(['/catalog/', key], {queryParams: queryParams});
 }
 populateCourseSearch(key) {
   this.key = key;
@@ -166,53 +201,12 @@ populateCourseSearch(key) {
     }
   );
 }
-inview(event) {
-  // const visitsLength = this.inviewLogs.length;
-  // const visits = [];
-  // _.forEach(event.inview, (inview, key) => {
-  //   const content = _.find(this.inviewLogs, (eachContent) => {
-  //     if (inview) {
-  //       return eachContent.metaData = 'jm';
-  //        }
-  //   });
-  //   if (content === undefined) {
-  //     inview.data.section = 'trending';
-  //     this.inviewLogs.push(inview.data);
-  //     visits.push(inview.data);
-  //   }
-  // });
-  // if (visits.length > 0) {
-  //   this.visits.emit(visits);
-  // }
+preview(courseId) {
+  this.route.navigate(['/preview', courseId]);
 }
-/**
- * get inviewChange
-*/
-inviewChange(contentList, event) {
-  // const visits = [];
-  // const slideData = contentList.slice(event.currentSlide + 1, event.currentSlide + 5);
-  // _.forEach(slideData, (slide, key) => {
-  //   const content = _.find(this.inviewLogs, (eachContent) => {
-      // if (slide.metaData.courseId) {
-      //   return eachContent.metaData.courseId === slide.metaData.courseId;
-      // } else if (slide.metaData.identifier) {
-      //   return eachContent.metaData.identifier === slide.metaData.identifier;
-      // }
-//     });
-//     if (content === undefined) {
-//       // slide.section = this.section.name;
-//       this.inviewLogs.push(slide);
-//       visits.push(slide);
-//     }
-//   });
-//   if (visits.length > 0) {
-//     this.visits.emit(visits);
-//   }
+// gotoPreview(courseId) {
+//   console.log('id' , courseId);
+// this.route.navigate(['preview/', courseId]);
 // }
-}
-gotoPreview(courseId) {
-  console.log('id' , courseId);
-this.route.navigate(['preview/', courseId]);
-}
 }
 
