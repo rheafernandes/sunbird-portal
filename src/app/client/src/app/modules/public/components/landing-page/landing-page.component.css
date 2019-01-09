@@ -1,6 +1,6 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 @import url("https://fonts.googleapis.com/css?family=Hind:400,700");
-.firma-ara{
+/* .firma-ara{
   padding-bottom: 100px;
   padding-top: 100px;
 }
@@ -17,7 +17,7 @@
   -webkit-text-fill-color: white;
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: black;
-}
+} */
 .ui.styled.accordion.align-content {
   margin-top: 10px;
   margin-bottom: 20px;
@@ -43,7 +43,7 @@ footer.footer {
 header.masthead {
   position: relative;
   background-color: #343a40;
-  background: url("./images/student-849826__340.jpg") no-repeat center center;
+  background: url("../../../../../../../tenant/sunbird/images/student-849825__340.jpg") no-repeat center center;
   background-size: cover;
   padding-top: 8rem;
   padding-bottom: 8rem;

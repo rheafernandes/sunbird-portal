@@ -16,7 +16,7 @@ import { SearchService, ContentService } from '@sunbird/core';
 })
 export class LandingPageComponent implements OnInit  {
   slideConfig = {
-    'slidesToShow': 4,
+    'slidesToShow': 5,
     'slidesToScroll': 4,
     'responsive': [
       {
@@ -43,14 +43,14 @@ export class LandingPageComponent implements OnInit  {
       {
         'breakpoint': 1400,
         'settings': {
-          'slidesToShow': 4,
+          'slidesToShow': 5,
           'slidesToScroll': 4,
         }
       },
       {
         'breakpoint': 1200,
         'settings': {
-          'slidesToShow': 4,
+          'slidesToShow': 5,
           'slidesToScroll': 4,
         }
       },
