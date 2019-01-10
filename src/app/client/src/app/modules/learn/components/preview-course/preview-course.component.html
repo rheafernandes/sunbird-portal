@@ -97,21 +97,20 @@
 </section>
 <!-- Section #4
       This section is for Preview/Sample video  -->
-<app-course-player></app-course-player>
 <section class="container-fluid bg-secondary">
   <div class="container">
     <div class="row">
-      <div class="col-sm-9">
+      <div class="col-sm-8">
         <div class="row">
-          <section data-aos="fade-right" class="sneak-peak disp-lg">
+          <section  class="course-preview-section" data-aos="fade-right" class="sneak-peak disp-lg">
             <div class="container">
               <h6 class="text-secondary text-left mb-0 font-weight-bold">WHY LEARN?</h6>
               <h3 class="text-left section-headers">SNEAK-PEAK</h3>
-              <section class="course-preview-section container-fluid" data-aos="fade-left" id="preview">
+              <div  data-aos="fade-left" id="preview">
                 <mat-tab-group class="video-text">
                   <mat-tab label="Sample Video ">
-                    <iframe width="720" height="450" src='https://www.youtube.com/embed/6opf_ke2Hlk' frameborder="0"
-                      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe width="720" height="450" [src]='safeUrl' frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen></iframe>
                     <!-- <iframe width="650" height="450" src="https://www.youtube.com/embed/Zv8-hrGiGno" frameborder="0"
                             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
                   </mat-tab>
@@ -119,7 +118,7 @@
                     <iframe width="720" height="450" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vS-ORUK9ChAFCMDw0zjPwYrxcgp1n47iTqCPnNSdfq5AKvhvJkHbWqmuSNb8qTuvaRdRxh3v9EbKBYO/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
                   </mat-tab>
                 </mat-tab-group>
-              </section>
+              </div>
             </div>
           </section>
         </div>
@@ -162,50 +161,76 @@
             <div class="row">
               <div class="col-sm-4 mt-2 mb-2">
                 <i class="fas fa-thumb-tack fa-lg text-primary" aria-hidden="true"></i>
-                Sound knowledge about C and C++
+                <p>Sound knowledge about C and C++</p>
               </div>
               <div class="col-sm-4 mt-2 mb-2">
                 <i class="fas fa-thumb-tack fa-lg text-primary" aria-hidden="true"></i>
-                Good Logic thinker
+                <p></p>Good Logic thinker
               </div>
               <div class="col-sm-4 mt-2 mb-2">
                 <i class="fas fa-thumb-tack fa-lg text-primary" aria-hidden="true"></i>
-                Should be willing to have sleepless nights
+                <p>Should be willing to have sleepless nights</p>
               </div>
               <div class="col-sm-4 mt-2 mb-2">
                 <i class="fas fa-thumb-tack fa-lg text-primary" aria-hidden="true"></i>
-                Must embrace frustration
+                <p>Must embrace frustration</p>
               </div>
 
               <div class="col-sm-4 mt-2 mb-2">
                 <i class="fas fa-thumb-tack fa-lg text-primary" aria-hidden="true"></i>
-                Loads of Coffee and Caffeine Tolerance
+                <p>Loads of Coffee and Caffeine Tolerance</p>
               </div>
               <div class="col-sm-4 mt-2 mb-2">
                 <i class="fas fa-thumb-tack fa-lg text-primary" aria-hidden="true"></i>
-                Objects are everything
+                <p>Objects are everything</p>
               </div>
             </div>
           </section>
         </div>
       </div>
-      <div class="col-sm-3">
+      <div class="col-sm-4">
         <section data-aos="fade-left" class="course-roadmap-section">
           <h6 class="text-secondary text-right mb-0 font-weight-bold">ROADMAP</h6>
           <h3 class="text-right section-headers">YOUR JOURNEY</h3>
-          <mat-vertical-stepper linear="false" #stepper>
+          <app-collection-tree [showPreviewAccordian]="true" *ngIf="collectionTreeNodes; else: dataCommingSoon" [nodes]="collectionTreeNodes"
+            [options]="collectionTreeOptions" (previewSelect)="fetchUrl($event)"></app-collection-tree>
+          <!-- <mat-vertical-stepper linear="false" #stepper>
             <mat-step *ngFor="let chapter of coursechapters">
               <ng-template matStepLabel>{{chapter?.name}}</ng-template>
               <p>
                 {{chapter?.description}}
               </p>
             </mat-step>
-          </mat-vertical-stepper>
+          </mat-vertical-stepper> -->
         </section>
       </div>
     </div>
   </div>
 </section>
+
+<!-- <section class="container-fluid">
+  <div class="container">
+      <h6 class="text-secondary text-left mb-0 font-weight-bold">COURSE STRUCTURE</h6>
+      <h3 class="text-left section-headers">WHAT YOU'LL LEARN</h3>
+      <div class="row">
+          <div class="bg-secondary col-sm-4" style="height: 80vh; overflow-y: overlay;">
+              <app-collection-tree 
+              [showPreviewAccordian] = "true"
+              *ngIf="collectionTreeNodes; else: dataCommingSoon"
+              [nodes]="collectionTreeNodes"
+              [options]="collectionTreeOptions"
+              (previewSelect)="fetchUrl($event)"
+            ></app-collection-tree>      
+          </div>
+          <div class="col-sm-6">
+              <div class="pt-5">
+                  <iframe width="720" height="450" [src]='safeUrl' frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen></iframe>
+              </div>
+          </div>
+        </div>
+  </div>
+</section> -->
 
 <section data-aos="fade-right" class="Batches">
   <div class="container">
@@ -224,16 +249,15 @@
               </mat-option>
             </mat-select>
             <mat-error *ngIf="batchControl.hasError('required')">Batch type</mat-error>
-            <!-- <mat-hint>{{batchControl.value?.status}}</mat-hint> -->
           </mat-form-field>
         </div>
       </div>
     </div>
   </div>
-  <div class="container-fluid bg-secondary">
+  <div class="container-fluid bg-secondary pt-5 pb-5">
     <div class="container">
       <div class="row">
-          <app-batch-card class="col-sm-4 mt-3" *ngFor="let bat of batches" [batch]=bat></app-batch-card>
+        <app-batch-card class="col-sm-4 mt-3" *ngFor="let bat of batches" [batch]=bat></app-batch-card>
       </div>
     </div>
   </div>
@@ -246,7 +270,7 @@
       <div class="col-sm-5 ">
         <section data-aos="fade-right">
           <h6 class="text-secondary text-left mb-0 font-weight-bold">COMMENTS</h6>
-          <h3 class="text-left section-headers">STUDENTS REVIEWS</h3>
+          <h3 class="text-left section-headers">COURSE REVIEWS</h3>
           <div class="reviews container reviews-section">
             <div class="row" data-aos="fade-right" *ngFor="let i of [1,2,2,4]">
               <div class="wrapper row">
@@ -281,7 +305,7 @@
           <h6 class="text-secondary text-right mb-0 font-weight-bold">MENTORS</h6>
           <h3 class="text-right section-headers">WE'RE HERE TO HELP</h3>
           <div class="row mt-3" data-aos="fade-left">
-            <div class="col-lg-6 col-sm-12"  *ngFor="let mentor of mentorsDetails">
+            <div class="col-lg-6 col-sm-12" *ngFor="let mentor of mentorsDetails">
               <div class="card mentor-card">
                 <div class="box">
                   <div class="img">

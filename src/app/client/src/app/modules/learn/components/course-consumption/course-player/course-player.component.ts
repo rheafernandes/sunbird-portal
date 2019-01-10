@@ -237,6 +237,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy, OnChanges {
       .subscribe(
         (response: any) => {
           this.courseHierarchy = response.courseHierarchy;
+          console.log('Meow', this.courseHierarchy);
           const contentCredits = _.get(this.courseHierarchy, 'contentCredits');
           if (_.isArray(contentCredits)) {
             this.contributionsLength = contentCredits.length;
@@ -461,7 +462,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy, OnChanges {
       queryParams: { contentId: content.id },
       relativeTo: this.activatedRoute
     };
-    console.log('navigate');
     const playContentDetail = this.findContentById(content.id);
     if (
       playContentDetail.model.mimeType ===

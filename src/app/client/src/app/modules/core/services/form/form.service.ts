@@ -46,7 +46,8 @@ export class FormService {
           action: formInputParams.formAction,
           subType: this.configService.appConfig.formApiTypes[formInputParams.contentType],
           rootOrgId: hashTagId ? hashTagId : this.userService.hashTagId,
-          framework: formInputParams.framework
+          framework: formInputParams.framework,
+          component: 'portal'
         }
       }
     };
