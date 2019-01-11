@@ -41,7 +41,7 @@ import {SearchModule} from '../search';
 
   ],
   declarations: [LandingPageComponent, SignupComponent, GetComponent, DialCodeComponent,
-    PublicFooterComponent, PublicContentPlayerComponent, PublicCollectionPlayerComponent , ],
+    PublicFooterComponent, PublicContentPlayerComponent, PublicCollectionPlayerComponent],
   providers: [SignupService, PublicPlayerService, DeviceDetectorService, SignupGuard, LandingpageGuard]
 })
 export class PublicModule { }

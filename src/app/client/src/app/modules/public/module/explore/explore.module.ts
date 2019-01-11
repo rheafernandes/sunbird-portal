@@ -8,7 +8,6 @@ import { SharedModule } from '@sunbird/shared';
 import { NgInviewModule } from 'angular-inport';
 import { ExploreComponent } from './components/explore/explore.component';
 
-
 @NgModule({
   imports: [
     CommonModule,

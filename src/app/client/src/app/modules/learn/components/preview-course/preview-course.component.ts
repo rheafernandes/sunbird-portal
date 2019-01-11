@@ -50,6 +50,7 @@ export class PreviewCourseComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log('preview' , this.courseId);
     this.search = {
       filters: {
         status: '1',

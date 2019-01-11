@@ -16,7 +16,7 @@ import { SearchService, ContentService } from '@sunbird/core';
 })
 export class LandingPageComponent implements OnInit  {
   slideConfig = {
-    'slidesToShow': 5,
+    'slidesToShow': 4,
     'slidesToScroll': 4,
     'responsive': [
       {
@@ -36,21 +36,21 @@ export class LandingPageComponent implements OnInit  {
       {
         'breakpoint': 2000,
         'settings': {
-          'slidesToShow': 5,
+          'slidesToShow': 4,
           'slidesToScroll': 4,
         }
       },
       {
         'breakpoint': 1400,
         'settings': {
-          'slidesToShow': 5,
+          'slidesToShow': 4,
           'slidesToScroll': 4,
         }
       },
       {
         'breakpoint': 1200,
         'settings': {
-          'slidesToShow': 5,
+          'slidesToShow': 4,
           'slidesToScroll': 4,
         }
       },
@@ -87,7 +87,12 @@ export class LandingPageComponent implements OnInit  {
   filters: any;
   pageNumber: number;
   trendingCourse = [];
+  technology = [];
+  finance = [];
+  marketing = [];
+  management = [];
   trendingCount: number;
+  exploreButtonVisibility: string;
   // @Input() section: ICaraouselData;
   // @Output() visits = new EventEmitter<any>();
   constructor(private config: ConfigService , private searchService: SearchService ,
@@ -95,6 +100,12 @@ export class LandingPageComponent implements OnInit  {
       this.route = route;
     }
 ngOnInit() {
+  try {
+    this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
+  } catch (error) {
+    this.exploreButtonVisibility = 'false';
+  }
+  console.log('this.explore', this.exploreButtonVisibility);
   this.filters = {
     objectType: ['Content']
   };
@@ -129,11 +140,33 @@ ngOnInit() {
              this.trendingCourse.push(trending);
         }
     });
+    this.searchService.courseSearchManagement().subscribe((data) => {
+      console.log('jhsdjk', data);
+      for (const course of data.result.course) {
+           this.management.push(course);
+      }
+  });
+  this.searchService.courseSearchTechnology().subscribe((data) => {
+    for (const course of data.result.course) {
+      this.technology.push(course);
+ }
+});
+this.searchService.courseSearchFinance().subscribe((data) => {
+  for (const course of data.result.course) {
+    this.finance.push(course);
+}
+});
+this.searchService.courseSearchManagement().subscribe((data) => {
+  for (const course of data.result.course) {
+    this.marketing.push(course);
+}
+});
     console.log('trending', this.trendingCourse);
 }
 onEnter(key) {
   this.populateCourseSearch(key);
-  this.route.navigate(['/catalog', key]);
+  const queryParams = {};
+  this.route.navigate(['/catalog/', key], {queryParams: queryParams});
 }
 populateCourseSearch(key) {
   this.key = key;

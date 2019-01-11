@@ -6,6 +6,7 @@ import {
   UserDeleteComponent, OrgSearchComponent, CourseSearchComponent, LibrarySearchComponent
 } from './components';
 import { CatalogComponent } from './components/catalog/catalog.component';
+
 const routes: Routes = [
   {
     path: 'All/:pageNumber', component: HomeSearchComponent,

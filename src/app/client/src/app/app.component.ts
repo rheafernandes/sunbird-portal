@@ -105,6 +105,7 @@ export class AppComponent implements OnInit {
     } else {
       this.router.events.pipe(filter(event => event instanceof NavigationEnd), first()).subscribe((urlAfterRedirects: NavigationEnd) => {
         const slug = _.get(this.activatedRoute, 'snapshot.root.firstChild.params.slug');
+        console.log('slug', slug);
         fingerPrint2.get((deviceId) => {
           (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
           this.initializeAnonymousSession(slug);

@@ -1,16 +1,17 @@
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, Observable, Subject } from 'rxjs';
 import {
   ConfigService, ResourceService, Framework, ToasterService, ServerResponse,
   BrowserCacheTtlService, IUserData
 } from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef, OnDestroy, OnChanges } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FrameworkService, FormService, ConceptPickerService, PermissionService, UserService } from '../../../core/services';
+import { FrameworkService, FormService, ConceptPickerService, PermissionService, OrgDetailsService } from '../../../core/services';
 import * as _ from 'lodash';
 import { CacheService } from 'ng2-cache-service';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
+import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-catalog-filters',
   templateUrl: './catalog-filters.component.html',
@@ -67,10 +68,12 @@ export class CatalogFiltersComponent implements OnInit, OnDestroy, OnChanges {
  */
   public formInputData: any;
 
+  public orgDetailsService: OrgDetailsService;
+
   userRoles = [];
 
   public permissionService: PermissionService;
-  public userService: UserService;
+  // public userService: UserService;
   public loggedInUserRoles = [];
 
   selectedConcepts: Array<object>;
@@ -82,6 +85,7 @@ export class CatalogFiltersComponent implements OnInit, OnDestroy, OnChanges {
   filterIntractEdata: IInteractEventEdata;
   submitIntractEdata: IInteractEventEdata;
   browsingCategory: any;
+  public unsubscribe$ = new Subject<void>();
   /**
     * Constructor to create injected service(s) object
     Default method of Draft Component class
@@ -98,13 +102,14 @@ export class CatalogFiltersComponent implements OnInit, OnDestroy, OnChanges {
     frameworkService: FrameworkService,
     formService: FormService,
     toasterService: ToasterService,
-    userService: UserService,
+    // userService: UserService,
+    orgDetailsService: OrgDetailsService,
     public conceptPickerService: ConceptPickerService,
     permissionService: PermissionService,
     private browserCacheTtlService: BrowserCacheTtlService,
     private snackBar: MatSnackBar
   ) {
-    this.userService = userService;
+    // this.userService = userService;
     this.configService = configService;
     this.resourceService = resourceService;
     this.router = router;
@@ -117,7 +122,9 @@ export class CatalogFiltersComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit() {
-    this.frameworkService.initialize(this.hashTagId);
+
+
+    this.frameworkService.initialize();
     this.formInputData = {};
     this.activatedRoute.paramMap.subscribe((paramMap: any) => {
       if (paramMap.params.cat) {
@@ -127,12 +134,12 @@ export class CatalogFiltersComponent implements OnInit, OnDestroy, OnChanges {
     this.getQueryParams();
     this.fetchFilterMetaData();
     this.contentTypes = this.configService.dropDownConfig.FILTER.RESOURCES.contentTypes;
-    this.userService.userData$.subscribe(
-      (user: IUserData) => {
-        if (user && !user.err) {
-          this.loggedInUserRoles = user.userProfile.userRoles;
-        }
-      });
+    // this.userService.userData$.subscribe(
+    //   (user: IUserData) => {
+    //     if (user && !user.err) {
+    //       this.loggedInUserRoles = user.userProfile.userRoles;
+    //     }
+    //   });
     this.filterIntractEdata = {
       id: 'filter',
       type: 'click',
@@ -406,5 +413,6 @@ export class CatalogFiltersComponent implements OnInit, OnDestroy, OnChanges {
     }
     this.applyFilters();
   }
+
 }
 
