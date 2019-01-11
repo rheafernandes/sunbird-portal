@@ -207,7 +207,7 @@
   <ng-container *ngFor="let category of categoryMasterList">
     <button mat-menu-item [matMenuTriggerFor]="sub_menu">
       <mat-icon>import_contacts</mat-icon>
-      <span>{{ category?.code}}</span>
+      <span>{{ category?.name}}</span>
     </button>
     <mat-menu #sub_menu="matMenu" xPosition="after" yPosition="below" [overlapTrigger]="false">
       <button *ngFor="let subItem of category?.terms" mat-menu-item (click)="filter(category?.code , subItem?.name)">

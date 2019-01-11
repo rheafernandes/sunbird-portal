@@ -61,7 +61,7 @@ import { LearnMaterialComponent } from './components/learn-material/learn-materi
     SessionDetailsComponent,
     FilterSessionPipe,
     AttendanceComponent,
-    LearnMaterialComponent
+    LearnMaterialComponent,
   ],
   exports: [SessionDetailsComponent],
   providers: [WorkSpaceService, EditorService, BatchService, CourseConsumptionService,

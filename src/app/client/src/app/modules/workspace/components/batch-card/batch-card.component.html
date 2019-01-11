@@ -16,7 +16,16 @@
       By {{batch.userName}}<br/> {{batch.startDate | date: "dd MMM"}} - {{batch.endDate | date: "dd MMM"}}
       <!-- <i class="right floated large unlock alternate icon" *ngIf="batch.enrollmentType === 'open'">
       </i> -->
-      <button mat-raised-button (click)="openDialog()" type="button" class="btn btn-secondary" style="float: right;" >Create Session</button>
+      <mat-icon style="margin-left: 32vh" mat-icon-button [matMenuTriggerFor]="menu" data-toggle="tooltip" data-placement="bottom" title="More">more_vert</mat-icon>
+      <mat-menu #menu="matMenu" xPosition="after" [overlapTrigger]="false">
+        <div mat-menu-item (click)="openDialog()">
+          Create Session
+        </div>
+        <div mat-menu-item (click)="openAssessment()">
+        Create Assessment
+        </div>
+      </mat-menu>
+      <!-- <button mat-raised-button (click)="openDialog()" type="button" class="btn btn-secondary" style="float: right;" >Create Session</button> -->
     </div>
   </div>
 </div>

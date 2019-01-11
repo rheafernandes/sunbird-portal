@@ -7,6 +7,7 @@ import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { NgInviewModule } from 'angular-inport';
 import { ExploreComponent } from './components/explore/explore.component';
+import { CatalogFiltersComponent } from '../../../search/components/catalog-filters/catalog-filters.component';
 
 
 @NgModule({
@@ -18,6 +19,6 @@ import { ExploreComponent } from './components/explore/explore.component';
     NgInviewModule,
     ExploreRoutingModule
   ],
-  declarations: [ ExploreContentComponent, ExploreComponent]
+  declarations: [ ExploreContentComponent, ExploreComponent, CatalogFiltersComponent]
 })
 export class ExploreModule { }

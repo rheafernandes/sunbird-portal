@@ -68,12 +68,29 @@ export class BatchCardComponent {
       width: '50%',
       height: '100%',
       scrollStrategy: this.overlay.scrollStrategies.reposition(),
-      data: {sessionData: this.batch , create: true}
+      data: {
+        sessionData: this.batch ,
+        create: true,
+        title: 'session'
+       }
     });
-
     dialogRef.afterClosed().subscribe(result => {
 console.log('result', result);
     });
   }
-
+  openAssessment(): void {
+    const dialogRef = this.dialog.open(CreateSessionComponent, {
+      width: '50%',
+      height: '100%',
+      scrollStrategy: this.overlay.scrollStrategies.reposition(),
+      data: {
+        sessionData: this.batch ,
+        create: true,
+        title: 'assessment'
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+    console.log('result', result);
+    });
+  }
 }

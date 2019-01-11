@@ -10,7 +10,7 @@ const routes: Routes = [
       }
     },
     {
-        path: '', component: ExploreComponent, data: {
+        path: 'catalog/:pageNumber', component: ExploreComponent, data: {
           telemetry: {
             env: 'public', pageid: 'explore', type: 'view', subtype: 'paginate'
           }
