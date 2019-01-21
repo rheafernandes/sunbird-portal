@@ -34,6 +34,7 @@ export class OrgDetailsService {
       }
     };
     if (this.orgDetails) {
+      console.log('orgdetails', observableOf(this.orgDetails));
       return observableOf(this.orgDetails);
     } else {
       return this.publicDataService.post(option).pipe(mergeMap((data: ServerResponse) => {
@@ -47,6 +48,7 @@ export class OrgDetailsService {
           return this.publicDataService.post(option).pipe(mergeMap((responseData: ServerResponse) => {
             if (responseData.result.response.count > 0) {
               this.orgDetails = responseData.result.response.content[0];
+              console.log('orgdetails', this.orgDetails);
               this.setOrgDetailsToRequestHeaders();
               this._orgDetails$.next({ err: null, orgDetails: this.orgDetails });
               return observableOf(responseData.result.response.content[0]);

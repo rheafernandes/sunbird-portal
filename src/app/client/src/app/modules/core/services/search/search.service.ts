@@ -201,6 +201,66 @@ export class SearchService {
     };
     return this.content.post(option);
   }
+  courseSearchTechnology(): Observable<ServerResponse> {
+    const option = {
+      url: this.config.urlConFig.URLS.COURSE.SEARCH,
+      data: {
+        request: {
+          filters: { keywords: ['technology']},
+          limit: 10
+        }
+      }
+    };
+    return this.content.post(option);
+  }
+  courseSearchFinance(): Observable<ServerResponse> {
+    const option = {
+      url: this.config.urlConFig.URLS.COURSE.SEARCH,
+      data: {
+        request: {
+          filters: { keywords: ['finance']},
+          limit: 10
+        }
+      }
+    };
+    return this.content.post(option);
+  }
+  courseSearchMarketing(): Observable<ServerResponse> {
+    const option = {
+      url: this.config.urlConFig.URLS.COURSE.SEARCH,
+      data: {
+        request: {
+          filters: { keywords: ['marketing']},
+          limit: 10
+        }
+      }
+    };
+    return this.content.post(option);
+  }
+  courseSearchManagement(): Observable<ServerResponse> {
+    const option = {
+      url: this.config.urlConFig.URLS.COURSE.SEARCH,
+      data: {
+        request: {
+          filters: { keywords: ['management']},
+          limit: 10
+        }
+      }
+    };
+    return this.content.post(option);
+  }
+  courseSearchTrending(): Observable<ServerResponse> {
+    const option = {
+      url: this.config.urlConFig.URLS.COURSE.SEARCH,
+      data: {
+        request: {
+          filters: { keywords: ['Trending']},
+          limit: 10
+        }
+      }
+    };
+    return this.content.post(option);
+  }
   /**
    * Content Search.
    *

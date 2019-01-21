@@ -26,9 +26,11 @@ ul{
         padding:0;
     }
     .showcase-header{
-        background-image: url('http://www.romangadgets.com/wp-content/uploads/revslider/home2/blue-background-hd-wallpapers11.jpg');
+        background-image: url('./images/3256657136926fa.jpg');
         background-size: cover;
         background-attachment: fixed;
+        overflow:hidden;
+        object-fit: contain;
     }
     .jumbotron{
         background-color: rgba(70, 142, 250, 0.3);
@@ -78,7 +80,7 @@ ul{
     }
     .mentor-card{
         background:#fff;
-        box-shadow:5px 5px 30px rgb(197, 197, 197);
+        box-shadow:0px 2px 10px black;
         border-radius:10px;
         border-top: 2px solid orange;
         transition:0.5s;

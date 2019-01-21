@@ -22,6 +22,6 @@ import { OutboxComponent, DeleteComponent, DetailsComponent, GeoExplorerComponen
   declarations: [OutboxComponent, DeleteComponent, DetailsComponent, GeoExplorerComponent, DetailsPopupComponent, InboxComponent,
      CreateComponent, FileUploaderComponent],
   providers: [AnnouncementService, ResourceService, PaginationService, ToasterService, GeoExplorerService,
-     RouterNavigationService, CreateService]
+     RouterNavigationService, CreateService],
 })
 export class AnnouncementModule { }

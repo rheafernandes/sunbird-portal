@@ -1,16 +1,17 @@
 
-import { combineLatest as observableCombineLatest, Observable } from 'rxjs';
+import { combineLatest as observableCombineLatest, Observable, Subject } from 'rxjs';
 import {
   ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
   ILoaderMessage, UtilService, ICard
 } from '@sunbird/shared';
-import { SearchService, CoursesService, ICourses, SearchParam, ISort, PlayerService } from '@sunbird/core';
+import { SearchService, CoursesService, ICourses, SearchParam, ISort, PlayerService, OrgDetailsService } from '@sunbird/core';
 import { Component, OnInit, NgZone, ChangeDetectorRef, EventEmitter, Output, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { CatalogFiltersComponent } from '../catalog-filters/catalog-filters.component';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -118,7 +119,11 @@ export class CatalogComponent implements OnInit {
   public filterType: string;
   public redirectUrl: string;
   sortingOptions: Array<ISort>;
+  slug = '';
+  public unsubscribe$ = new Subject<void>();
+  public orgDetailsService: OrgDetailsService;
   @ViewChild(CatalogFiltersComponent) catalogFiltersComponent: CatalogFiltersComponent;
+  hashTagId: any;
 
   /**
      * Constructor to create injected service(s) object
@@ -133,7 +138,7 @@ export class CatalogComponent implements OnInit {
      * @param {ToasterService} toasterService Reference of ToasterService
    */
   constructor(searchService: SearchService, route: Router, private playerService: PlayerService,
-    activatedRoute: ActivatedRoute, paginationService: PaginationService,
+    activatedRoute: ActivatedRoute, paginationService: PaginationService, orgDetailsService: OrgDetailsService,
     resourceService: ResourceService, toasterService: ToasterService, private changeDetectorRef: ChangeDetectorRef,
     config: ConfigService, coursesService: CoursesService, public utilService: UtilService) {
     this.searchService = searchService;
@@ -146,6 +151,7 @@ export class CatalogComponent implements OnInit {
     this.config = config;
     this.route.onSameUrlNavigation = 'reload';
     this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
+
   }
   /**
     * This method calls the enrolled courses API.
@@ -256,6 +262,7 @@ export class CatalogComponent implements OnInit {
   }
 
   ngOnInit() {
+
     this.filterType = this.config.appConfig.course.filterType;
     this.redirectUrl = this.config.appConfig.course.searchPageredirectUrl;
     this.filters = {
@@ -289,6 +296,7 @@ export class CatalogComponent implements OnInit {
         this.populateEnrolledCourse();
       });
     this.setInteractEventData();
+
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
@@ -300,6 +308,8 @@ export class CatalogComponent implements OnInit {
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype
       }
     };
+    console.log('telemetry impression', this.telemetryImpression);
+
   }
   setInteractEventData() {
     this.closeIntractEdata = {

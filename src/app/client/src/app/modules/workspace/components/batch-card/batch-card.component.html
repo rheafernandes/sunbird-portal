@@ -1,10 +1,10 @@
 <div class="ui link cards margin-top-15">
   <div class="ui fluid card mouse-pointer">
-    <div class="image" (click)="onAction(batch)"
+    <div class="image"
     appTelemetryInteract [telemetryInteractObject]="{id:batch.identifier,type:'batch',ver:'1.0'}" [telemetryInteractEdata]="{id:'batchId',type:'click',pageid:'course-batch'}">
       <div class="ui fluid image">
-          <div class="ui black right ribbon label">Batch of {{batch.label}} </div>
-        <img src="{{'assets/images/default.png' | cdnprefixurl}}">
+          <div class="ui black right ribbon label" (click)="listOfUsers(batch)">Batch of {{batch.label}} </div>
+        <img  (click)="onAction(batch)" src="{{'assets/images/default.png' | cdnprefixurl}}">
       </div>
       <div class="batch-content" suiPopup popupText="{{batch.name}}">
         <span class="batch-content-description">{{batch.name | slice:0:20}}
@@ -16,16 +16,8 @@
       By {{batch.userName}}<br/> {{batch.startDate | date: "dd MMM"}} - {{batch.endDate | date: "dd MMM"}}
       <!-- <i class="right floated large unlock alternate icon" *ngIf="batch.enrollmentType === 'open'">
       </i> -->
-      <mat-icon style="margin-left: 32vh" mat-icon-button [matMenuTriggerFor]="menu" data-toggle="tooltip" data-placement="bottom" title="More">more_vert</mat-icon>
-      <mat-menu #menu="matMenu" xPosition="after" [overlapTrigger]="false">
-        <div mat-menu-item (click)="openDialog()">
-          Create Session
-        </div>
-        <div mat-menu-item (click)="openAssessment()">
-        Create Assessment
-        </div>
-      </mat-menu>
-      <!-- <button mat-raised-button (click)="openDialog()" type="button" class="btn btn-secondary" style="float: right;" >Create Session</button> -->
+      <button mat-raised-button (click)="openDialog()" type="button" class="btn btn-secondary" style="float: right;" >Create Session</button>
+      <!-- <button type="button" class="btn btn-secondary">Create assessment</button> -->
     </div>
   </div>
 </div>

@@ -28,6 +28,11 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { FilterSessionPipe } from './pipes/filter-session.pipe';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { LearnMaterialComponent } from './components/learn-material/learn-material.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { UsersListComponent } from './components/users-list/users-list.component';
+import { UserStatsComponent } from './components/user-stats/user-stats.component';
+import { SlickModule } from 'ngx-slick';
+
 
 @NgModule({
   imports: [
@@ -40,6 +45,7 @@ import { LearnMaterialComponent } from './components/learn-material/learn-materi
     ReactiveFormsModule,
     NgInviewModule,
     TelemetryModule,
+    SlickModule,
     NgxMaterialTimepickerModule.forRoot()
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent,
@@ -62,10 +68,13 @@ import { LearnMaterialComponent } from './components/learn-material/learn-materi
     FilterSessionPipe,
     AttendanceComponent,
     LearnMaterialComponent,
+    DashboardComponent,
+    UsersListComponent,
+    UserStatsComponent
   ],
   exports: [SessionDetailsComponent],
   providers: [WorkSpaceService, EditorService, BatchService, CourseConsumptionService,
     CourseProgressService, CourseBatchService , SessionService],
-  entryComponents: [CreateSessionComponent, SessionDetailsComponent, AttendanceComponent],
+  entryComponents: [CreateSessionComponent, SessionDetailsComponent, AttendanceComponent ],
 })
 export class WorkspaceModule { }

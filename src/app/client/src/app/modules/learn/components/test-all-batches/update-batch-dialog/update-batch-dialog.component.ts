@@ -86,12 +86,11 @@ export class UpdateBatchDialogComponent implements OnInit {
     this.existingBatchDetail = this.data.batchDetail;
     if (this.data.batchDetail.mentors.length > 0) {
       this.mentorIds = _.union(this.data.batchDetail.mentors);
+    } else {
+      this.mentorIds = [];
     }
 
-    if (
-      this.data.batchDetail.participant !== undefined ||
-      this.data.batchDetail.participant !== null
-    ) {
+    if (this.existingBatchDetail.hasOwnProperty('participant')) {
       this.participantIds = _.union(_.keys(this.data.batchDetail.participant));
     } else {
       this.participantIds = [];
@@ -457,8 +456,4 @@ updateMentors() {
     });
     this.dialogRef.close();
   }
-
-
 }
-
-

@@ -1,111 +1,527 @@
-<div class="ui stackable grid landing-page-section">
-  <div class="one wide column"></div>
-  <div class="five wide column landing-page-image">
-      <img class="ui fluid image" src="{{'assets/images/landingPage.jpg' |  cdnprefixurl}} " />
-  </div>
-  <div class="five wide column">
-      <div class="ui left aligned container landing-page-description">
-          <p>NIIT is a leading Skills and Talent Development Corporation that is building a manpower pool for global
-              industry requirements. The company, which was set up in 1981 to help the nascent IT industry overcome
-              its human resource challenges, today ranks among the world’s leading training companies owing to its
-              vast, yet comprehensive array of talent development programs. With a footprint across 40 nations, NIIT
-              offers training and development solutions to Individuals, Enterprises and Institutions.</p>
-          <br />
+<header class="masthead text-white text-center">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-9 mx-auto">
+        <h1 class="mb-5" style=" font-family: fantasy;">
+          Take the worlds best courses, online
+        </h1>
       </div>
+      <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+        <form>
+          <div class="form-group">
+            <div class="col-12  mb-2 mb-md-0 searchicon ui fluid icon input">
+              <input  type="text" id="keyword" name="filter_search" class="form-control form-control-lg" title="Search" placeholder="Search for courses"
+              [(ngModel)]="key" (keyup.enter)="onEnter(key)" />
+              <i class="circular search link icon" id="searchIcon" (click)="onEnter(key)"></i>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
-  <div class="one wide column"></div>
+</header>
+
+
+
+<section class="trending_courses">
+  <div class="container">
+  <div class="ui link popular-section">
+    <h4 class="ui header card-section-header sectionHeading">
+      Trending courses
+      <!-- <span class="ui red circular inline label">{{ trendingCount }}</span> -->
+    </h4>
+    <div>
+      <ngx-slick
+        in-view-container
+        [throttle]="[1000]"
+        [trigger]="trendingCourse"
+        class="carousel"
+        #slickModal="slick-modal"
+        [config]="slideConfig"
+      >
+        <div
+          in-view-item
+          [id]="i"
+          [data]="content"
+          ngxSlickItem
+          *ngFor="let content of trendingCourse; let i = index"
+          class="slide"
+        >
+          <div
+            class="my-2 mx-auto p-relative card"
+         >
+            <div class="box">
+              <div style="border: 0.1rem solid black">
+                <img
+                  class="card-img-top"
+                  src="{{ content.posterImage }}"
+                  alt="Card image cap"
+                  style="width: 100% !important; height: 135px;"
+                />
+              </div>
+              <div
+                class="card-body"
+              >
+                <h6 class="card-title">{{ content.name }}</h6>
+                <div class="rating">
+                <i class="text-warning fas fa-star fa-sm"></i>
+                <i class="text-warning fas fa-star fa-sm"></i>
+                <i class="text-warning fas fa-star fa-sm"></i>
+                <i class="text-warning fas fa-star fa-sm"></i>
+                <i class="text-warning fas fa-star-half-alt fa-sm">&nbsp;<span>4.6</span></i>
+              </div>
+                <button
+                  class="btn btn-info color-3 float-right"
+                  (click)="preview(content.IL_UNIQUE_ID)"
+                >
+                  preview
+                </button>
+              </div>
+              <!-- <div class="buttons">
+                <button
+                  class="btn btn-info color-3"
+                  (click)="preview(content.IL_UNIQUE_ID)"
+                >
+                  preview
+                </button>
+              </div> -->
+              <br />
+            </div>
+          </div>
+        </div>
+      </ngx-slick>
+    </div>
+  </div>
 </div>
-<div class="ui stackable grid">
-  <div class="one wide column"></div>
-  <div class="seven wide column ">
-      <div class="ui segment">
-          <div class="header padding-10 segment-heading">
-              <span>Key Features</span>
-              <a class="expand-or-minimize right-float">View All</a>
+</section>
+
+<section class="catagories">
+  <div class="container">
+  <mat-tab-group>
+    <mat-tab label="Technology" style="margin-left: 22rem;">
+      <section class="trending_courses">
+        <div class="ui link popular-section">
+          <div>
+            <ngx-slick
+              in-view-container
+              [throttle]="[1000]"
+              [trigger]="technology"
+              class="carousel"
+              #slickModal="slick-modal"
+              [config]="slideConfig"
+            >
+              <div
+                in-view-item
+                [id]="i"
+                [data]="content"
+                ngxSlickItem
+                *ngFor="let content of technology; let i = index"
+                class="slide"
+              >
+              <div
+              class="my-2 mx-auto p-relative card"
+           >
+              <div class="box">
+                <div style="border: 0.1rem solid black">
+                  <img
+                    class="card-img-top"
+                    src="{{ content.posterImage }}"
+                    alt="Card image cap"
+                    style="width: 100% !important; height: 135px;"
+                  />
+                </div>
+                <div
+                  class="card-body"
+                >
+                <h6 class="card-title">{{ content.name }}</h6>
+                <div class="rating">
+                <i class="text-warning fas fa-star fa-sm"></i>
+                <i class="text-warning fas fa-star fa-sm"></i>
+                <i class="text-warning fas fa-star fa-sm"></i>
+                <i class="text-warning fas fa-star fa-sm"></i>
+                <i class="text-warning fas fa-star-half-alt fa-sm">&nbsp;<span>4.6</span></i>
+              </div>
+                <button
+                  class="btn btn-info color-3 float-right"
+                  (click)="preview(content.IL_UNIQUE_ID)"
+                >
+                  preview
+                </button>
+                    </div>
+                    <!-- <div class="buttons">
+                      <button
+                        class="btn-hover color-3"
+                        (click)="preview(content.IL_UNIQUE_ID)"
+                      >
+                        preview
+                      </button>
+                    </div> -->
+                    <br />
+                  </div>
+                </div>
+              </div>
+            </ngx-slick>
           </div>
-          <br>
-          <div class="ui two stackable cards">
-              <div class="ui card">
-                  <div class="content">
-                      <div class="description">
-                          <p>Enrollment info for life skill training Enrollment info for life skill training
-                              Enrollment info
-                              for life skill training Enrollment info for life skill training Enrollment info for
-                              life
-                              skill training Enrollment info for life skill training</p>
-                      </div>
-                  </div>
-                  <h4 class="article-header-padding">Immersive Online Sessions</h4>
+        </div>
+      </section>
+    </mat-tab>
+    <mat-tab label="Marketing">
+      <section class="trending_courses">
+        <div class="ui link popular-section">
+          <div>
+            <ngx-slick
+              in-view-container
+              [throttle]="[1000]"
+              [trigger]="marketing"
+              class="carousel"
+              #slickModal="slick-modal"
+              [config]="slideConfig"
+            >
+              <div
+                in-view-item
+                [id]="i"
+                [data]="content"
+                ngxSlickItem
+                *ngFor="let content of marketing; let i = index"
+                class="slide"
+              >
+              <div
+              class="my-2 mx-auto p-relative card"
+           >
+              <div class="box">
+                <div style="border: 0.1rem solid black">
+                  <img
+                    class="card-img-top"
+                    src="{{ content.posterImage }}"
+                    alt="Card image cap"
+                    style="width: 100% !important; height: 135px;"
+                  />
+                </div>
+                <div
+                  class="card-body"
+                >
+                <h6 class="card-title">{{ content.name }}</h6>
+                <div class="rating">
+                <i class="text-warning fas fa-star fa-sm"></i>
+                <i class="text-warning fas fa-star fa-sm"></i>
+                <i class="text-warning fas fa-star fa-sm"></i>
+                <i class="text-warning fas fa-star fa-sm"></i>
+                <i class="text-warning fas fa-star-half-alt fa-sm">&nbsp;<span>4.6</span></i>
               </div>
-              <div class="ui card">
-                  <div class="content">
-                      <div class="description">
-                          <p>Verified certification from globally recognized institutes</p>
-                      </div>
+                <button
+                  class="btn btn-info color-3 float-right"
+                  (click)="preview(content.IL_UNIQUE_ID)"
+                >
+                  preview
+                </button>
+                    </div>
+                    <!-- <div class="buttons">
+                      <button
+                        class="btn-hover color-3"
+                        (click)="preview(content.IL_UNIQUE_ID)"
+                      >
+                        preview
+                      </button> -->
+                    <!-- </div> -->
+                    <br />
                   </div>
-                  <h4 class="article-header-padding">Top Tier Certifications</h4>
+                </div>
               </div>
-              <div class="ui card">
-                  <div class="content">
-                      <div class="description">
-                          <p>Faculty with deep industry experience and extensive functional expertises</p>
-                      </div>
-                  </div>
-                  <h4 class="article-header-padding">Industry Experts & Mentors</h4>
-              </div>
-              <div class="ui card">
-                  <div class="content">
-                      <div class="description">
-                          <p>Option to pay in installments. Loan facility available for select courses</p>
-                      </div>
-                  </div>
-                  <div class="article-header-padding">Easy Payment Plans</div>
-              </div>
+            </ngx-slick>
           </div>
-      </div>
-  </div>
-  <div class="three wide column">
-      <div class="ui segment">
-          <div class="content">
-              <div class="header segment-heading">
-                  <span>Announcements</span>
-                  <a class="right-float expand-or-minimize">View All</a>
+        </div>
+      </section>
+    </mat-tab>
+    <mat-tab label="Finance">
+      <section class="trending_courses">
+        <div class="ui link popular-section">
+
+          <div>
+            <ngx-slick
+              in-view-container
+              [throttle]="[1000]"
+              [trigger]="finance"
+              class="carousel"
+              #slickModal="slick-modal"
+              [config]="slideConfig"
+            >
+              <div
+                in-view-item
+                [id]="i"
+                [data]="content"
+                ngxSlickItem
+                *ngFor="let content of finance; let i = index"
+                class="slide"
+              >
+              <div
+              class="my-2 mx-auto p-relative card"
+           >
+              <div class="box">
+                <div style="border: 0.1rem solid black">
+                  <img
+                    class="card-img-top"
+                    src="{{ content.posterImage }}"
+                    alt="Card image cap"
+                    style="width: 100% !important; height: 135px;"
+                  />
+                </div>
+                <div
+                  class="card-body"
+                >
+                <h6 class="card-title">{{ content.name }}</h6>
+                <div class="rating">
+                <i class="text-warning fas fa-star fa-sm"></i>
+                <i class="text-warning fas fa-star fa-sm"></i>
+                <i class="text-warning fas fa-star fa-sm"></i>
+                <i class="text-warning fas fa-star fa-sm"></i>
+                <i class="text-warning fas fa-star-half-alt fa-sm">&nbsp;<span>4.6</span></i>
               </div>
-              <div class="description margin-top-10">
-                  <div class="ui relaxed divided list">
-                      <div class="item">
-                          <div class="content">
-                              <a class="header text-decoration-underline">Exam Date Announced </a>
-                              <br>
-                              <div class="description">An excellent polish restaurant, quick delivery and hearty,
-                                  filling meals.</div>
-                          </div>
-                      </div>
-                      <br />
-                      <div class="item">
-                          <div class="content">
-                              <br />
-                              <a class="header text-decoration-underline">Exam Date Announced </a>
-                              <br>
-                              <div class="description">An excellent polish restaurant, quick delivery and hearty,
-                                  filling meals.</div>
-                          </div>
-                      </div>
+                <button
+                  class="btn btn-info color-3 float-right"
+                  (click)="preview(content.IL_UNIQUE_ID)"
+                >
+                  preview
+                </button>
+                    </div>
+                    <!-- <div class="buttons">
+                      <button
+                        class="btn-hover color-3"
+                        (click)="preview(content.IL_UNIQUE_ID)"
+                      >
+                        preview
+                      </button>
+                    </div> -->
+                    <br />
                   </div>
+                </div>
               </div>
+            </ngx-slick>
           </div>
-      </div>
-      <br>
-      <div class="ui segment">
-          <div class="content">
-              <div class="header segment-heading">
-                  <span>Calendar</span>
-                  <a class="right-float expand-or-minimize">View All</a>
+        </div>
+      </section>
+    </mat-tab>
+    <mat-tab label="Management">
+      <section class="trending_courses">
+        <div class="ui link popular-section">
+
+          <div>
+            <ngx-slick
+              in-view-container
+              [throttle]="[1000]"
+              [trigger]="management"
+              class="carousel"
+              #slickModal="slick-modal"
+              [config]="slideConfig"
+            >
+              <div
+                in-view-item
+                [id]="i"
+                [data]="content"
+                ngxSlickItem
+                *ngFor="let content of management; let i = index"
+                class="slide"
+              >
+              <div
+              class="my-2 mx-auto p-relative card"
+           >
+              <div class="box">
+                <div style="border: 0.1rem solid black">
+                  <img
+                    class="card-img-top"
+                    src="{{ content.posterImage }}"
+                    alt="Card image cap"
+                    style="width: 100% !important; height: 135px;"
+                  />
+                </div>
+                <div
+                  class="card-body"
+                >
+                <h6 class="card-title">{{ content.name }}</h6>
+                <div class="rating">
+                <i class="text-warning fas fa-star fa-sm"></i>
+                <i class="text-warning fas fa-star fa-sm"></i>
+                <i class="text-warning fas fa-star fa-sm"></i>
+                <i class="text-warning fas fa-star fa-sm"></i>
+                <i class="text-warning fas fa-star-half-alt fa-sm">&nbsp;<span>4.6</span></i>
               </div>
+                <button
+                  class="btn btn-info color-3 float-right"
+                  (click)="preview(content.IL_UNIQUE_ID)"
+                >
+                  preview
+                </button>
+                    </div>
+                    <!-- <div class="buttons">
+                      <button
+                        class="btn-hover color-3"
+                        (click)="preview(content.IL_UNIQUE_ID)"
+                      >
+                        preview
+                      </button>
+                    </div> -->
+                    <br />
+                  </div>
+                </div>
+              </div>
+            </ngx-slick>
           </div>
-      </div>
-      <button type="button" onclick="openModal()" class="ui basic fluid button margin-top--5">ORGANIZATIONS</button>
-  </div>
-  <div class="one wide column"></div>
+        </div>
+      </section>
+    </mat-tab>
+  </mat-tab-group>
 </div>
+</section>
+
+
+<div class="container text-center">
+  <button class="btn btn-primary align-center"  *ngIf="route.isActive('', true) && exploreButtonVisibility==='true'"
+  routerLink="/explore/catalog/1">View All Courses</button>
+</div>
+
+<section id="services">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h2 class="section-heading">At Your Service</h2>
+        <hr class="my-4">
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+
+      <div class="col-lg-3 col-md-6 text-center">
+        <div class="service-box mt-5 mx-auto">
+          <i class="fas fa-4x fa-paper-plane text-warning mb-3 sr-icon-2"></i>
+
+          <h3 class="mb-3">Hands On Exercises</h3>
+          <p class="text-muted mb-0">Your training is packed with assignments, assessment tests, quizzes and exercises</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 text-center">
+        <div class="service-box mt-5 mx-auto">
+          <i class="fas fa-4x fa-chalkboard-teacher mb-3 sr-icon-3 text-warning"></i>
+          <h3 class="mb-3"> Expert Instructors</h3>
+          <p class="text-muted mb-0">Take help from our Instructors </p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 text-center">
+        <div class="service-box mt-5 mx-auto">
+          <i class="fas fa-4x fa-question text-warning mb-3 sr-icon-4"></i>
+          <h3 class="mb-3">Queries</h3>
+          <p class="text-muted mb-0">Post your Queries</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 text-center">
+          <div class="service-box mt-5 mx-auto">
+              <i class="fas fa-4x fa-ribbon text-warning mb-3 sr-icon-1"></i>
+              <h3 class="mb-3">Global Certificate</h3>
+              <p class="text-muted mb-0">Our templates are updated regularly so they don't break.</p>
+            </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials text-center bg-light">
+  <div class="container">
+    <h2 class="mb-5" style="font-family: fantasy;">
+      What people are saying...
+    </h2>
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+          <img
+            class="img-fluid rounded-circle mb-3"
+            src="../../../../../../../tenant/sunbird/images/testimonials-2.jpg"
+            alt="images"
+          />
+          <h5>Margaret E.</h5>
+          <p class="font-weight-light mb-0" id="p">
+            "This is fantastic! Thanks so much guys!"
+          </p>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+          <img
+            class="img-fluid rounded-circle mb-3"
+            src="../../../../../../../tenant/sunbird/images/testimonials-1.jpg"
+            alt=""
+          />
+          <h5>Fred S.</h5>
+          <p class="font-weight-light mb-0" id="p">
+            "I believe in lifelong learning and it is a great place to learn
+            from experts. I've learned a lot and recommend it to all my
+            friends."
+          </p>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+          <img
+            class="img-fluid rounded-circle mb-3"
+            src="../../../../../../../tenant/sunbird/images/testimonials-3.jpg"
+            alt=""
+          />
+          <h5>Sarah W.</h5>
+          <p class="font-weight-light mb-0" id="p">
+            "The personalized mentorship, industry-relevant and projects of
+            Nanodegree guided me towards a career as Business Analyst in one of
+            India's top startups"
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<footer class="footer bg-dark">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
+        <ul class="list-inline mb-2">
+          <li class="list-inline-item">
+            <a href="#">About</a>
+          </li>
+          <li class="list-inline-item">&sdot;</li>
+          <li class="list-inline-item">
+            <a href="#">Contact</a>
+          </li>
+          <li class="list-inline-item">&sdot;</li>
+          <li class="list-inline-item">
+            <a href="#">Terms of Use</a>
+          </li>
+          <li class="list-inline-item">&sdot;</li>
+          <li class="list-inline-item">
+            <a href="#">Privacy Policy</a>
+          </li>
+        </ul>
+        <p class="text-muted small mb-4 mb-lg-0">&copy; Your Website 2018. All Rights Reserved.</p>
+      </div>
+      <div class="col-lg-6 h-100 text-center text-lg-right my-auto">
+        <ul class="list-inline mb-0">
+          <li class="list-inline-item mr-3">
+            <a href="#">
+              <i class="fab fa-facebook fa-2x fa-fw"></i>
+            </a>
+          </li>
+          <li class="list-inline-item mr-3">
+            <a href="#">
+              <i class="fab fa-twitter-square fa-2x fa-fw"></i>
+            </a>
+          </li>
+          <li class="list-inline-item">
+            <a href="#">
+              <i class="fab fa-instagram fa-2x fa-fw"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
 <router-outlet></router-outlet>

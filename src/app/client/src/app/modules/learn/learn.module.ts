@@ -22,6 +22,8 @@ import { CreateBatchDialogComponent } from './components/test-all-batches/create
 import { UpdateBatchDialogComponent } from './components/test-all-batches/update-batch-dialog/update-batch-dialog.component';
 import { ListSessionsComponent } from './components/list-sessions/list-sessions.component';
 import { WorkspaceModule } from '../workspace';
+import { BatchCardComponent } from './components/preview-course/batch-card/batch-card.component';
+import { AnnouncementModule } from '../announcement';
 @NgModule({
   imports: [
     CommonModule,
@@ -36,14 +38,15 @@ import { WorkspaceModule } from '../workspace';
     NotesModule,
     TelemetryModule,
     NgInviewModule,
-    WorkspaceModule
+    WorkspaceModule,
+    AnnouncementModule
   ],
   providers: [CourseConsumptionService, CourseBatchService, CourseProgressService, PlayContent],
   exports: [UpdateBatchDialogComponent, CreateBatchDialogComponent],
   declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
     CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,
     UpdateCourseBatchComponent, CarriculumCardComponent, PreviewCourseComponent, TestAllBatchesComponent,
-    DialogOverviewExampleDialog, CreateBatchDialogComponent, UpdateBatchDialogComponent, ListSessionsComponent],
+    DialogOverviewExampleDialog, CreateBatchDialogComponent, UpdateBatchDialogComponent, ListSessionsComponent, BatchCardComponent],
   entryComponents: [DialogOverviewExampleDialog, CreateBatchDialogComponent, UpdateBatchDialogComponent, ListSessionsComponent],
 })
 export class LearnModule { }

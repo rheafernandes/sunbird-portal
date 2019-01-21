@@ -9,7 +9,6 @@ import { NgInviewModule } from 'angular-inport';
 import { ExploreComponent } from './components/explore/explore.component';
 import { CatalogFiltersComponent } from '../../../search/components/catalog-filters/catalog-filters.component';
 
-
 @NgModule({
   imports: [
     CommonModule,

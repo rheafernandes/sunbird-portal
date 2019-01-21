@@ -18,13 +18,15 @@ Plugin.extend({
         if (instance.isPreviewInIframe()) {
             if (evt.target) {
                 var parsedData = JSON.parse(evt.target);
+                console.log('parse data', parsedData);
                     var custTelemetryEvent = new CustomEvent('renderer:telemetry:event', {
                         "detail": {
                             "telemetryData": parsedData
                         }
                     });
                     window.parent.document.getElementById('contentPlayer').dispatchEvent(custTelemetryEvent);
-                  //  console.info('OE_END Event is sending..');
+                   console.info('OE_END Event is sending..', window.parent.document.getElementById('contentPlayer').dispatchEvent(custTelemetryEvent)
+                   );
             }
         }
     }

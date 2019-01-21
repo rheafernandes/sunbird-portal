@@ -44,6 +44,10 @@
  [class.active]="router.isActive('/workspace/content/batches')">
    View All Sessions
 </a>
+<a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='coursebacthesRole' [routerLink]="['/workspace/content/overallActivity']"
+[class.active]="router.isActive('/workspace/content/batches')">
+  Overall Activity
+</a>
   <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='flaggedRole' [routerLink]="['flagged',1]"
     [class.active]="router.isActive('/workspace/content/flagged')">
     {{resourceService?.frmelmnts?.snav?.flagged}}

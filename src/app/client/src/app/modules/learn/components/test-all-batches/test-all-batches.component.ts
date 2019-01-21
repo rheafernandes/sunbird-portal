@@ -203,7 +203,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       .pipe(pluck('result', 'response'));
     return response;
   }
-  openEnrollDetailsDialog(batch) {
+  openEnrollDetailsDialog(batch, i) {
     this.courseBatchService.setEnrollToBatchDetails(batch);
     this.router.navigate(['enroll/batch', batch.identifier], {
       relativeTo: this.activatedRoute
@@ -214,7 +214,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
     const request = {
       request: {
         courseId: batch.courseId,
-        batchId: batch.id,
+        batchId: batch.identifier,
         userId: this.userId
       }
     };
@@ -227,6 +227,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
           this.fetchEnrolledCourseData(batch);
         },
         err => {
+          this.showUnenroll = false;
           this.toasterService.error('Unsuccesful, try again later');
         }
       );
@@ -290,6 +291,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
 
   }
   updateBatch(batch): void {
+    console.log('batch', batch);
     const notCreator = this.checkMentorIsPresent(batch);
     const usersOfCourse = this.allMembers.concat(this.allMentors);
     this.mentorIsPresent = batch.mentors.includes(this.userService.userid);
@@ -318,6 +320,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
 
     },
     (err: any) => {
+      this.toasterService.error('Posting additional details, Please wait');
     if (err.status === 404) {
         const request = {
         request: {
@@ -332,11 +335,11 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
       };
         this.updateBatchService.updateMentors(request).subscribe((res: any) => {
         console.log(res);
-        this.toasterService.success('batch updated successfully');
+        this.toasterService.success('Batch updated successfully');
         },
         error => {
           console.log(error);
-          this.toasterService.error('please try again');
+          this.toasterService.error('Please try again');
         });
     }
     }
@@ -353,7 +356,7 @@ export class TestAllBatchesComponent implements OnInit, OnDestroy {
   }
   checkRoles() {
     if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
-      this.courseMentor = true;
+            this.courseMentor = true;
     } else {
       this.courseMentor = false;
     }

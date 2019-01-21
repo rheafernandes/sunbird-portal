@@ -162,6 +162,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   navigateToWorkspace() {
     const authroles = this.permissionService.getWorkspaceAuthRoles();
     if (authroles) {
+      console.log('roles', authroles);
       this.router.navigate([authroles.url]);
     }
   }
@@ -231,6 +232,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     console.log(node, '-', child);
     const queryParams = {};
     queryParams[node] = child;
+    console.log('node' , node , 'child' , child );
     this.router.navigate(['search/catalog/1', {cat: node}], {queryParams: queryParams});
   }
 

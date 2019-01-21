@@ -96,10 +96,8 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
 
   private initialize() {
     this.rootNode = this.createTreeModel();
-    console.log(' this.rootNode', this.rootNode);
     if (this.rootNode) {
       this.rootChildrens = this.rootNode.children;
-      console.log('this.rootChildrens', this.rootChildrens);
       this.nodeRoot = this.rootNode;
       this.addNodeMeta();
     }

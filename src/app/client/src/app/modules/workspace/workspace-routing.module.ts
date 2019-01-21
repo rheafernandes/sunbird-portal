@@ -10,8 +10,13 @@ import {
 } from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 import { SessionListComponent } from './components/session-list/session-list.component';
+import { UserStatsComponent } from './components/user-stats/user-stats.component';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { LearnMaterialComponent } from './components/learn-material/learn-material.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { UsersListComponent } from './components/users-list/users-list.component';
+import { updateBatchDetails } from '../learn/components/batch/update-course-batch/update-course-batch.component.data';
+import { CreateComponent } from '../announcement';
 const telemetryEnv = 'workspace';
 const objectType = 'workspace';
 const routes: Routes = [
@@ -194,8 +199,19 @@ const routes: Routes = [
             }, roles: 'coursebacthesRole',
             breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
           }
-        }]
+        }],
       },
+      {
+        path: 'userList/:batchId', component: UsersListComponent, canActivate: [AuthGuard],
+        data: {
+          telemetry: {
+            env: telemetryEnv, pageid: 'batch-edit', subtype: 'paginate', uri: '/workspace/userList',
+            type: 'detail', mode: 'create', object: { type: objectType, ver: '1.0' }
+          }, roles: 'coursebacthesRole',
+          breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+        }
+      }
+      ,
       {
         path: 'sessions', component: SessionListComponent, canActivate: [AuthGuard],
         data: {
@@ -205,6 +221,17 @@ const routes: Routes = [
           }, roles: 'coursebacthesRole',
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' },
           { label: 'Sessions', url: '' }]
+        },
+      },
+      {
+        path: 'overallActivity', component: DashboardComponent, canActivate: [AuthGuard],
+        data: {
+          telemetry: {
+            env: telemetryEnv, pageid: 'workspace-course-batch', subtype: 'paginate', uri: '/workspace/overallActivity',
+            type: 'list', mode: 'create', object: { type: objectType, ver: '1.0' }
+          }, roles: 'coursebacthesRole',
+          breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' },
+          { label: 'Overall_Activity', url: '' }]
         },
       },
       {
@@ -227,6 +254,17 @@ const routes: Routes = [
           }, roles: 'coursebacthesRole',
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' },
           { label: 'Sessions', url: '' }]
+        },
+      },
+      {
+        path: 'user-stats/:userId', component: UserStatsComponent, canActivate: [AuthGuard],
+        data: {
+          telemetry: {
+            env: telemetryEnv, pageid: 'workspace-course-batch', subtype: 'paginate', uri: '/workspace/user-stats',
+            type: 'list', mode: 'create', object: { type: objectType, ver: '1.0' }
+          }, roles: 'coursebacthesRole',
+          breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' },
+           { label: 'User Info', url: '' }]
         },
       },
       {
@@ -287,7 +325,8 @@ const routes: Routes = [
       roles: 'workspace',
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
     }
-  }
+  },
+
 ];
 
 @NgModule({

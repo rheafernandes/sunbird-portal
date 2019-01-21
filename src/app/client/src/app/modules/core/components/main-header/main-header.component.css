@@ -13,11 +13,11 @@
   justify-content: center;
   align-items: center;
 }
-.ui.grid {
-  /* margin-top: -1rem;
-  margin-bottom: -1rem;
-  margin-left: -1rem; */
-  /* margin-right: 0rem; */
+
+.nav-link{
+  color: white;
+  margin-top:2rem;
+  font-family: fantasy;
 }
 #beforelogin {
   background-color: black;
@@ -44,6 +44,10 @@
 #search {
   padding-left: 0px;
 }
+.ui.fluid.container {
+  width: 100%;
+  background: black;
+}
 @media only screen and (min-width:320px )and (max-width: 760px) {
   /* #search {
     top: 6vh;
@@ -67,5 +71,10 @@
 #header {
   background-color: black;
 }
-}
 
+}
+@media only screen and (min-width: 1200px) {
+  .ui.grid.container {
+    width: calc(1127px + 12rem)!important;
+}
+}

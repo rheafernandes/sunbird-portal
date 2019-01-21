@@ -202,7 +202,6 @@ export class CreateBatchDialogComponent implements OnInit {
   }
 
   removeMember(member): void {
-    console.log('remove mentor', member);
     const index = this.members.indexOf(member);
     if (index >= 0) {
       this.members.splice(index, 1);
@@ -261,7 +260,6 @@ export class CreateBatchDialogComponent implements OnInit {
     };
 
     for (const memberId of this.members) {
-      console.log('meemId', memberId.id);
       participants.push(memberId.id);
     }
     this.courseBatchService

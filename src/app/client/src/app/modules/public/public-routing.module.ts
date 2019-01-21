@@ -5,9 +5,10 @@ import { DialCodeComponent } from './components/dial-code/dial-code.component';
 import { PublicFooterComponent } from './components/public-footer/public-footer.component';
 import {
   LandingPageComponent, SignupComponent, PublicContentPlayerComponent,
-  PublicCollectionPlayerComponent
+  PublicCollectionPlayerComponent,
 } from './components';
 import { SignupGuard, LandingpageGuard } from './services';
+import { PreviewCourseComponent } from '../learn/components/preview-course/preview-course.component';
 
 const routes: Routes = [
   {
@@ -62,10 +63,13 @@ const routes: Routes = [
   },
   {
     path: ':slug/explore', loadChildren: './module/explore/explore.module#ExploreModule'
-  }
+  },
+  {
+    path: 'preview/:courseId' , component: PreviewCourseComponent
+  },
 ];
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  imports: [RouterModule.forChild(routes) ],
+  exports: [RouterModule],
 })
 export class PublicRoutingModule { }

@@ -2,9 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseConsumptionService, CourseBatchService } from '../../services';
 import { UserService, LearnerService } from '@sunbird/core';
-import { ConfigService } from '@sunbird/shared';
+import { ConfigService, ToasterService } from '@sunbird/shared';
 import { pluck } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
+import * as _ from 'lodash';
+import { FormControl, Validators } from '@angular/forms';
+
+export interface Batches {
+  name: string;
+  status: string;
+}
 
 
 @Component({
@@ -13,9 +20,15 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./preview-course.component.css']
 })
 export class PreviewCourseComponent implements OnInit {
+  batchControl = new FormControl('', [Validators.required]);
+  batch: Batches[] = [
+    {name: 'Ongoing', status: '1'},
+    {name: 'Upcoming', status: '0'},
+    {name: 'Previous', status: '2'},
+  ];
   courseId = this.route.snapshot.paramMap.get('courseId');
   courseDetails;
-  public ongoingSearch: any;
+  public search: any;
   totalParticipants = 0;
   batches = [];
   mentorsDetails = [];
@@ -33,56 +46,79 @@ export class PreviewCourseComponent implements OnInit {
     public config: ConfigService,
     public sanitizer: DomSanitizer,
     public router: Router,
+    public toaster: ToasterService,
   ) { }
 
   ngOnInit() {
-    this.ongoingSearch = {
+    console.log('preview' , this.courseId);
+    this.search = {
       filters: {
         status: '1',
         courseId: this.courseId
       }
     };
     this.getCourseDetails();
-    this.getBatchDetails();
+    this.getBatchDetails(this.search);
   }
   getCourseDetails() {
     this.courseConsumptionService.getCourseHierarchy(this.courseId)
       .subscribe(
         (response: any) => {
           this.courseDetails = response;
-          this.getUserDetails(this.courseDetails.createdBy);
           this.coursechapters = this.courseDetails.children;
-          this.getpreviewlinks();
+        },
+        (err) => {
+          this.toaster.error('Fetching Details Failed');
+        },
+        () => {
+          // this.getpreviewlinks();
         }
       );
   }
 
-  getBatchDetails() {
-    this.courseBatchService.getAllBatchDetails(this.ongoingSearch)
-      .subscribe((data: any) => {
+  getBatchDetails(search) {
+    this.courseBatchService.getAllBatchDetails(search)
+      .subscribe(
+        (data: any) => {
         this.batches = data.result.response.content;
         for (const batch of this.batches) {
-          this.totalParticipants = this.totalParticipants + Object.keys(batch.participant).length;
-        }
-        if (this.batches.length > 0) {
-          for (const mentor of this.batches[0].mentors) {
-            this.getUserDetails(mentor);
+          if (batch.hasOwnProperty('participant')) {
+            this.totalParticipants = this.totalParticipants + _.keys(batch.participant).length;
           }
         }
-      });
+        if (this.batches.length > 0 && this.mentorsDetails.length === 0) {
+          const mentorIds = _.union(this.batches[0].mentors);
+          this.getMentorslist(mentorIds);
+        }
+      },
+      (err) => {
+        this.toaster.error('Fetching Details Failed');
+      },
+      );
+  }
+  getMentorslist(mentorIds) {
+    const option = {
+      url: this.config.urlConFig.URLS.ADMIN.USER_SEARCH,
+      data: {
+        request: {
+          filters: {
+            identifier : mentorIds,
+          },
+          limit: 2
+        }
+      }
+    };
+    this.learnerService.post(option)
+      .subscribe(
+        (data) => {
+          this.mentorsDetails = data.result.response.content;
+        },
+        (err) => {
+          this.toaster.error('Fetching Details Failed');
+        }
+      );
   }
 
-  getUserDetails(userId) {
-    const option = {
-      url: `${this.config.urlConFig.URLS.USER.GET_PROFILE}${userId}`,
-      param: this.config.urlConFig.params.userReadParam
-    };
-    const response = this.learnerService.get(option).pipe(pluck('result', 'response'));
-    response.subscribe(data => {
-      this.mentorsDetails.push(data);
-    }
-    );
-  }
   getpreviewlinks() {
     for (const child of this.coursechapters) {
 
@@ -99,16 +135,6 @@ export class PreviewCourseComponent implements OnInit {
         this.previewurl.push(link.previewUrl);
       }
     }
-
-
-    // for (const link of this.youtubelink) {
-    //   for (const ulink of link) {
-    //     if (ulink.mimeType === 'video/x-youtube') {
-    //       ulink.previewUrl = ulink.previewUrl.replace('watch?v=', 'embed/');
-    //       this.previewurl.push(ulink.previewUrl);
-    //     }
-    //   }
-    // }
     this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.previewurl[0]);
   }
 
@@ -127,5 +153,16 @@ export class PreviewCourseComponent implements OnInit {
         }
       }
     }
+  }
+
+  fetchBatches(input) {
+    console.log('fETCH', input);
+    this.search = {
+      filters: {
+        status: input.status,
+        courseId: this.courseId
+      }
+    };
+    this.getBatchDetails(this.search);
   }
 }
