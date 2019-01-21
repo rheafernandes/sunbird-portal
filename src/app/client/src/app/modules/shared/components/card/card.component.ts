@@ -16,7 +16,6 @@ export class CardComponent {
   @Output() clickEvent = new EventEmitter<any>();
 
   public onAction(data, action) {
-    console.log('card displa', data.action.right.dispalType);
     this.clickEvent.emit({ 'action': action, 'data': data });
   }
 
