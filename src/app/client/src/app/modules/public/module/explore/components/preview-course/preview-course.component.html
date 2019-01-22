@@ -1,0 +1,313 @@
+<!-- Section #1
+      This showcases the course details  -->
+<header class="showcase-header">
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8 j-description text-left mt-3">
+          <section class="j-description text-white">
+            <h5 class="tagline text-left text-warning">"Write Once, Debug anywhere"</h5>
+            <h3 class="text-left j-heading text-white">{{courseDetails?.name}}</h3>
+            <i class="text-warning fas fa-star fa-lg"></i>
+            <i class="text-warning fas fa-star fa-lg"></i>
+            <i class="text-warning fas fa-star fa-lg"></i>
+            <i class="text-warning fas fa-star fa-lg"></i>
+            <i class="text-warning fas fa-star-half-alt fa-lg"> 2038 Reviews</i>
+            <br />
+            <br />
+            <p>
+              {{courseDetails?.description}}
+            </p>
+          </section>
+          <div class="row icon-section mt-3" style="color:white !important;">
+            <div class="col-sm-6 col-md-3">
+              <h4>22</h4>
+              <p> Hours</p>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <mat-icon style="font-size: 30px;" data-toggle="tooltip" data-placement="top" title="Organisation">school</mat-icon>
+              <p> {{courseDetails?.organisation}}</p>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <mat-icon style="font-size: 30px;" data-toggle="tooltip" data-placement="top" title="Users">person</mat-icon>
+              <p> {{totalParticipants}}</p>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <mat-icon style="font-size: 30px;" data-toggle="tooltip" data-placement="top" title="Language">language</mat-icon>
+              <p> {{courseDetails?.language[0]}}</p>
+            </div>
+          </div>
+          <div class="row">
+            <button (click)="redirect()" class="btn btn-outline-warning ml-3 mt-3">View Batches</button>
+          </div>
+        </div>
+        <div class="col-sm-4 text-left mt-4">
+          <img class="j-image" src='{{courseDetails?.appIcon}}' alt="Course-Image">
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<!-- Section #2
+      This section is for detailed description
+      Has Two subsections 1. Prerequisites 2. Contents  -->
+<section data-aos="fade-right" class="course-highlights-section container-fluid bg-light">
+  <div class="container">
+    <br />
+    <h6 class="text-secondary mb-0 font-weight-bold">HIGHLIGHTS</h6>
+    <h3 class="text-left section-headers">WHY ENROLL?</h3>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card highlight-card" data-aos="fade-right">
+          <i class="fas fa-laptop fa-4x text-info text-center mt-1" aria-hidden="true"></i>
+          <div class="card-body text-center">
+            <h4 class="card-title " style="font-size: 2em;">CAREER-READY</h4>
+            <hr />
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+              card's content.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card highlight-card" data-aos="fade-right">
+          <i class="fas fa-award fa-4x text-success text-center mt-1" aria-hidden="true"></i>
+          <div class="card-body text-center">
+            <h4 class="card-title" style="font-size: 2em;">TRENDING #3</h4>
+            <hr />
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+              card's
+              content.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card highlight-card" data-aos="fade-right">
+          <i class="fas fa-users-cog fa-4x text-danger text-center mt-1" aria-hidden="true"></i>
+          <div class="card-body text-center">
+            <h4 class="card-title" style="font-size: 2em;">GLOBAL COMMUNITY </h4>
+            <hr />
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+              card's
+              content.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Section #4
+      This section is for Preview/Sample video  -->
+<!-- <app-course-player></app-course-player> -->
+<section class="container-fluid bg-secondary">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-9">
+        <div class="row">
+          <section data-aos="fade-right" class="sneak-peak disp-lg">
+            <div class="container">
+              <h6 class="text-secondary text-left mb-0 font-weight-bold">WHY LEARN?</h6>
+              <h3 class="text-left section-headers">SNEAK-PEAK</h3>
+              <section class="course-preview-section container-fluid" data-aos="fade-left" id="preview">
+                <mat-tab-group class="video-text">
+                  <mat-tab label="Sample Video ">
+                    <iframe width="720" height="450" src='https://www.youtube.com/embed/6opf_ke2Hlk' frameborder="0"
+                      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <!-- <iframe width="650" height="450" src="https://www.youtube.com/embed/Zv8-hrGiGno" frameborder="0"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+                  </mat-tab>
+                  <mat-tab label="Sample Chapter">
+                    <iframe width="720" height="450" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vS-ORUK9ChAFCMDw0zjPwYrxcgp1n47iTqCPnNSdfq5AKvhvJkHbWqmuSNb8qTuvaRdRxh3v9EbKBYO/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
+                  </mat-tab>
+                </mat-tab-group>
+              </section>
+            </div>
+          </section>
+        </div>
+        <div class="row">
+          <section class="contents-section container-fluid" data-aos="fade-right">
+            <h6 class="text-secondary text-left mb-0 font-weight-bold">FILES</h6>
+            <h3 class="text-left section-headers">MEDIA CONTENTS</h3>
+            <div class="row">
+              <div class="col-sm-2">
+                <i class="fa fa-play-circle fa-lg text-primary" aria-hidden="true"></i>
+                <h4 style="color:black !important;">5</h4>
+              </div>
+              <div class="col-sm-2">
+                <i class="fa fa-file-pdf-o fa-lg text-success" aria-hidden="true"></i>
+                <h4 style="color:black !important;">10</h4>
+              </div>
+              <div class="col-sm-2">
+                <i class="fa fa-code fa-lg text-danger" aria-hidden="true"></i>
+                <h4 style="color:black !important;">100</h4>
+              </div>
+              <div class="col-sm-2">
+                <i class="fa fa-clock-o fa-lg text-primary" aria-hidden="true"></i>
+                <h4 style="color:black !important;">36</h4>
+              </div>
+              <div class="col-sm-2">
+                <i class="fa fa-desktop fa-lg text-success" aria-hidden="true"></i>
+                <h4 style="color:black !important;">15</h4>
+              </div>
+              <div class="col-sm-2">
+                <i class="fa  fa-file-text fa-lg text-danger" aria-hidden="true"></i>
+                <h4 style="color:black !important;">28</h4>
+              </div>
+            </div>
+            <br />
+            <br />
+          </section>
+          <section class="pre-requisites-section container-fluid" data-aos="fade-right">
+            <h6 class="text-secondary text-left mb-0 font-weight-bold">NEED TO KNOW</h6>
+            <h3 class="text-left section-headers">PRE-REQUISITES</h3>
+            <div class="row">
+              <div class="col-sm-4 mt-2 mb-2">
+                <i class="fas fa-thumb-tack fa-lg text-primary" aria-hidden="true"></i>
+                Sound knowledge about C and C++
+              </div>
+              <div class="col-sm-4 mt-2 mb-2">
+                <i class="fas fa-thumb-tack fa-lg text-primary" aria-hidden="true"></i>
+                Good Logic thinker
+              </div>
+              <div class="col-sm-4 mt-2 mb-2">
+                <i class="fas fa-thumb-tack fa-lg text-primary" aria-hidden="true"></i>
+                Should be willing to have sleepless nights
+              </div>
+              <div class="col-sm-4 mt-2 mb-2">
+                <i class="fas fa-thumb-tack fa-lg text-primary" aria-hidden="true"></i>
+                Must embrace frustration
+              </div>
+
+              <div class="col-sm-4 mt-2 mb-2">
+                <i class="fas fa-thumb-tack fa-lg text-primary" aria-hidden="true"></i>
+                Loads of Coffee and Caffeine Tolerance
+              </div>
+              <div class="col-sm-4 mt-2 mb-2">
+                <i class="fas fa-thumb-tack fa-lg text-primary" aria-hidden="true"></i>
+                Objects are everything
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <section data-aos="fade-left" class="course-roadmap-section">
+          <h6 class="text-secondary text-right mb-0 font-weight-bold">ROADMAP</h6>
+          <h3 class="text-right section-headers">YOUR JOURNEY</h3>
+          <mat-vertical-stepper linear="false" #stepper>
+            <mat-step *ngFor="let chapter of coursechapters">
+              <ng-template matStepLabel>{{chapter?.name}}</ng-template>
+              <p>
+                {{chapter?.description}}
+              </p>
+            </mat-step>
+          </mat-vertical-stepper>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-aos="fade-right" class="Batches">
+  <div class="container">
+    <h6 class="text-secondary mb-0 font-weight-bold">BATCHES</h6>
+    <div class="row">
+      <div class="col-sm-6">
+        <h3 class="text-left section-headers">ENROLL NOW</h3>
+      </div>
+      <div class="col-sm-6">
+        <div data-aos="fade-left" class="container text-right">
+          <mat-form-field>
+            <mat-select placeholder="Batch Type" [formControl]="batchControl" (selectionChange)="fetchBatches($event.value)"
+              required>
+              <mat-option *ngFor="let bat of batch" [value]="bat">
+                {{bat.name}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="batchControl.hasError('required')">Batch type</mat-error>
+            <!-- <mat-hint>{{batchControl.value?.status}}</mat-hint> -->
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid bg-secondary">
+    <div class="container">
+      <div class="row">
+          <!-- <app-batch-card class="col-sm-4 mt-3" *ngFor="let bat of batches" [batch]=bat></app-batch-card> -->
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Section #6
+      This section is for Instructors/Mentors -->
+<section class="container-fluid">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-5 ">
+        <section data-aos="fade-right">
+          <h6 class="text-secondary text-left mb-0 font-weight-bold">COMMENTS</h6>
+          <h3 class="text-left section-headers">STUDENTS REVIEWS</h3>
+          <div class="reviews container reviews-section">
+            <div class="row" data-aos="fade-right" *ngFor="let i of [1,2,2,4]">
+              <div class="wrapper row">
+                <div class="col-sm-3">
+                  <div class="box">
+                    <div class="review-img">
+                      <img src="http://www.ishootshows.com/wp-content/uploads/2008/07/todd-owyoung-portrait-145238_COB8628-square-600px.jpg">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-9">
+                  <p style="margin-bottom: 0; font-size: 1.4em;"> Raphael</p>
+                  <i class="text-warning fas fa-star "></i>
+                  <i class="text-warning fas fa-star "></i>
+                  <i class="text-warning fas fa-star "></i>
+                  <i class="text-warning fas fa-star "></i>
+                  <i class="text-warning fas fa-star-half-alt "></i>
+                  <br />
+                  Lorem Ipsum is simply dummy text of the printing and
+                  typesetting industry. Lorem Ipsum has been the industry's
+                  standard dummy text ever since the 1500s, when an unknown
+                  printer took a galley of type and scrambled it to make a type
+                  specimen book.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="col-sm-7 bg-secondary">
+        <section data-aos="fade-left" class="mentors-section">
+          <h6 class="text-secondary text-right mb-0 font-weight-bold">MENTORS</h6>
+          <h3 class="text-right section-headers">WE'RE HERE TO HELP</h3>
+          <div class="row mt-3" data-aos="fade-left">
+            <div class="col-lg-6 col-sm-12"  *ngFor="let mentor of mentorsDetails">
+              <div class="card mentor-card">
+                <div class="box">
+                  <div class="img">
+                    <img src='{{mentor?.avatar}}'>
+                  </div>
+                  <h2>{{mentor?.firstName}} {{mentor?.lastName}}<br><span>{{mentor?.jobProfile[0]}}Web Graphic Designer</span></h2>
+                  <p>
+                    {{mentor?.profileSummary | slice: 0 : 40}}
+                  </p>
+                  <span>
+                    <ul>
+                      <li><a href="#"><i class="fab fa-facebook" aria-hidden="true"></i></a></li>
+                      <li><a href="#"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
+                      <li><a href="#"><i class="fab fa-google-plus" aria-hidden="true"></i></a></li>
+                      <li><a href="#"><i class="fab fa-linkedin" aria-hidden="true"></i></a></li>
+                      <li><a href="#"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
+                    </ul>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+  </div>
+</section>
+<router-outlet></router-outlet>

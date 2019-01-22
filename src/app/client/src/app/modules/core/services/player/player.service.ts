@@ -137,16 +137,22 @@ export class PlayerService {
     this.navigationHelperService.storeResourceCloseUrl();
     setTimeout(() => { // setTimeOut is used to trigger telemetry interact event as changeDetectorRef.detectChanges() not working.
       if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+        console.log('content mimetype', content.mimeType);
         if (content.contentType !== this.configService.appConfig.PLAYER_CONFIG.contentType.Course) {
+          console.log('content mimetype', content.identifier);
           this.router.navigate(['/resources/play/collection', content.identifier]);
         } else if (content.batchId) {
+          console.log('content mimetype', content.mimeType);
           this.router.navigate(['/learn/course', content.courseId, 'batch', content.batchId]);
         } else {
+          console.log('content mimetype', content.identifier);
           this.router.navigate(['/learn/preview', content.identifier]);
         }
       } else if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent) {
+        console.log('content mimetype', content.identifier);
         this.router.navigate(['/resources/play/content', content.identifier]);
       } else {
+        console.log('content mimetype', content.identifier);
         this.router.navigate(['/resources/play/content', content.identifier]);
       }
     }, 0);

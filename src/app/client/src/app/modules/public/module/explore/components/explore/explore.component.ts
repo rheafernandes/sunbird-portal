@@ -385,12 +385,16 @@ setInteractEventData() {
   };
 }
 playContent(event) {
+  console.log('event', event);
   if (event.data.metaData.batchId) {
+
     event.data.metaData.mimeType = 'application/vnd.ekstep.content-collection';
     event.data.metaData.contentType = 'Course';
   }
   this.changeDetectorRef.detectChanges();
-  this.playerService.playContent(event.data.metaData);
+  console.log('metadat ', event.data.metaData.identifier);
+  this.route.navigate(['/explore/preview', event.data.metaData.identifier]);
+  // this.playerService.playContent(event.data.metaData);
 }
 inview(event) {
   _.forEach(event.inview, (inview, key) => {
