@@ -1,0 +1,12 @@
+@import "~bootstrap/dist/css/bootstrap.min.css";
+.filtersBody{
+    max-height: 200px;
+    overflow-y: scroll;
+    font-size: 2vh !important;
+}
+#card-header{
+font-size: 3vh !important;
+}
+.form-group {
+  font-size: 3vh !important;
+}

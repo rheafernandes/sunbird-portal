@@ -43,7 +43,7 @@
             <div class="right floated two wide tablet computer only column">
                 <div class="beforelogin ui secondary pointing menu padding-top-10" id="beforelogin">
                     <button *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'" class="ui item text-upper-case padding-bottom-20"
-                        routerLink="/explore">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</button>
+                        routerLink="/explore/catalog/1">{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}</button>
                     <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="signUpInteractEdata"
                         *ngIf="enableSignup && router.isActive('', true)" class="ui item padding-bottom-20" routerLink="/signup">{{resourceService.frmelmnts?.btn?.signup}}</button>
                     <a href="/home" class="sunblogin">
@@ -89,8 +89,8 @@
   </div>
 </span>
 
-<div *ngIf="showExploreHeader" class="ui fluid container">
-    <div class="ui grid margin-none">
+<!-- <div > -->
+    <div *ngIf="showExploreHeader" class="ui fluid container grid margin-none">
         <!--tablet computer view header code starts-->
         <div class="center aligned twelve wide tablet computer only column">
             <div class="ui grid">
@@ -100,8 +100,8 @@
                         <img class="image centered header-logo-before-login padding-top-5" alt={{tenantName}} src="{{logo}}">
                     </a>
                 </div>
-                <div class="two wide column"></div>
-                <div class="five wide column padding-top-20">
+                <!-- <div class="two wide column"></div> -->
+                <div class="six wide column padding-top-20">
                     <div class="ui search">
                         <div class="searchicon ui icon input width-100">
                             <input type="text" id="keyword" name="filter_search" title="Search" placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}"
@@ -110,14 +110,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="one wide column">
-                    <div class="beforelogin ui secondary pointing menu right-float" id="beforelogin" style="background-color:black">
+                <div class="two wide column">
+                    <div class="beforelogin ui secondary pointing menu right-float" id="beforelogin">
                         <a href="/home" class="sunblogin padding-top-5">
                             <button class="ui item padding-right-none">{{resourceService.frmelmnts?.btn?.login}}</button>
                         </a>
                     </div>
                 </div>
-                <div class="one wide column"></div>
+                <!-- <div class="one wide column"></div> -->
             </div>
         </div>
         <!--view header view code ends-->
@@ -150,17 +150,17 @@
         </div>
         <!--mobile header view code ends-->
     </div>
-    <div class="ui grid margin-top-0">
+    <div  *ngIf="showExploreHeader" class="ui grid margin-top-0">
         <!--tablet computer sub header view code starts-->
         <div class="center aligned twelve wide tablet computer only column anon-consumption-sec-menu padding-top-none">
             <div class="ui grid margin-top-0">
-                <div class="one wide column"></div>
-                <div class="two wide column">
+                <!-- <div class="one wide column"></div> -->
+                <!-- <div class="two wide column">
                     <button class="ui basic button left-float" (click)="showQrmodal = true;">
                         <i class="qrcode icon"></i>{{resourceService.frmelmnts?.lbl?.enterQrCode}}
                     </button>
-                </div>
-                <div class="six wide column"></div>
+                </div> -->
+                <!-- <div class="six wide column"></div> -->
                 <div class="two wide right floated right aligned column">
                     <app-language-dropdown></app-language-dropdown>
                 </div>
@@ -186,11 +186,11 @@
         </div>
         <!--mobile sub header view code ends-->
     </div>
-</div>
+<!-- </div> -->
 
-<div *ngIf="showQrmodal">
+<!-- <div *ngIf="showQrmodal">
     <app-qr-code-modal (closeQrModal)="closeQrModalEvent($event)"></app-qr-code-modal>
-</div>
+</div> -->
 
 
 <mat-menu #main_menu="matMenu" xPosition="after" yPosition="below" [overlapTrigger]="false">
@@ -207,7 +207,7 @@
   <ng-container *ngFor="let category of categoryMasterList">
     <button mat-menu-item [matMenuTriggerFor]="sub_menu">
       <mat-icon>import_contacts</mat-icon>
-      <span>{{ category?.code}}</span>
+      <span>{{ category?.name}}</span>
     </button>
     <mat-menu #sub_menu="matMenu" xPosition="after" yPosition="below" [overlapTrigger]="false">
       <button *ngFor="let subItem of category?.terms" mat-menu-item (click)="filter(category?.code , subItem?.name)">

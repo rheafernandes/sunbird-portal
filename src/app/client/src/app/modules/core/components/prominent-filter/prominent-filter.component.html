@@ -1,31 +1,41 @@
-<div class="ui segment">
-  <div class="ui stackable grid">
-    <div class="twelve wide column" *ngIf="refresh">
-      <form class="ui form">
-        <div class="ui stackable grid">
-          <div class="nine wide column">
-            <div *ngIf="formFieldProperties" class="ui stackable grid">
-              <div *ngFor="let field of formFieldProperties" class="{{field.renderingHints.semanticColumnWidth || 'twelve'}} wide column">
-                <div *ngIf="field.inputType==='select'" class="field">
-                  <div class="margin-bottom-10">
-                    <strong>{{field.name}}</strong>
-                  </div>
-                  <app-custom-multi-select [inputData]="formInputData[field.code]" [field]="field" (selectedValue)="selectedValue($event, field.code)"></app-custom-multi-select>
-                </div>
-                <div *ngIf="field.code==='concepts' && showConcepts" class="field">
-                  <form class="conceptSelector ui form">
-                    <app-concept-picker [selectedConcepts]="formInputData[field.code]" (Concepts)="concepts($event)"></app-concept-picker>
-                  </form>
+
+<div class="row">
+  <div class="col-md-12">
+    <form>
+      <fieldset>
+        <div *ngIf="formFieldProperties">
+          <div *ngFor="let field of filtersDetails">
+            <div class="text-black mb-3" *ngIf="field.inputType==='select' && field.code!==browsingCategory">
+              <div id="card-header">
+                 <i alt="Filter" class="icon filter"></i>  &nbsp;{{field.name}}
+                 <i class="far fa-times-circle float-right" (click)="resetFilters2(field.code)"></i>
+              </div>
+              <div class="card-body filtersBody">
+                <div class="form-group" *ngIf="field.inputType==='select'">
+                  <fieldset class="form-group" *ngIf="field.inputType==='select'">
+                    <div class="form-check" *ngFor="let option of field.range">
+                      <label class="form-check-label">
+                        <input (change)="onFilterChange($event)" name={{field.code}} class="form-check-input" type="checkbox"
+                          [value]="option.name">
+                       &nbsp; {{option.name}} </label>
+                    </div>
+                    <!-- <div class="custom-control custom-checkbox"  *ngFor="let option of field.range">
+                      <input (change)="onFilterChange($event)" name={{field.code}} type="checkbox" class="custom-control-input form-check-input" id={{option.name}} [value]="option.name">
+                      <label class="custom-control-label" for="customCheck2">{{option.name}}</label>
+                    </div> -->
+                  </fieldset>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="three wide right floated column filter-button margin-top-30">
-            <a class="searchfilterbutton ui blue tiny  button" (click)="applyFilters()" appTelemetryInteract [telemetryInteractEdata]="submitIntractEdata">{{resourceService.frmelmnts?.btn?.submit}}</a>
-            <a class="searchfilterbutton ui primary tiny basic button" (click)="resetFilters()">{{resourceService.frmelmnts?.btn?.reset}}</a>
+
+            <!-- <div *ngIf="field.code==='concepts' && showConcepts" class="field">
+                <form class="conceptSelector ui form">
+                  <app-concept-picker [selectedConcepts]="formInputData[field.code]" (Concepts)="concepts($event)"></app-concept-picker>
+                </form>
+              </div> -->
           </div>
         </div>
-      </form>
-    </div>
+      </fieldset>
+    </form>
   </div>
 </div>

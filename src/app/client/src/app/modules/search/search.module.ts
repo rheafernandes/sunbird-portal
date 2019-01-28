@@ -13,6 +13,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { CatalogComponent } from './components/catalog/catalog.component';
 import { CatalogFiltersComponent } from './components/catalog-filters/catalog-filters.component';
+import {ExploreComponent} from '../public/module/explore/components';
 
 @NgModule({
   imports: [
@@ -31,6 +32,5 @@ import { CatalogFiltersComponent } from './components/catalog-filters/catalog-fi
   UserFilterComponent, UserEditComponent, UserDeleteComponent, OrgSearchComponent, OrgFilterComponent,
    UserProfileComponent, HomeSearchComponent, HomeFilterComponent, CatalogComponent, CatalogFiltersComponent],
   providers: [UserSearchService],
-
 })
 export class SearchModule { }

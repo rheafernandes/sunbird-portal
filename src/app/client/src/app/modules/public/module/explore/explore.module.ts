@@ -7,17 +7,21 @@ import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { NgInviewModule } from 'angular-inport';
 import { ExploreComponent } from './components/explore/explore.component';
-
+import { CatalogFiltersComponent } from '../../../search/components/catalog-filters/catalog-filters.component';
+import { PreviewCourseComponent} from './components/preview-course/preview-course.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   imports: [
     CommonModule,
     TelemetryModule,
     CoreModule,
+    FormsModule,
+    ReactiveFormsModule,
     SharedModule,
     NgInviewModule,
     ExploreRoutingModule
   ],
-  declarations: [ ExploreContentComponent, ExploreComponent],
-  exports: [ExploreComponent]
-})
+  declarations: [ ExploreContentComponent, ExploreComponent, CatalogFiltersComponent, PreviewCourseComponent]
+,
+exports: [ExploreComponent]})
 export class ExploreModule { }

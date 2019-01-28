@@ -206,7 +206,7 @@ export class SearchService {
       url: this.config.urlConFig.URLS.COURSE.SEARCH,
       data: {
         request: {
-          filters: { keywords: ['technology']},
+          filters: { gradeLevel: ['Technology']},
           limit: 10
         }
       }
@@ -218,7 +218,7 @@ export class SearchService {
       url: this.config.urlConFig.URLS.COURSE.SEARCH,
       data: {
         request: {
-          filters: { keywords: ['finance']},
+          filters: {gradeLevel: ['Finance']},
           limit: 10
         }
       }
@@ -230,7 +230,7 @@ export class SearchService {
       url: this.config.urlConFig.URLS.COURSE.SEARCH,
       data: {
         request: {
-          filters: { keywords: ['marketing']},
+          filters: {gradeLevel: ['Marketing']},
           limit: 10
         }
       }
@@ -242,7 +242,7 @@ export class SearchService {
       url: this.config.urlConFig.URLS.COURSE.SEARCH,
       data: {
         request: {
-          filters: { keywords: ['management']},
+          filters: {gradeLevel: ['Management']},
           limit: 10
         }
       }

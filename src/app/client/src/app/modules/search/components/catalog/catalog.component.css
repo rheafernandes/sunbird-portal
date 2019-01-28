@@ -1,1 +1,10 @@
 @import "~bootstrap/dist/css/bootstrap.min.css";
+.jumbotron-bg {
+  background: white !important;
+}
+@media (min-width: 576px)
+{
+.jumbotron {
+    padding: 0rem 2rem;
+}
+}
