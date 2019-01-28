@@ -156,7 +156,7 @@ this.searchService.courseSearchFinance().subscribe((data) => {
     this.finance.push(course);
 }
 });
-this.searchService.courseSearchManagement().subscribe((data) => {
+this.searchService.courseSearchMarketing().subscribe((data) => {
   for (const course of data.result.course) {
     this.marketing.push(course);
 }
@@ -165,8 +165,8 @@ this.searchService.courseSearchManagement().subscribe((data) => {
 }
 onEnter(key) {
   this.populateCourseSearch(key);
-  const queryParams = {};
-  this.route.navigate(['/catalog/', key], {queryParams: queryParams});
+  const queryParams = {key: key};
+  this.route.navigate(['/explore/catalog/1'], {queryParams: queryParams});
 }
 populateCourseSearch(key) {
   this.key = key;
