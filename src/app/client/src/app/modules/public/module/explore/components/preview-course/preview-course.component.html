@@ -274,7 +274,37 @@
       <section class="container-fluid">
         <div class="container">
           <div class="row">
-            <div class="col-sm-5 ">
+              <div class="col-sm-8 bg-secondary" *ngIf="userId!=anonymous">
+                  <section data-aos="fade-left" class="mentors-section">
+                    <h6 class="text-secondary text-right mb-0 font-weight-bold">MENTORS</h6>
+                    <h3 class="text-right section-headers">WE'RE HERE TO HELP</h3>
+                    <div class="row mt-3" data-aos="fade-left">
+                      <div class="col-lg-6 col-sm-12" *ngFor="let mentor of mentorsDetails">
+                        <div class="card mentor-card">
+                          <div class="box">
+                            <div class="img">
+                              <img src='{{mentor?.avatar}}'>
+                            </div>
+                            <h2>{{mentor?.firstName}} {{mentor?.lastName}}<br><span>{{mentor?.jobProfile[0]}}Web Graphic Designer</span></h2>
+                            <p>
+                              {{mentor?.profileSummary | slice: 0 : 40}}
+                            </p>
+                            <span>
+                              <ul>
+                                <li><a href="#"><i class="fab fa-facebook" aria-hidden="true"></i></a></li>
+                                <li><a href="#"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
+                                <li><a href="#"><i class="fab fa-google-plus" aria-hidden="true"></i></a></li>
+                                <li><a href="#"><i class="fab fa-linkedin" aria-hidden="true"></i></a></li>
+                                <li><a href="#"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
+                              </ul>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+            <div class="col-sm-8">
               <section data-aos="fade-right">
                 <h6 class="text-secondary text-left mb-0 font-weight-bold">COMMENTS</h6>
                 <h3 class="text-left section-headers">COURSE REVIEWS</h3>
@@ -307,36 +337,7 @@
                 </div>
               </section>
             </div>
-            <div class="col-sm-7 bg-secondary">
-              <section data-aos="fade-left" class="mentors-section">
-                <h6 class="text-secondary text-right mb-0 font-weight-bold">MENTORS</h6>
-                <h3 class="text-right section-headers">WE'RE HERE TO HELP</h3>
-                <div class="row mt-3" data-aos="fade-left">
-                  <div class="col-lg-6 col-sm-12" *ngFor="let mentor of mentorsDetails">
-                    <div class="card mentor-card">
-                      <div class="box">
-                        <div class="img">
-                          <img src='{{mentor?.avatar}}'>
-                        </div>
-                        <h2>{{mentor?.firstName}} {{mentor?.lastName}}<br><span>{{mentor?.jobProfile[0]}}Web Graphic Designer</span></h2>
-                        <p>
-                          {{mentor?.profileSummary | slice: 0 : 40}}
-                        </p>
-                        <span>
-                          <ul>
-                            <li><a href="#"><i class="fab fa-facebook" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fab fa-google-plus" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fab fa-linkedin" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
-                          </ul>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </section>
-            </div>
+
           </div>
 
         </div>

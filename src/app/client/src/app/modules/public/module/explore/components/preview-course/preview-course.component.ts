@@ -75,9 +75,9 @@ export class PreviewCourseComponent implements OnInit {
           console.log('course', this.courseDetails.createdBy);
           this.collectionTreeNodes = { data: this.courseDetails };
           this.coursechapters = this.courseDetails.children;
-          const mentorIds = _.union(this.courseDetails.createdBy);
-          console.log('mentor', mentorIds);
-          this.getMentorslist(mentorIds);
+          // const mentorIds = _.union(this.courseDetails.createdBy);
+          // console.log('mentor', mentorIds);
+          // this.getMentorslist(mentorIds);
         },
         (err) => {
           this.toaster.error('Fetching Details Failed');
@@ -97,10 +97,10 @@ export class PreviewCourseComponent implements OnInit {
             this.totalParticipants = this.totalParticipants + _.keys(batch.participant).length;
           }
         }
-        // if (this.batches.length > 0 && this.mentorsDetails.length === 0) {
-        //   const mentorIds = _.union(this.batches[0].mentors);
-        //   this.getMentorslist(mentorIds);
-        // }
+        if (this.batches.length > 0 && this.mentorsDetails.length === 0) {
+          const mentorIds = _.union(this.batches[0].mentors);
+          this.getMentorslist(mentorIds);
+        }
       },
       (err) => {
         this.toaster.error('Fetching Details Failed');
@@ -156,7 +156,6 @@ export class PreviewCourseComponent implements OnInit {
     } else {
       this.toaster.error('Error loading Mutli-media content');
     }
-
   }
 }
 
