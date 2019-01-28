@@ -6,9 +6,9 @@
         [ignoreQuery]="['key']" [filterEnv]="filterType" [isShowFilterLabel]=true></app-catalog-filters>
     </div>
     <div class="col-md-9">
-      <div class="alert alert-dismissible alert-primary" *ngIf="!showLoader && !noResult">
+      <div class="alert alert-dismissible" *ngIf="!showLoader && !noResult">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <h5> {{totalCount }} Matching Result(s)
+        <h5 class="text-dark"> {{totalCount }} Matching Result(s)
           <div class="float-right">
             <button routerLink="/learn" type="button" class="btn btn-danger">View Enrolled Courses</button> &nbsp;
             <button (click)="clearFilters()" type="button" class="btn btn-danger" *ngIf="!checkForEmptyObject(filters)">Clear Filters <i class="fas fa-filter"></i></button>
@@ -21,7 +21,7 @@
       <div class="jumbotron" *ngIf="showLoader">
         <app-loader [data]='loaderMessage'></app-loader>
       </div>
-      <div class="jumbotron" *ngIf="!showLoader && !noResult">
+      <div class="jumbotron jumbotron-bg"  *ngIf="!showLoader && !noResult">
         <div class="row">
           <div class="col-md-12">
             <h6 class="float-right">

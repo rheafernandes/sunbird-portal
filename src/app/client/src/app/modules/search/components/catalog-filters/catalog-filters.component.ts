@@ -191,6 +191,7 @@ export class CatalogFiltersComponent implements OnInit, OnDestroy, OnChanges {
       this.frameworkDataSubscription = this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
         if (frameworkData && !frameworkData.err) {
           this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata);
+          console.log('categorylisrty', this.categoryMasterList);
           this.framework = frameworkData.framework;
           const formServiceInputParams = {
             formType: this.formType,
@@ -201,6 +202,7 @@ export class CatalogFiltersComponent implements OnInit, OnDestroy, OnChanges {
           this.formService.getFormConfig(formServiceInputParams, this.hashTagId).subscribe(
             (data: ServerResponse) => {
               this.formFieldProperties = data;
+              console.log('catalog filter', data);
               _.forEach(this.formFieldProperties, (formFieldCategory) => {
                 if (formFieldCategory && formFieldCategory.allowedRoles) {
                   const userRoles = formFieldCategory.allowedRoles.filter(element => this.userRoles.includes(element));

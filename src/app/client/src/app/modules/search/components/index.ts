@@ -9,3 +9,4 @@ export * from './user-edit/user-edit.component';
 export * from './user-profile/user-profile.component';
 export * from './org-search/org-search.component';
 export * from './org-filter/org-filter.component';
+export * from './catalog-filters/catalog-filters.component';

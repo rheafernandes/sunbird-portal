@@ -20,8 +20,6 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { BadgingModule } from '@sunbird/badge';
 import { SlickModule } from 'ngx-slick';
 import {LearnModule} from '../learn';
-import {SearchModule} from '../search';
-
 @NgModule({
   imports: [
     CommonModule,
@@ -37,11 +35,9 @@ import {SearchModule} from '../search';
     BadgingModule,
     SlickModule,
     LearnModule,
-    SearchModule
-
   ],
   declarations: [LandingPageComponent, SignupComponent, GetComponent, DialCodeComponent,
-    PublicFooterComponent, PublicContentPlayerComponent, PublicCollectionPlayerComponent],
-  providers: [SignupService, PublicPlayerService, DeviceDetectorService, SignupGuard, LandingpageGuard]
+    PublicFooterComponent, PublicContentPlayerComponent, PublicCollectionPlayerComponent, ],
+  providers: [SignupService, PublicPlayerService, DeviceDetectorService, SignupGuard, LandingpageGuard],
 })
 export class PublicModule { }

@@ -1,0 +1,33 @@
+<div class="wrapper">
+    <mat-card class="styleClass">
+        <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>{{batch?.name}}</mat-card-title>
+            <mat-card-subtitle>{{batch?.enrollmentType}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <p *ngIf="batch?.description !==null && batch?.description !== undefined && batch?.description !== ''"
+                class="description">
+                Description :{{batch?.description | slice: 0 : 40}}
+            </p>
+            <p *ngIf="batch?.description === null || batch?.description === undefined || batch?.description === ''">
+                Description : No Description
+            </p>
+            <p>
+                Start Date : {{batch?.startDate|date}}
+            </p>
+            <p *ngIf="batch?.endDate !== undefined && batch?.endDate !== null">
+                End Date : {{batch?.endDate|date}}
+            </p>
+            <p *ngIf="batch?.endDate === undefined || batch?.endDate === null">
+                End Date : No End Date
+            </p>
+        </mat-card-content>
+        <mat-card-actions class="align-content">
+            <button class=" btn btn-primary" *ngIf="batch?.enrollmentType==='open' && !showUnenroll" (click)="enroll()">Enroll</button>
+            <button class="btn btn-primary" *ngIf="batch?.enrollmentType==='invite-only'">Contact</button>
+            <button class="btn btn-primary" *ngIf="batch?.enrollmentType==='open' && showUnenroll"
+                (click)="unEnroll()" >UnEnroll</button>
+        </mat-card-actions>
+    </mat-card>
+</div>
