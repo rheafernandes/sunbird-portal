@@ -32,6 +32,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { UsersListComponent } from './components/users-list/users-list.component';
 import { UserStatsComponent } from './components/user-stats/user-stats.component';
 import { SlickModule } from 'ngx-slick';
+
+
 @NgModule({
   imports: [
     CommonModule,

@@ -5,11 +5,10 @@ import { DialCodeComponent } from './components/dial-code/dial-code.component';
 import { PublicFooterComponent } from './components/public-footer/public-footer.component';
 import {
   LandingPageComponent, SignupComponent, PublicContentPlayerComponent,
-  PublicCollectionPlayerComponent
+  PublicCollectionPlayerComponent,
 } from './components';
 import { SignupGuard, LandingpageGuard } from './services';
 import { PreviewCourseComponent } from '../learn/components/preview-course/preview-course.component';
-import { CatalogComponent} from '../search/components/catalog/catalog.component';
 
 const routes: Routes = [
   {
@@ -68,10 +67,6 @@ const routes: Routes = [
   {
     path: 'preview/:courseId' , component: PreviewCourseComponent
   },
-  {
-    path: 'catalog/:pageNumber' , component: CatalogComponent
-  }
-
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes) ],

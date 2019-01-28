@@ -23,6 +23,7 @@ import { UpdateBatchDialogComponent } from './components/test-all-batches/update
 import { ListSessionsComponent } from './components/list-sessions/list-sessions.component';
 import { WorkspaceModule } from '../workspace';
 import { BatchCardComponent } from './components/preview-course/batch-card/batch-card.component';
+import { AnnouncementModule } from '../announcement';
 @NgModule({
   imports: [
     CommonModule,
@@ -38,6 +39,7 @@ import { BatchCardComponent } from './components/preview-course/batch-card/batch
     TelemetryModule,
     NgInviewModule,
     WorkspaceModule,
+    AnnouncementModule
   ],
   providers: [CourseConsumptionService, CourseBatchService, CourseProgressService, PlayContent],
   exports: [UpdateBatchDialogComponent, CreateBatchDialogComponent],

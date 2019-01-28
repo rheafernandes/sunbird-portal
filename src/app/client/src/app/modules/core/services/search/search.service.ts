@@ -201,48 +201,48 @@ export class SearchService {
     };
     return this.content.post(option);
   }
-  courseSearchIT(): Observable<ServerResponse> {
+  courseSearchTechnology(): Observable<ServerResponse> {
     const option = {
       url: this.config.urlConFig.URLS.COURSE.SEARCH,
       data: {
         request: {
-          filters: { keywords: ['Software']},
+          filters: { keywords: ['technology']},
           limit: 10
         }
       }
     };
     return this.content.post(option);
   }
-  courseSearchDesign(): Observable<ServerResponse> {
+  courseSearchFinance(): Observable<ServerResponse> {
     const option = {
       url: this.config.urlConFig.URLS.COURSE.SEARCH,
       data: {
         request: {
-          filters: { keywords: ['Design']},
+          filters: { keywords: ['finance']},
           limit: 10
         }
       }
     };
     return this.content.post(option);
   }
-  courseSearchDevelopment(): Observable<ServerResponse> {
+  courseSearchMarketing(): Observable<ServerResponse> {
     const option = {
       url: this.config.urlConFig.URLS.COURSE.SEARCH,
       data: {
         request: {
-          filters: { keywords: ['Development']},
+          filters: { keywords: ['marketing']},
           limit: 10
         }
       }
     };
     return this.content.post(option);
   }
-  courseSearchBusiness(): Observable<ServerResponse> {
+  courseSearchManagement(): Observable<ServerResponse> {
     const option = {
       url: this.config.urlConFig.URLS.COURSE.SEARCH,
       data: {
         request: {
-          filters: { keywords: ['Business']},
+          filters: { keywords: ['management']},
           limit: 10
         }
       }

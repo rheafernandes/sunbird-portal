@@ -150,6 +150,7 @@ export class ExploreComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.prominentFilters = {};
     this.slug = this.activatedRoute.snapshot.params.slug;
+    console.log('slug', this.slug);
     this.filterType = this.config.appConfig.explore.filterType;
     this.redirectUrl = this.config.appConfig.explore.inPageredirectUrl;
     this.getChannelId();

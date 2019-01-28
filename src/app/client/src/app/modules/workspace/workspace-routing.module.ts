@@ -16,6 +16,7 @@ import { LearnMaterialComponent } from './components/learn-material/learn-materi
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { UsersListComponent } from './components/users-list/users-list.component';
 import { updateBatchDetails } from '../learn/components/batch/update-course-batch/update-course-batch.component.data';
+import { CreateComponent } from '../announcement';
 const telemetryEnv = 'workspace';
 const objectType = 'workspace';
 const routes: Routes = [
@@ -325,6 +326,7 @@ const routes: Routes = [
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
     }
   },
+
 ];
 
 @NgModule({

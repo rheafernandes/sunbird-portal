@@ -30,6 +30,7 @@ import { CatalogFiltersComponent } from './components/catalog-filters/catalog-fi
   declarations: [ UserSearchComponent, CourseSearchComponent, LibrarySearchComponent,
   UserFilterComponent, UserEditComponent, UserDeleteComponent, OrgSearchComponent, OrgFilterComponent,
    UserProfileComponent, HomeSearchComponent, HomeFilterComponent, CatalogComponent, CatalogFiltersComponent],
-  providers: [UserSearchService]
+  providers: [UserSearchService],
+
 })
 export class SearchModule { }
