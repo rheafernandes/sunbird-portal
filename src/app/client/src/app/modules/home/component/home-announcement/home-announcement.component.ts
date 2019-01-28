@@ -1,7 +1,7 @@
 
 import { takeUntil } from 'rxjs/operators';
 import { HomeAnnouncementService } from './../../service/index';
-import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, OnDestroy } from '@angular/core';
 import { AnnouncementService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfigService, ResourceService, ServerResponse } from '@sunbird/shared';
@@ -23,6 +23,7 @@ import { Subject } from 'rxjs';
 export class HomeAnnouncementComponent implements OnInit, OnDestroy {
 
   public unsubscribe = new Subject<void>();
+  @Input() showall;
 
   @Output() inviewEvent = new EventEmitter<any>();
 

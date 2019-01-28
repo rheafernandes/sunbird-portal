@@ -147,6 +147,8 @@ ngOnInit() {
       }
   });
   this.searchService.courseSearchTechnology().subscribe((data) => {
+    console.log('jhsdjk', data);
+
     for (const course of data.result.course) {
       this.technology.push(course);
  }
@@ -156,7 +158,9 @@ this.searchService.courseSearchFinance().subscribe((data) => {
     this.finance.push(course);
 }
 });
-this.searchService.courseSearchManagement().subscribe((data) => {
+this.searchService.courseSearchMarketing().subscribe((data) => {
+  console.log('jhsdjk', data);
+
   for (const course of data.result.course) {
     this.marketing.push(course);
 }

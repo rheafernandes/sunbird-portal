@@ -17,6 +17,7 @@ import { ExploreComponent } from './components/explore/explore.component';
     NgInviewModule,
     ExploreRoutingModule
   ],
-  declarations: [ ExploreContentComponent, ExploreComponent]
+  declarations: [ ExploreContentComponent, ExploreComponent],
+  exports: [ExploreComponent]
 })
 export class ExploreModule { }
