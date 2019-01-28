@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, Inject, EventEmitter, Input, Output } from '@angular/core';
+import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { CourseConsumptionService, CourseBatchService } from '@sunbird/learn';
 import { UserService, LearnerService } from '@sunbird/core';
-import { ConfigService, ToasterService } from '@sunbird/shared';
+import { ConfigService, ToasterService, ICollectionTreeOptions, PlayContent} from '@sunbird/shared';
 import { pluck } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as _ from 'lodash';
 import { FormControl, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 
 export interface Batches {
   name: string;
@@ -37,8 +39,11 @@ export class PreviewCourseComponent implements OnInit {
   youtubelink = [];
   check = [];
   safeUrl;
+  collectionTreeNodes;
+  collectionTreeOptions: ICollectionTreeOptions;
 
   constructor(
+    public dialog: MatDialog,
     private route: ActivatedRoute,
     private courseConsumptionService: CourseConsumptionService,
     public courseBatchService: CourseBatchService,
@@ -47,10 +52,12 @@ export class PreviewCourseComponent implements OnInit {
     public sanitizer: DomSanitizer,
     public router: Router,
     public toaster: ToasterService,
-  ) { }
+    public player: PlayContent,
+  ) {
+    this.collectionTreeOptions = this.config.appConfig.collectionTreeOptions;
+  }
 
   ngOnInit() {
-    console.log('preview' , this.courseId);
     this.search = {
       filters: {
         status: '1',
@@ -65,13 +72,17 @@ export class PreviewCourseComponent implements OnInit {
       .subscribe(
         (response: any) => {
           this.courseDetails = response;
+          console.log('course', this.courseDetails.createdBy);
+          this.collectionTreeNodes = { data: this.courseDetails };
           this.coursechapters = this.courseDetails.children;
+          const mentorIds = _.union(this.courseDetails.createdBy);
+          console.log('mentor', mentorIds);
+          this.getMentorslist(mentorIds);
         },
         (err) => {
           this.toaster.error('Fetching Details Failed');
         },
         () => {
-          // this.getpreviewlinks();
         }
       );
   }
@@ -86,10 +97,10 @@ export class PreviewCourseComponent implements OnInit {
             this.totalParticipants = this.totalParticipants + _.keys(batch.participant).length;
           }
         }
-        if (this.batches.length > 0 && this.mentorsDetails.length === 0) {
-          const mentorIds = _.union(this.batches[0].mentors);
-          this.getMentorslist(mentorIds);
-        }
+        // if (this.batches.length > 0 && this.mentorsDetails.length === 0) {
+        //   const mentorIds = _.union(this.batches[0].mentors);
+        //   this.getMentorslist(mentorIds);
+        // }
       },
       (err) => {
         this.toaster.error('Fetching Details Failed');
@@ -119,44 +130,11 @@ export class PreviewCourseComponent implements OnInit {
       );
   }
 
-  getpreviewlinks() {
-    for (const child of this.coursechapters) {
-
-      this.youtubelink.push(child.children);
-      if (child.children.length !== 0 && child.hasOwnProperty('children')) {
-      this.checkChildrens(child);
-      }
-
-    }
-
-    for (const link of this.check) {
-      if (link.mimeType === 'video/x-youtube') {
-        link.previewUrl = link.previewUrl.replace('watch?v=', 'embed/');
-        this.previewurl.push(link.previewUrl);
-      }
-    }
-    this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.previewurl[0]);
-  }
-
   redirect() {
     this.router.navigate(['/learn/course', this.courseId]);
   }
 
-  checkChildrens(child) {
-    const property = 'children';
-    for (const chheck of child.children) {
-      if (chheck.hasOwnProperty('children')) {
-        if (chheck.children.length !== 0) {
-          this.checkChildrens(chheck);
-        } else {
-          this.check.push(chheck);
-        }
-      }
-    }
-  }
-
   fetchBatches(input) {
-    console.log('fETCH', input);
     this.search = {
       filters: {
         status: input.status,
@@ -165,4 +143,20 @@ export class PreviewCourseComponent implements OnInit {
     };
     this.getBatchDetails(this.search);
   }
+
+  openDialog(event) {
+    console.log('dialog is openend');
+  }
+  public fetchUrl(event) {
+
+    console.log( 'EVENT', event);
+    if (event.hasOwnProperty('previewUrl') && event.previewUrl !== undefined) {
+      const previewUrl = event.previewUrl.replace('watch?v=', 'embed/');
+      this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(previewUrl);
+    } else {
+      this.toaster.error('Error loading Mutli-media content');
+    }
+
+  }
 }
+

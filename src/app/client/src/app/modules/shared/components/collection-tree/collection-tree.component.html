@@ -1,55 +1,48 @@
-<!-- <sui-accordion *ngFor="let child of rootChildrens"  class="ui styled accordion margin-top-10  width-100">
-  <sui-accordion-panel (click)="!child.folder && onNodeClick(child)" [(isOpen)]="child.togglePanelIcon" [isDisabled]="!child.folder">
-    <div title class="accordian-left-text">
-      <i *ngIf="child.folder" class="fa fa-2x vertical-align-middle" [class.fa-folder-open-o]="child.togglePanelIcon" [class.fa-folder-o]="!child.togglePanelIcon"></i>
-      <i *ngIf="!child.folder" [ngClass]="child.icon"></i>&nbsp;&nbsp;&nbsp;<span>{{child.title}}</span>
-      <i *ngIf="child.folder" class="icon right-float accordion-content-right" [class.plus]="!child.togglePanelIcon" [class.minus]="child.togglePanelIcon"></i>
-    </div>
-    <div *ngIf="child.folder" content>
-      <app-fancy-tree (itemSelect)="onItemSelect($event)" [nodes]="child.children" [options]="{ showConnectors: true }"></app-fancy-tree>
-    </div>
-  </sui-accordion-panel>
-</sui-accordion> -->
-<div *ngIf="nodeRoot!=undefined">
-<div *ngFor="let child of nodeRoot.children" class="expansion">
-  <mat-accordion>
-    <mat-expansion-panel
-      *ngIf="child.children.length > 0"
-      (opened)="panelOpenState = true"
-      (closed)="panelOpenState = false"
-      class="mat-expansion-panel-spacing"
-    >
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          <span [ngClass]="child.icon"></span> {{ child.title }} &nbsp;&nbsp;
-          <div *ngFor="let sessionDetail of session">
-            <i *ngIf="sessionDetail.sessionDetails.courseUnit == child.id" class="material-icons float-right" (click)="openSession(sessionDetail)">
+<div *ngIf="showPreviewAccordian">
+  <sui-accordion *ngFor="let child of nodeRoot?.children" class="ui styled accordion margin-top-10  width-100">
+    <sui-accordion-panel (click)="!child.folder && onNodeClick(child)" [(isOpen)]="child.togglePanelIcon" [isDisabled]="!child.folder">
+      <div title class="accordian-left-text">
+        <i *ngIf="child.folder" class="fa fa-2x vertical-align-middle" [class.fa-folder-open-o]="child.togglePanelIcon"
+          [class.fa-folder-o]="!child.togglePanelIcon"></i>
+        <i *ngIf="!child.folder" [ngClass]="child.icon"></i>&nbsp;&nbsp;&nbsp;<span>{{child.title}}</span>
+        <i *ngIf="child.folder" class="icon right-float accordion-content-right" [class.plus]="!child.togglePanelIcon"
+          [class.minus]="child.togglePanelIcon"></i>
+      </div>
+      <div *ngIf="child.folder" content>
+        <app-fancy-tree (itemSelect)="onItemSelect($event)" [nodes]="child.children" [options]="{ showConnectors: true }"></app-fancy-tree>
+      </div>
+    </sui-accordion-panel>
+  </sui-accordion>
+</div>
+
+
+<div *ngIf="nodeRoot!=undefined && !showPreviewAccordian">
+  <div *ngFor="let child of nodeRoot.children" class="expansion">
+    <mat-accordion>
+      <mat-expansion-panel *ngIf="child.children.length > 0" (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+        class="mat-expansion-panel-spacing">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <span [ngClass]="child.icon"></span> {{ child.title }} &nbsp;&nbsp;
+            <div *ngFor="let sessionDetail of session">
+              <i *ngIf="sessionDetail.sessionDetails.courseUnit == child.id" class="material-icons float-right" (click)="openSession(sessionDetail)">
                 live_tv</i>
-          </div>
-        </mat-panel-title>
+            </div>
+          </mat-panel-title>
           <mat-panel-description>
           </mat-panel-description>
 
-      </mat-expansion-panel-header>
-      <app-collection-tree
-        *ngIf="child.children.length > 0"
-        [nodeRoot]="child"
-      ></app-collection-tree>
-    </mat-expansion-panel>
+        </mat-expansion-panel-header>
+        <app-collection-tree *ngIf="child.children.length > 0" [nodeRoot]="child"></app-collection-tree>
+      </mat-expansion-panel>
 
-    <mat-card
-      *ngIf="child.children.length == 0"
-      (click)="onItemSelect(child)"
-    >
-      <mat-card-header>
-        <mat-checkbox
-          (click)="onContentCheckBoxClick(child)"
-          [checked]="child.completed" [disabled]="child.completed"
-          color="primary"
-        ></mat-checkbox>
-        &nbsp; &nbsp; <span [ngClass]="child.icon"></span> &nbsp; {{ child.title }}
-      </mat-card-header>
-    </mat-card>
-  </mat-accordion>
-</div>
+      <mat-card *ngIf="child.children.length == 0" (click)="onItemSelect(child)">
+        <mat-card-header>
+          <mat-checkbox (click)="onContentCheckBoxClick(child)" [checked]="child.completed" [disabled]="child.completed"
+            color="primary"></mat-checkbox>
+          &nbsp; &nbsp; <span [ngClass]="child.icon"></span> &nbsp; {{ child.title }}
+        </mat-card-header>
+      </mat-card>
+    </mat-accordion>
+  </div>
 </div>

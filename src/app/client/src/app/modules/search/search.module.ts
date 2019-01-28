@@ -13,7 +13,6 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { CatalogComponent } from './components/catalog/catalog.component';
 import { CatalogFiltersComponent } from './components/catalog-filters/catalog-filters.component';
-
 @NgModule({
   imports: [
     CommonModule,

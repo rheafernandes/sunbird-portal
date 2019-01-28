@@ -6,6 +6,7 @@ import {
   UserDeleteComponent, OrgSearchComponent, CourseSearchComponent, LibrarySearchComponent
 } from './components';
 import { CatalogComponent } from './components/catalog/catalog.component';
+import { ExploreComponent } from '../public/module/explore';
 
 const routes: Routes = [
   {
@@ -19,7 +20,7 @@ const routes: Routes = [
 
   },
   {
-    path: 'catalog/:pageNumber', component: CatalogComponent,
+    path: 'explore/catalog/:pageNumber', component: ExploreComponent,
     data: {
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Catalog', url: '' }],
       telemetry: {

@@ -159,7 +159,7 @@ ul{
           overflow-x: hidden;
       }
       .wrapper{
-          border-bottom: 2px solid orange;
+          border-top: 2px solid orange;
           padding:1em 0;
       }
      .highlight-card{
@@ -243,3 +243,13 @@ ul{
         padding-bottom:5vh;
     }
 }
+
+.course-roadmap-section {
+  overflow-y: scroll;
+  height: 75vh;
+  scroll-behavior: smooth;
+}
+::-webkit-scrollbar {
+  width: 0px;
+}
+

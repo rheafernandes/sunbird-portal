@@ -6,9 +6,8 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { NgInviewModule } from 'angular-inport';
-import { ExploreComponent } from './components/explore/explore.component';
+import { ExploreComponent, PreviewCourseComponent, DialogOverviewExampleDialog} from './components/';
 import { CatalogFiltersComponent } from '../../../search/components/catalog-filters/catalog-filters.component';
-import { PreviewCourseComponent} from './components/preview-course/preview-course.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   imports: [
@@ -21,6 +20,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     NgInviewModule,
     ExploreRoutingModule
   ],
-  declarations: [ ExploreContentComponent, ExploreComponent, CatalogFiltersComponent, PreviewCourseComponent]
+  declarations: [ ExploreContentComponent, ExploreComponent, CatalogFiltersComponent,
+    PreviewCourseComponent, DialogOverviewExampleDialog],
+  entryComponents: [DialogOverviewExampleDialog]
 })
 export class ExploreModule { }

@@ -166,7 +166,7 @@ this.searchService.courseSearchManagement().subscribe((data) => {
 onEnter(key) {
   this.populateCourseSearch(key);
   const queryParams = {};
-  this.route.navigate(['/catalog/', key], {queryParams: queryParams});
+  this.route.navigate(['/explore/catalog/', key], {queryParams: queryParams});
 }
 populateCourseSearch(key) {
   this.key = key;
@@ -202,7 +202,7 @@ populateCourseSearch(key) {
   );
 }
 preview(courseId) {
-  this.route.navigate(['/preview', courseId]);
+  this.route.navigate(['/explore/preview', courseId]);
 }
 }
 

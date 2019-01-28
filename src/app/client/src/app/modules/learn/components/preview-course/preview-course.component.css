@@ -159,7 +159,7 @@ ul{
           overflow-x: hidden;
       }
       .wrapper{
-          border-bottom: 2px solid orange;
+          border-top: 2px solid orange;
           padding:1em 0;
       }
      .highlight-card{

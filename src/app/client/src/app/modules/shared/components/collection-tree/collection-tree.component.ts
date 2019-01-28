@@ -25,11 +25,18 @@ import { Session } from 'protractor';
   styleUrls: ['./collection-tree.component.css']
 })
 export class CollectionTreeComponent implements OnInit, OnChanges {
+  @Input()
+  showPreviewAccordian = false;
   @Input() public nodes: ICollectionTreeNodes;
   @Input() public options: ICollectionTreeOptions;
   @Output() public contentSelect: EventEmitter<{
     id: string;
     title: string;
+  }> = new EventEmitter();
+  @Output() public previewSelect: EventEmitter<{
+    id: string;
+    title: string;
+    previewUrl: string;
   }> = new EventEmitter();
   @Input() contentStatus: any;
   @Input() nodeRoot: any;
@@ -61,9 +68,9 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
   }
   ngOnInit() {
     this.initialize();
-    console.log('in collection tree sesion', this.session);
-    console.log('this noderoot', this.nodeRoot);
-    console.log('units', this.unitId);
+    // console.log('in collection tree sesion', this.session);
+    // console.log('this noderoot', this.nodeRoot);
+    // console.log('units', this.unitId);
   }
 
   ngOnChanges() {
@@ -83,6 +90,10 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
 
   public onItemSelect(item: any) {
     if (!item.folder) {
+      this.contentSelect.emit({ id: item.id, title: item.title });
+      if (this.showPreviewAccordian) {
+        this.previewSelect.emit({ id: item.data.id, title: item.title, previewUrl: item.data.model.previewUrl });
+      }
       this.subscription.next({ id: item.id, title: item.title });
     }
   }
@@ -96,8 +107,10 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
 
   private initialize() {
     this.rootNode = this.createTreeModel();
+    // console.log(' this.rootNode', this.rootNode);
     if (this.rootNode) {
       this.rootChildrens = this.rootNode.children;
+      // console.log('this.rootChildrens', this.rootChildrens);
       this.nodeRoot = this.rootNode;
       this.addNodeMeta();
     }
