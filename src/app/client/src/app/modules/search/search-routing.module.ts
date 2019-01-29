@@ -6,8 +6,7 @@ import {
   UserDeleteComponent, OrgSearchComponent, CourseSearchComponent, LibrarySearchComponent
 } from './components';
 import { CatalogComponent } from './components/catalog/catalog.component';
-import { ExploreComponent } from '../public/module/explore';
-
+// import {ExploreComponent} from '../public/module/explore/components';
 const routes: Routes = [
   {
     path: 'All/:pageNumber', component: HomeSearchComponent,
@@ -20,7 +19,7 @@ const routes: Routes = [
 
   },
   {
-    path: 'explore/catalog/:pageNumber', component: ExploreComponent,
+    path: 'catalog/:pageNumber', component: CatalogComponent,
     data: {
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Catalog', url: '' }],
       telemetry: {
@@ -29,6 +28,16 @@ const routes: Routes = [
     }
 
   },
+//   {
+//   path: 'explore/catalog/:pageNumber', component: ExploreComponent,
+//   data: {
+//     breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Catalog', url: '' }],
+//     telemetry: {
+//       env: 'catalog', pageid: 'course-catalog', type: 'view', subtype: 'paginate'
+//     }
+//   }
+
+// },
   {
     path: 'Courses/:pageNumber', component: CourseSearchComponent,
     data: {

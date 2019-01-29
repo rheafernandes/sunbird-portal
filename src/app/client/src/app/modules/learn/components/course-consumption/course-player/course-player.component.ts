@@ -57,6 +57,8 @@ import { ListSessionsComponent } from '../../list-sessions/list-sessions.compone
 export class CoursePlayerComponent implements OnInit, OnDestroy, OnChanges {
   public courseInteractObject: IInteractEventObject;
 
+  public showall = true;
+
   public contentInteractObject: IInteractEventObject;
 
   public closeContentIntractEdata: IInteractEventEdata;

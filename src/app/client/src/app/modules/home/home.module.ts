@@ -44,7 +44,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     NotificationComponent,
   ],
   entryComponents: [HomeCalendarCardComponent],
-  providers: [HomeAnnouncementService]
+  providers: [HomeAnnouncementService],
+  exports: [HomeAnnouncementComponent]
 })
 export class HomeModule {
 }

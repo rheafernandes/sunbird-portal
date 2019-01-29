@@ -24,6 +24,7 @@ import { ListSessionsComponent } from './components/list-sessions/list-sessions.
 import { WorkspaceModule } from '../workspace';
 import { BatchCardComponent } from './components/preview-course/batch-card/batch-card.component';
 import { AnnouncementModule } from '../announcement';
+import { HomeModule } from '../home';
 @NgModule({
   imports: [
     CommonModule,
@@ -39,9 +40,11 @@ import { AnnouncementModule } from '../announcement';
     TelemetryModule,
     NgInviewModule,
     WorkspaceModule,
-    AnnouncementModule
+    AnnouncementModule,
+    HomeModule
   ],
   providers: [CourseConsumptionService, CourseBatchService, CourseProgressService, PlayContent],
+
   exports: [UpdateBatchDialogComponent, CreateBatchDialogComponent],
   declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
     CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,

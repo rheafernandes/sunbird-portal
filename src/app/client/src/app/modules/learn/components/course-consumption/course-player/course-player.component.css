@@ -23,10 +23,12 @@
   /* align-content: center; */
   align-items: center;
   /* position: relative; */
+  overflow: hidden;
+  padding-top: 1.25rem
 }
 
 .example-sidenav {
-  padding: 10px;
+  padding-top: 1.5rem;
   width: 30%;
   background-color: white;
 }
@@ -110,6 +112,19 @@ ul{
 }
 #list{
   display: none;
+}
+.mat-tab-body-content {
+  height: 100%;
+  overflow: hidden;;
+}
+#ann {
+  padding-top: 2rem;
+  overflow: hidden;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+#player{
+  max-width: 55rem;;
 }
 @media only screen and (max-width: 760px) {
   ul {

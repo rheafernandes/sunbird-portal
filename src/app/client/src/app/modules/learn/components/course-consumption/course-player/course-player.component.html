@@ -1,206 +1,228 @@
-<mat-drawer-container class="example-container">
-  <mat-drawer #drawer class="example-sidenav" mode="side">
-      <a>
-          <i id="list"
-            mat-button
-            (click)="toggle()"
-            class="material-icons"
-          >
-            close
-          </i></a>
-    <div *ngIf="enrolledBatchInfo" class="schedule">
-      <mat-accordion>
-        <mat-expansion-panel
-          (opened)="panelOpenState = true"
-          (closed)="panelOpenState = false"
-        >
-          <mat-expansion-panel-header>
-            <mat-panel-title>course schedule</mat-panel-title>
-          </mat-expansion-panel-header>
-          <mat-panel-description class="mat-expansion-panel-header-description">
-            <h6 class="text-center">{{ enrolledBatchInfo.name }}</h6>
-            <p> <i class="fa fa-calendar" aria-hidden="true"></i>
-              &nbsp;
-              <span>{{ enrolledBatchInfo.startDate | date }}</span
-              >&nbsp;<span *ngIf="enrolledBatchInfo.endDate" class="date">
-                - {{ enrolledBatchInfo.endDate | date }}</span
-              ></p>
-              <mat-divider></mat-divider>
-              <p>
-              <span class="left-float" *ngIf="enrolledBatchInfo.participant.length>0">&nbsp;
-                {{ enrolledBatchInfo.participant.length }}
-                {{ resourceService.frmelmnts.lbl.learners }}
-              </span>
-              &nbsp; &nbsp; &nbsp;
-              <span class="mentor"
-                >{{ enrolledBatchInfo.mentors.length }}
-                {{ resourceService.frmelmnts.lbl.mentors }} &nbsp;</span
-              ></p>
-          </mat-panel-description>
-          </mat-expansion-panel>
-      </mat-accordion>
-    </div>
-    <app-collection-tree [session]="sessions"
-      *ngIf="collectionTreeNodes; else: dataCommingSoon"
-      (contentSelect)="navigateToContent($event)"
-      [nodes]="collectionTreeNodes"
-      [options]="collectionTreeOptions"
-      [contentStatus]="contentStatus"
-    ></app-collection-tree>
-  </mat-drawer>
-  <div class="icons" >
-    <ul>
-      <li>
+<mat-tab-group>
+  <mat-tab label="First">
+    <mat-drawer-container class="example-container">
+      <mat-drawer #drawer class="example-sidenav" mode="side">
         <a>
-          <i
-            mat-button
-            (click)="drawer.toggle()"
-            id="icon_view_list"
-            class="material-icons"
-          >
-            view_list
+          <i id="list" mat-button (click)="toggle()" class="material-icons">
+            close
           </i></a
         >
-      </li>
-
-      <li>
-        <div ng-if="toc.showNoteInLecture">
-          <h2 class="ui center aligned icon tiny header toc-note">
-            <a
-              class="ui cursor-pointer"
-              (click)="showNoteEditor = !showNoteEditor"
+        <div *ngIf="enrolledBatchInfo" class="schedule">
+          <mat-accordion>
+            <mat-expansion-panel
+              (opened)="panelOpenState = true"
+              (closed)="panelOpenState = false"
             >
-              <app-popup-editor
-                *ngIf="showNoteEditor"
-                [mode]="'create'"
-                [ids]="{ contentId: contentId, courseId: courseId }"
-                (exitModal)="showNoteEditor = false"
-                (createEventEmitter)="createEventEmitter($event)"
-              ></app-popup-editor>
-                  <i id="noteIcon" class="material-icons"> note </i>
-            </a>
-          </h2>
+              <mat-expansion-panel-header>
+                <mat-panel-title>course schedule</mat-panel-title>
+              </mat-expansion-panel-header>
+              <mat-panel-description
+                class="mat-expansion-panel-header-description"
+              >
+                <h6 class="text-center">{{ enrolledBatchInfo.name }}</h6>
+                <p>
+                  <i class="fa fa-calendar" aria-hidden="true"></i> &nbsp;
+                  <span>{{ enrolledBatchInfo.startDate | date }}</span
+                  >&nbsp;<span *ngIf="enrolledBatchInfo.endDate" class="date">
+                    - {{ enrolledBatchInfo.endDate | date }}</span
+                  >
+                </p>
+                <mat-divider></mat-divider>
+                <p>
+                  <!-- <span class="left-float" *ngIf="enrolledBatchInfo.participant.length>0">&nbsp;
+                    {{ enrolledBatchInfo.participant.length }}
+                    {{ resourceService.frmelmnts.lbl.learners }}
+                  </span> -->
+                  &nbsp; &nbsp; &nbsp;
+                  <span class="mentor"
+                    >{{ enrolledBatchInfo.mentors.length }}
+                    {{ resourceService.frmelmnts.lbl.mentors }} &nbsp;</span
+                  >
+                </p>
+              </mat-panel-description>
+            </mat-expansion-panel>
+          </mat-accordion>
         </div>
-      </li>
-      <li *ngIf="sessions?.length>0" (click)="openDialog()">
-        <a>
-            <i id="sessionlist"
-             class="material-icons">
-                live_tv
-                </i>
-        </a>
-      </li>
-      <!-- <span>{{enableContentPlayer}} {{loader}}</span> -->
-    </ul>
-  </div>
-  <div class="example-sidenav-content">
-    <div *ngIf="enableContentPlayer && !loader" id="player">
-      <div class="ui stackable grid">
-        <div class="twelve wide column">
+        <app-collection-tree
+          [session]="sessions"
+          *ngIf="collectionTreeNodes; else dataCommingSoon"
+          (contentSelect)="navigateToContent($event)"
+          [nodes]="collectionTreeNodes"
+          [options]="collectionTreeOptions"
+          [contentStatus]="contentStatus"
+        ></app-collection-tree>
+      </mat-drawer>
+      <div class="icons">
+        <ul>
+          <li>
+            <a>
+              <i
+                mat-button
+                (click)="drawer.toggle()"
+                id="icon_view_list"
+                class="material-icons"
+              >
+                view_list
+              </i></a
+            >
+          </li>
+
+          <li>
+            <div ng-if="toc.showNoteInLecture">
+              <h2 class="ui center aligned icon tiny header toc-note">
+                <a
+                  class="ui cursor-pointer"
+                  (click)="showNoteEditor = !showNoteEditor"
+                >
+                  <app-popup-editor
+                    *ngIf="showNoteEditor"
+                    [mode]="'create'"
+                    [ids]="{ contentId: contentId, courseId: courseId }"
+                    (exitModal)="showNoteEditor = false"
+                    (createEventEmitter)="createEventEmitter($event)"
+                  ></app-popup-editor>
+                  <i id="noteIcon" class="material-icons"> note </i>
+                </a>
+              </h2>
+            </div>
+          </li>
+          <li *ngIf="sessions?.length > 0" (click)="openDialog()">
+            <a> <i id="sessionlist" class="material-icons"> live_tv </i> </a>
+          </li>
+          <!-- <span>{{enableContentPlayer}} {{loader}}</span> -->
+        </ul>
+      </div>
+      <div class="example-sidenav-content">
+        <div *ngIf="enableContentPlayer && !loader" id="player">
+          <div class="ui stackable grid">
+            <div class="twelve wide column">
+              <div class="ui grid">
+                <div class="row">
+                  <div class="twelve wide column">
+                    <div
+                      class="ui grid"
+                      id="app-player-collection-renderer"
+                    ></div>
+                    <div
+                      class="ui warning message click-notify-xurl"
+                      *ngIf="showExtContentMsg"
+                    >
+                      <div class="column twelve wide">
+                        <p>{{ resourceService.messages.imsg.m0036 }}</p>
+                      </div>
+                    </div>
+                    <div class="ui grid">
+                      <div
+                        class="twelve wide column"
+                        [appTelemetryImpression]="telemetryContentImpression"
+                      >
+                        <app-player
+                          (playerOnDestroyEvent)="playerOnDestroy($event)"
+                          (contentProgressEvent)="contentProgressEvent($event)"
+                          class="content-player"
+                          [playerConfig]="playerConfig"
+                        ></app-player>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="ui row padding-top-none">
+                  <div class="ui twelve column grid padding-right-none">
+                    <div
+                      class="five wide mobile only three wide tablet only three wide computer only column"
+                    >
+                      <button
+                        id="previous"
+                        class="ui blue button left floated fluid tocbutton toc-left-nav-btn-content"
+                        (click)="navigateToContent(prevPlaylistItem)"
+                        [disabled]="prevPlaylistItem === undefined"
+                      >
+                        <span class="header">previous</span> <br />
+                        <span
+                          class="font-white description text-ellipsis"
+                          title="{{
+                            prevPlaylistItem?.title || noContentToPlay
+                          }}"
+                          >{{
+                            prevPlaylistItem?.title || noContentToPlay
+                          }}</span
+                        >
+                      </button>
+                    </div>
+                    <div
+                      class="two wide tablet only two wide computer only column"
+                    ></div>
+                    <div class="two wide column center aligned">
+                      <!-- take note -->
+                    </div>
+                    <div
+                      class="two wide tablet only two wide computer only column"
+                    ></div>
+                    <div
+                      class="five wide mobile only three wide tablet only three wide computer only column padding-right-none"
+                    >
+                      <button
+                        id="previous"
+                        class="ui blue button right floated fluid toc-right-nav-btn-content"
+                        (click)="navigateToContent(nextPlaylistItem)"
+                        [disabled]="nextPlaylistItem === undefined"
+                      >
+                        <span class="header">next</span> <br />
+                        <span
+                          class="font-white description text-ellipsis"
+                          title="{{
+                            nextPlaylistItem?.title || noContentToPlay
+                          }}"
+                          >{{
+                            nextPlaylistItem?.title || noContentToPlay
+                          }}</span
+                        >
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ui section divider"></div>
+          <div class="two wide column"></div>
           <div class="ui grid">
             <div class="row">
-              <div class="twelve wide column">
-                <div class="ui grid" id="app-player-collection-renderer"></div>
-                <div
-                  class="ui warning message click-notify-xurl"
-                  *ngIf="showExtContentMsg"
-                >
-                  <div class="column twelve wide">
-                    <p>{{ resourceService.messages.imsg.m0036 }}</p>
-                  </div>
-                </div>
-                <div class="ui grid">
-                  <div
-                    class="twelve wide column"
-                    [appTelemetryImpression]="telemetryContentImpression"
-                  >
-                    <app-player
-                      (playerOnDestroyEvent)="playerOnDestroy($event)"
-                      (contentProgressEvent)="contentProgressEvent($event)"
-                      class="content-player"
-                      [playerConfig]="playerConfig"
-                    ></app-player>
-                  </div>
-                </div>
+              <div class="eight wide column">
+                <!-- <course-discussions></course-discussions> -->
               </div>
-            </div>
-            <div class="ui row padding-top-none">
-              <div class="ui twelve column grid padding-right-none">
-                <div
-                  class="five wide mobile only three wide tablet only three wide computer only column"
-                >
-                  <button
-                    id="previous"
-                    class="ui blue button left floated fluid tocbutton toc-left-nav-btn-content"
-                    (click)="navigateToContent(prevPlaylistItem)"
-                    [disabled]="prevPlaylistItem === undefined"
-                  >
-                    <span class="header">previous</span>
-                    <br />
-                    <span
-                      class="font-white description text-ellipsis"
-                      title="{{prevPlaylistItem?.title || noContentToPlay}}"
-                      >{{ prevPlaylistItem?.title || noContentToPlay }}</span
-                    >
-                  </button>
-                </div>
-                <div
-                  class="two wide tablet only two wide computer only column"
-                ></div>
-                <div class="two wide column center aligned">
-                  <!-- take note -->
-                </div>
-                <div
-                  class="two wide tablet only two wide computer only column"
-                ></div>
-                <div
-                  class="five wide mobile only three wide tablet only three wide computer only column padding-right-none"
-                >
-                  <button
-                    id="previous"
-                    class="ui blue button right floated fluid toc-right-nav-btn-content"
-                    (click)="navigateToContent(nextPlaylistItem)"
-                    [disabled]="nextPlaylistItem === undefined"
-                  >
-                    <span class="header">next</span>
-                    <br />
-                    <span
-                      class="font-white description text-ellipsis"
-                      title="{{nextPlaylistItem?.title || noContentToPlay}}"
-                      >{{ nextPlaylistItem?.title || noContentToPlay }}</span
-                    >
-                  </button>
-                </div>
+              <div class="four wide column toc-note-content">
+                <app-note-card
+                  [ids]="{ contentId: contentId, courseId: courseId }"
+                  [createNoteData]="createNoteData"
+                ></app-note-card>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="ui section divider"></div>
-      <div class="two wide column"></div>
-      <div class="ui grid">
-        <div class="row">
-          <div class="eight wide column">
-            <!-- <course-discussions></course-discussions> -->
-          </div>
-          <div class="four wide column toc-note-content">
-            <app-note-card
-              [ids]="{ contentId: contentId, courseId: courseId }"
-              [createNoteData]="createNoteData"
-            ></app-note-card>
-          </div>
+        <div *ngIf="loader">
+          <app-loader [data]="loaderMessage"></app-loader>
         </div>
+        <div *ngIf="showError">
+          <!--
+            <error-message data="{{toc.error}}" visibility="toc.error.showError"></error-message>
+          -->
+        </div>
+        <div class="one wide column"></div>
       </div>
-    </div>
-    <div *ngIf="loader"><app-loader [data]="loaderMessage"></app-loader></div>
-    <div *ngIf="showError">
-      <!--
-        <error-message data="{{toc.error}}" visibility="toc.error.showError"></error-message>
-      -->
-    </div>
-    <div class="one wide column"></div>
-  </div>
-</mat-drawer-container>
+    </mat-drawer-container>
+  </mat-tab>
+  <mat-tab label="Q & A"> </mat-tab>
+  <mat-tab label="Announcement">
+<div ui container>
+    <app-home-announcement
+    (inviewEvent)="anouncementInview($event)"
+    [showall]="showall"
+  ></app-home-announcement>
+</div>
+
+  </mat-tab>
+</mat-tab-group>
 
 <!--
   <div class="ui stackable grid margin-top-20" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">

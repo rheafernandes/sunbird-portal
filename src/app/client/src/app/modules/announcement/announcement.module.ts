@@ -10,6 +10,7 @@ import { NgInviewModule } from 'angular-inport';
 import { OutboxComponent, DeleteComponent, DetailsComponent, GeoExplorerComponent,
   DetailsPopupComponent, InboxComponent, CreateComponent, FileUploaderComponent } from './components';
   import { GeoExplorerService, CreateService } from './services';
+import { AnnouncementInboxCardComponent } from '../shared/components';
 @NgModule({
   imports: [
     CommonModule,
@@ -23,5 +24,6 @@ import { OutboxComponent, DeleteComponent, DetailsComponent, GeoExplorerComponen
      CreateComponent, FileUploaderComponent],
   providers: [AnnouncementService, ResourceService, PaginationService, ToasterService, GeoExplorerService,
      RouterNavigationService, CreateService],
+     exports: [AnnouncementInboxCardComponent, DetailsPopupComponent]
 })
 export class AnnouncementModule { }

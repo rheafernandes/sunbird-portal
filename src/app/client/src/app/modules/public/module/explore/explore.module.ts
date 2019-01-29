@@ -22,5 +22,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   ],
   declarations: [ ExploreContentComponent, ExploreComponent, CatalogFiltersComponent,
     PreviewCourseComponent],
-})
+    exports: [ExploreComponent]
+  })
+
 export class ExploreModule { }
