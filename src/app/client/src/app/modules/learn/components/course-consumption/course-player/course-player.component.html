@@ -1,5 +1,6 @@
+<div class="container">
 <mat-tab-group>
-  <mat-tab label="First">
+  <mat-tab label="Player">
     <mat-drawer-container class="example-container">
       <mat-drawer #drawer class="example-sidenav" mode="side">
         <a>
@@ -214,7 +215,7 @@
   </mat-tab>
   <mat-tab label="Q & A"> </mat-tab>
   <mat-tab label="Announcement">
-<div ui container>
+<div class="container1">
     <app-home-announcement
     (inviewEvent)="anouncementInview($event)"
     [showall]="showall"
@@ -223,7 +224,7 @@
 
   </mat-tab>
 </mat-tab-group>
-
+</div>
 <!--
   <div class="ui stackable grid margin-top-20" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
       <div class="one wide column"></div>

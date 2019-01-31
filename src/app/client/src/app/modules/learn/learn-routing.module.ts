@@ -11,6 +11,7 @@ import { CourseProgressComponent } from '@sunbird/dashboard';
 import { RedirectComponent } from './../shared/components/redirect/redirect.component';
 import { PreviewCourseComponent } from './components/preview-course/preview-course.component';
 import { TestAllBatchesComponent } from './components/test-all-batches/test-all-batches.component';
+import {DetailsPopupComponent} from '@sunbird/announcement';
 const telemetryEnv = 'course';
 const objectType = 'course';
 const routes: Routes = [
@@ -113,8 +114,15 @@ const routes: Routes = [
           },
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }]
         }
-      }
-    ]
+      },
+       { path: 'view/:announcementId', component: DetailsPopupComponent,
+          data: {
+             telemetry: {
+               env: telemetryEnv, pageid: 'announcement-read', type: 'view', object: { type: objectType, ver: '1.0' }
+             }
+           }
+         }
+        ]
   }
 ];
 

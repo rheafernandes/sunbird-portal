@@ -23,7 +23,7 @@ import { UpdateBatchDialogComponent } from './components/test-all-batches/update
 import { ListSessionsComponent } from './components/list-sessions/list-sessions.component';
 import { WorkspaceModule } from '../workspace';
 import { BatchCardComponent } from './components/preview-course/batch-card/batch-card.component';
-import { AnnouncementModule } from '../announcement';
+import { AnnouncementModule , AnnouncementRoutingModule} from '../announcement';
 import { HomeModule } from '../home';
 @NgModule({
   imports: [
@@ -41,7 +41,8 @@ import { HomeModule } from '../home';
     NgInviewModule,
     WorkspaceModule,
     AnnouncementModule,
-    HomeModule
+    HomeModule,
+    AnnouncementRoutingModule
   ],
   providers: [CourseConsumptionService, CourseBatchService, CourseProgressService, PlayContent],
 
